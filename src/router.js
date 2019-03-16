@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./components/Home.vue";
 import login from "./components/login.vue";
 import tasks from "./components/tasks.vue";
+import taskDescription from "./components/taskDescription.vue";
 
 
 Vue.use(Router);
@@ -24,6 +25,11 @@ export default new Router({
       path: "/tasks",
       name: "tasks",
       component: tasks
+    },
+    {
+      path: "/taskDescription",
+      name: "taskDescription",
+      component: taskDescription
     }
     // {
     // path: "/about",

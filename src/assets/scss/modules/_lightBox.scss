@@ -1,0 +1,50 @@
+@import './font';
+
+.lightBox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  &__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(234, 234, 234, 0.7);
+  }
+
+  &__bubble {
+    position: relative;
+    background: $white;
+    max-width: 496px;
+    padding: 55px 48px 45px;
+    border-radius: 18px;
+    text-align: center;
+  }
+
+  &__titleMiddle {
+    font-size: $titleSize;
+    color: $black-1;
+    margin-bottom: 62px;
+  }
+
+  p {
+    text-align: left;
+    color: $black-1;
+    padding: 0 10px;
+    font-size: 18px;
+    line-height: 1.75em;
+    font-weight: 300;
+  }
+
+  &__subtitle {
+    padding-left: 20px;
+  }
+
+  &__taskDescription {
+    margin-bottom: 62px;
+  }
+}

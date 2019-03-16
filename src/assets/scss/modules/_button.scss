@@ -1,0 +1,34 @@
+.button {
+  border-radius: 8px;
+  outline: 0;
+  border: 0;
+  padding: 0;
+  color: $white;
+  min-width: 100px;
+  font-size: $titleSize;
+  width: 305px;
+  height: 68px;
+  cursor: pointer;
+
+  &__primary {
+    background: $normalColor;
+  }
+
+  &__secondary {
+    background: $rejectColor;
+      // background: black;
+  }
+
+  &__alert {
+    background: $alertColor;
+  }
+
+  &__default {
+    background: $white;
+    color: $gray-3;
+  }
+
+  &__callToAction {
+    background: $callToActionColor;
+  }
+}

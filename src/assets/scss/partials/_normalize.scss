@@ -1,0 +1,31 @@
+@import '.././modules/font';
+@import '.././modules/lightBox';
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body, h1, h2, h3, p, div {
+  margin: 0;
+}
+
+body {
+  background: $white;
+}
+
+// max-width
+$max-width: 768px;
+$max-height: 1024px;
+
+.wrapper {
+  position: relative;
+  max-width: $max-width;
+  max-height: $max-height;
+  margin: auto;
+}
