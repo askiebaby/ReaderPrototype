@@ -9,20 +9,21 @@
             <div class="taskList__description__word">功</div>
             <div class="taskList__description__word">能</div>
             <div class="taskList__description__word">橫</div>
-            </div>
+          </div>
           <div class="taskList__tasks-type1">
-            <div class="task task__completed"><span>1</span></div>
-            <div class="task"><span>2</span></div>
-            <div class="task"><span>3</span></div>
-            <div class="task"><span>4</span></div>
-            <div class="task"><span>5</span></div>
+            <!-- <router-link
+              tag="div"
+              :to="{ name: 'login',params:{id:n}}"
+              class="task"
+              v-for="n in 5"
+            >{{n}}</router-link>-->
+            <div class="task" v-for="n in 5" @click="toLogin(n,'M')">{{n}}</div>
           </div>
           <div class="taskList__tasks-type2">
-            <div class="task task__completed">1</div>
-            <div class="task"><span>2</span></div>
-            <div class="task"><span>3</span></div>
-            <div class="task"><span>4</span></div>
-            <div class="task"><span>5</span></div>
+            <div class="task" v-for="n in 5"
+            @click="toLogin(n,'F')">
+              {{n}}
+            </div>
           </div>
         </div>
         <div class="taskList">
@@ -32,20 +33,38 @@
             <div class="taskList__description__word">功</div>
             <div class="taskList__description__word">能</div>
             <div class="taskList__description__word">橫</div>
-            </div>
+          </div>
           <div class="taskList__tasks-type1">
-            <div class="task task__completed"><span>1</span></div>
-            <div class="task"><span>2</span></div>
-            <div class="task"><span>3</span></div>
-            <div class="task"><span>4</span></div>
-            <div class="task"><span>5</span></div>
+            <div class="task task__completed">
+              <span>1</span>
+            </div>
+            <div class="task">
+              <span>2</span>
+            </div>
+            <div class="task">
+              <span>3</span>
+            </div>
+            <div class="task">
+              <span>4</span>
+            </div>
+            <div class="task">
+              <span>5</span>
+            </div>
           </div>
           <div class="taskList__tasks-type2">
             <div class="task task__completed">1</div>
-            <div class="task"><span>2</span></div>
-            <div class="task"><span>3</span></div>
-            <div class="task"><span>4</span></div>
-            <div class="task"><span>5</span></div>
+            <div class="task">
+              <span>2</span>
+            </div>
+            <div class="task">
+              <span>3</span>
+            </div>
+            <div class="task">
+              <span>4</span>
+            </div>
+            <div class="task">
+              <span>5</span>
+            </div>
           </div>
         </div>
       </div>
@@ -54,7 +73,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 .wholeTask {
   padding: 55px 31px;
   font-size: $contentSize;
@@ -79,8 +97,8 @@
   }
 }
 
-.task:nth-child(2n+2) span{
-  border-bottom: .1em solid $white;
+.task:nth-child(2n + 2) span {
+  border-bottom: 0.1em solid $white;
 }
 
 .task + .task {
@@ -107,7 +125,8 @@
     }
   }
 
-  &__tasks-type1, &__tasks-type2 {
+  &__tasks-type1,
+  &__tasks-type2 {
     flex-grow: 1;
     display: flex;
 
@@ -122,7 +141,6 @@
     justify-content: center;
     padding: 0 14px 0 7px;
   }
-
 }
 
 .taskList + .taskList {
@@ -135,6 +153,10 @@
 // @ is an alias to /src
 
 export default {
-
+  methods: {
+    toLogin(id, gender) {
+      this.$router.push({ name: "login", params: { id: id, gender: gender } });
+    }
+  }
 };
 </script>
