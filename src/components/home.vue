@@ -17,10 +17,10 @@
               class="task"
               v-for="n in 5"
             >{{n}}</router-link>-->
-            <div class="task" v-for="n in 5" @click="toLogin(n,'M')">{{n}}</div>
+            <div class="task" v-for="n in 12" @click="toLogin(n,'M')">{{n}}</div>
           </div>
           <div class="taskList__tasks-type2">
-            <div class="task" v-for="n in 5"
+            <div class="task" v-for="n in 12"
             @click="toLogin(n,'F')">
               {{n}}
             </div>
@@ -98,10 +98,11 @@
 }
 
 .task:nth-child(2n + 2) span {
+  border-top: 0.1em solid transparent;
   border-bottom: 0.1em solid $white;
 }
 
-.task + .task {
+.task {
   margin-left: 8px;
 }
 
@@ -109,7 +110,7 @@
   background: $gray-2;
   color: $white;
   border-radius: 0 30px 30px 0;
-  padding: 18px 29px 17px 10px;
+  padding: 18px 29px 17px 15px;
   display: flex;
   min-height: 222px;
 
@@ -127,8 +128,12 @@
 
   &__tasks-type1,
   &__tasks-type2 {
-    flex-grow: 1;
     display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: calc((100% - 70px) / 2);
+    max-width: 50%;
 
     .task__completed {
       background: $gray-1;
@@ -139,7 +144,7 @@
     display: flex;
     flex-flow: column;
     justify-content: center;
-    padding: 0 14px 0 7px;
+    padding-right: 10px;
   }
 }
 
@@ -147,7 +152,6 @@
   margin-top: 12px;
 }
 </style>
-
 
 <script>
 // @ is an alias to /src
