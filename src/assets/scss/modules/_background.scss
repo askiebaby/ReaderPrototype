@@ -1,0 +1,9 @@
+.background {
+  &__male {
+    background: $blue;
+  }
+
+  &__female {
+    background: $red;
+  }
+}

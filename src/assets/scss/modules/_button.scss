@@ -16,7 +16,7 @@
 
   &__secondary {
     background: $rejectColor;
-      // background: black;
+    // background: black;
   }
 
   &__alert {
@@ -30,5 +30,17 @@
 
   &__callToAction {
     background: $callToActionColor;
+  }
+
+  &__default2 {
+    background: $white;
+    color: $gray-4;
+  }
+
+  &__space {
+    width: 100px;
+    height: 42px;
+    font-size: $contentSize;
+    margin: 0 17.5px;
   }
 }

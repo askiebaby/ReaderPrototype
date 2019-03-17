@@ -1,71 +1,68 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <div class="wholeTask">
-        <div class="taskList">
-          <div class="taskList__description">
-            <div class="taskList__description__word">文</div>
-            <div class="taskList__description__word">橫</div>
-            <div class="taskList__description__word">功</div>
-            <div class="taskList__description__word">能</div>
-            <div class="taskList__description__word">橫</div>
-          </div>
-          <div class="taskList__tasks-type1">
-            <!-- <router-link
+  <div class="wholeTask">
+    <div class="taskList">
+      <div class="taskList__description">
+        <div class="taskList__description__word">文</div>
+        <div class="taskList__description__word">橫</div>
+        <div class="taskList__description__word">功</div>
+        <div class="taskList__description__word">能</div>
+        <div class="taskList__description__word">橫</div>
+      </div>
+      <div class="taskList__tasks-type1">
+        <!-- <router-link
               tag="div"
               :to="{ name: 'login',params:{id:n}}"
               class="task"
               v-for="n in 5"
-            >{{n}}</router-link>-->
-            <div class="task" v-for="n in 12" @click="toLogin(n,'M')">{{n}}</div>
-          </div>
-          <div class="taskList__tasks-type2">
-            <div class="task" v-for="n in 12"
-            @click="toLogin(n,'F')">
-              {{n}}
-            </div>
-          </div>
+        >{{n}}</router-link>-->
+        <div class="task" v-for="n in 15" @click="toLogin(n,'M')">
+          <span>{{n}}</span>
         </div>
-        <div class="taskList">
-          <div class="taskList__description">
-            <div class="taskList__description__word">文</div>
-            <div class="taskList__description__word">橫</div>
-            <div class="taskList__description__word">功</div>
-            <div class="taskList__description__word">能</div>
-            <div class="taskList__description__word">橫</div>
-          </div>
-          <div class="taskList__tasks-type1">
-            <div class="task task__completed">
-              <span>1</span>
-            </div>
-            <div class="task">
-              <span>2</span>
-            </div>
-            <div class="task">
-              <span>3</span>
-            </div>
-            <div class="task">
-              <span>4</span>
-            </div>
-            <div class="task">
-              <span>5</span>
-            </div>
-          </div>
-          <div class="taskList__tasks-type2">
-            <div class="task task__completed">1</div>
-            <div class="task">
-              <span>2</span>
-            </div>
-            <div class="task">
-              <span>3</span>
-            </div>
-            <div class="task">
-              <span>4</span>
-            </div>
-            <div class="task">
-              <span>5</span>
-            </div>
-          </div>
+      </div>
+      <div class="taskList__tasks-type2">
+        <div class="task" v-for="n in 15" @click="toLogin(n,'F')">
+          <span>{{n}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="taskList">
+      <div class="taskList__description">
+        <div class="taskList__description__word">文</div>
+        <div class="taskList__description__word">橫</div>
+        <div class="taskList__description__word">功</div>
+        <div class="taskList__description__word">能</div>
+        <div class="taskList__description__word">橫</div>
+      </div>
+      <div class="taskList__tasks-type1">
+        <div class="task task__completed">
+          <span>1</span>
+        </div>
+        <div class="task">
+          <span>2</span>
+        </div>
+        <div class="task">
+          <span>3</span>
+        </div>
+        <div class="task">
+          <span>4</span>
+        </div>
+        <div class="task">
+          <span>5</span>
+        </div>
+      </div>
+      <div class="taskList__tasks-type2">
+        <div class="task task__completed">1</div>
+        <div class="task">
+          <span>2</span>
+        </div>
+        <div class="task">
+          <span>3</span>
+        </div>
+        <div class="task">
+          <span>4</span>
+        </div>
+        <div class="task">
+          <span>5</span>
         </div>
       </div>
     </div>

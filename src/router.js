@@ -4,14 +4,14 @@ import Home from "./components/home.vue";
 import login from "./components/login.vue";
 import tasks from "./components/tasks.vue";
 import taskDescription from "./components/taskDescription.vue";
-
+import finishTask from "./components/finishTask.vue";
+import cover from "./components/cover.vue";
 
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
-  routes: [
-    {
+  routes: [{
       path: "/",
       name: "home",
       component: Home
@@ -30,6 +30,17 @@ export default new Router({
       path: "/taskDescription",
       name: "taskDescription",
       component: taskDescription
+    },
+    {
+      path: "/finishTask",
+      name: "finishTask",
+      component: finishTask
+    }
+    ,
+    {
+      path: "/cover",
+      name: "cover",
+      component: cover
     }
     // {
     // path: "/about",

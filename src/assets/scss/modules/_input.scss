@@ -1,0 +1,25 @@
+input {
+  width: 300px;
+  height: 42px;
+  border-radius: 8px;
+  padding: 0;
+  border: 0 none;
+  background-color: $white;
+  text-align: center;
+  font-size: $contentSize;
+  margin-bottom: 76px;
+  &::placeholder {
+    color: $placeholderColor;
+  }
+}
+.input-center {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+.member_id {
+  color: $white;
+  font-size: $titleSize;
+  margin: 0 66px 19px 65px;
+}
