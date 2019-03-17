@@ -2,6 +2,13 @@
 
 .lightBox {
   position: relative;
+  // TODO 以下樣式在串狀態時使用（移除註解）
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
+  // z-index: 100;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   flex-flow: column wrap;
@@ -19,10 +26,15 @@
   &__bubble {
     position: relative;
     background: $white;
-    max-width: 496px;
-    padding: 55px 48px 45px;
+    min-width: 496px;
+    padding: 55px 48px 20px;
     border-radius: 18px;
     text-align: center;
+  }
+
+  &__titleLarge {
+    font-size: $headlineSize;
+    margin-bottom: 31px;
   }
 
   &__titleMiddle {
@@ -34,17 +46,117 @@
   p {
     text-align: left;
     color: $black-1;
-    padding: 0 10px;
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.75em;
     font-weight: 300;
   }
 
   &__subtitle {
-    padding-left: 20px;
+    padding-left: 10px;
+    margin-bottom: 25px;
   }
 
   &__taskDescription {
-    margin-bottom: 62px;
+    margin-bottom: 97px;
+  }
+  .button {
+    margin: auto;
+  }
+}
+
+// 完成任務
+.missionCompleted {
+  .lightBox{
+    &__content {
+      width: max-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &__subtitle {
+      text-align: center;
+
+      span + span {
+        margin-left: 1.25em;
+      }
+    }
+  }
+}
+
+// 泡泡視窗裡的按鈕們的設定
+.taskName, .missionCompleted, .deleteRecord, .deleteRecordConfirm {
+  .button {
+    min-width: 305px;
+  }
+}
+
+.leaveMission {
+  .button {
+    min-width: 160px;
+  }
+}
+
+// 刷新紀錄
+.deleteRecord {
+  .lightBox {
+    &__background {
+      background: $alertColor;
+    }
+
+    &__bubble {
+      padding-top: 161px;
+      padding-bottom: 46px;
+    }
+
+    &__subtitle {
+      text-align: center;
+
+      span + span {
+        margin-left: 1.5em;
+      }
+    }
+  }
+}
+
+// 離開重新測試 確認
+.deleteRecordConfirm {
+  .lightBox {
+    &__bubble {
+      padding-top: 177px;
+      padding-bottom: 25px;
+    }
+    &__titleLarge {
+      margin-bottom: 97px;
+    }
+  }
+}
+
+// 離開任務
+.leaveMission {
+  .lightBox {
+    &__bubble {
+      padding-top: 177px;
+      padding-bottom: 25px;
+    }
+    &__titleLarge {
+      margin-bottom: 164px;
+    }
+  }
+}
+
+// setting
+.setting {
+  .lightBox {
+    &__background {
+      background:rgba(216, 216, 216, 0.69);
+    }
+    &__bubbleLittle {
+      min-width: 320px;
+      position: relative;
+      background: $white;
+      text-align: center;
+      padding: 55px 16px;
+      border-radius: 14px;
+    }
   }
 }

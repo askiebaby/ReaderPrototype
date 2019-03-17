@@ -1,8 +1,12 @@
 <template>
-  <div class="taskPage">
-    <button class="button button__secondary taskPage__button">Task 1</button>
-    <button class="button button__primary taskPage__button">Task 2</button>
-    <button class="button button__primary taskPage__button">Task 3</button>
+  <div>
+    <div class="wrapper">
+      <div class="taskPage">
+        <button class="button buttonBig button__secondary taskPage__button">Task 1</button>
+        <button class="button buttonBig button__primary taskPage__button">Task 2</button>
+        <button class="button buttonBig button__primary taskPage__button">Task 3</button>
+      </div>
+    </div>
   </div>
 </template>
 

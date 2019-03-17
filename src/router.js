@@ -6,6 +6,9 @@ import tasks from "./components/tasks.vue";
 import taskDescription from "./components/taskDescription.vue";
 import finishTask from "./components/finishTask.vue";
 import cover from "./components/cover.vue";
+import bookIndex from "./components/index.vue";
+import setting from "./components/setting.vue";
+
 
 Vue.use(Router);
 
@@ -35,12 +38,21 @@ export default new Router({
       path: "/finishTask",
       name: "finishTask",
       component: finishTask
-    }
-    ,
+    },
     {
       path: "/cover",
       name: "cover",
       component: cover
+    },
+    {
+      path: "/index",
+      name: "index",
+      component: bookIndex
+    },
+    {
+      path: "/setting",
+      name: "setting",
+      component: setting
     }
     // {
     // path: "/about",
