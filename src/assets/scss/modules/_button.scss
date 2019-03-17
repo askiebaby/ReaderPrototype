@@ -6,9 +6,14 @@
   color: $white;
   min-width: 100px;
   font-size: $titleSize;
-  width: 305px;
+  display: block;
+  // margin: auto;
   height: 68px;
   cursor: pointer;
+  
+  &Big{
+    width: 305px;
+  }
 
   &__primary {
     background: $normalColor;
