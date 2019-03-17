@@ -5,6 +5,7 @@ import login from "./components/login.vue";
 import tasks from "./components/tasks.vue";
 import taskDescription from "./components/taskDescription.vue";
 import bookIndex from "./components/index.vue";
+import setting from "./components/setting.vue";
 
 
 Vue.use(Router);
@@ -36,6 +37,11 @@ export default new Router({
       path: "/index",
       name: "index",
       component: bookIndex
+    },
+    {
+      path: "/setting",
+      name: "setting",
+      component: setting
     }
     // {
     // path: "/about",

@@ -64,7 +64,6 @@
 
     &__container {
       position: relative;
-      // z-index: 10
       background: $white-2;
       top: 23px;
       width: 658px;
@@ -96,6 +95,7 @@
         color: $black-2;
         line-height: 2.8rem;
         height: min-content;
+        cursor: pointer;
 
         > span {
           line-height: 2.8em;

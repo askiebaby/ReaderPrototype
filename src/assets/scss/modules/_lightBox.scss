@@ -144,3 +144,19 @@
   }
 }
 
+// setting
+.setting {
+  .lightBox {
+    &__background {
+      background:rgba(216, 216, 216, 0.69);
+    }
+    &__bubbleLittle {
+      min-width: 320px;
+      position: relative;
+      background: $white;
+      text-align: center;
+      padding: 55px 16px;
+      border-radius: 14px;
+    }
+  }
+}
