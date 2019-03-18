@@ -10,9 +10,13 @@
   // margin: auto;
   height: 68px;
   cursor: pointer;
-  
-  &Big{
+
+  &Big {
     width: 305px;
+  }
+
+  &s {
+    display: flex;
   }
 
   &__primary {

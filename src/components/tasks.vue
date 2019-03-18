@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <div class="taskPage">
-        <button class="button buttonBig button__secondary taskPage__button">Task 1</button>
-        <button class="button buttonBig button__primary taskPage__button">Task 2</button>
-        <button class="button buttonBig button__primary taskPage__button">Task 3</button>
-      </div>
-    </div>
+  <div class="taskPage">
+    <router-link
+      tag="button"
+      :to="{ name: 'taskDescription'}"
+      class="button buttonBig button__primary taskPage__button"
+    >Task 1</router-link>
+    <!-- <button class="button buttonBig button__primary taskPage__button">Task 1</button> -->
+    <button class="button buttonBig button__primary taskPage__button">Task 2</button>
+    <button class="button buttonBig button__primary taskPage__button">Task 3</button>
   </div>
 </template>
 

@@ -1,35 +1,31 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <!-- 任務題目 -->
-      <div class="lightBox setting">
-        <div class="lightBox__background"></div>
-        <div class="lightBox__bubbleLittle">
-          <div class="lightBox__content">
-            <div class="function function__lightness"></div>
-            <div class="function function__fontSize">
-              <span>Aa</span>
-              <span>Aa</span>
-            </div>
-            <div class="function function__background">
-              <span class="function__background__white"></span>
-              <span class="function__background__black"></span>
-              <span class="function__background__yellow"></span>
-              <span class="function__background__green"></span>
-            </div>
-            <div class="function function__fontFamily">
-              <select>
-                <option>標楷體</option>
-              </select>
-            </div>
-            <div class="function function__pageMode">
-              <div class="function__pageMode__title">翻頁模式</div>
-              <div class="function__pageMode__content">
-                <span>捲動</span>
-                <span class="active">翻頁-單欄</span>
-                <span>翻頁-雙欄</span>
-              </div>
-            </div>
+  <!-- 任務題目 -->
+  <div class="lightBox setting">
+    <div class="lightBox__background"></div>
+    <div class="lightBox__bubbleLittle">
+      <div class="lightBox__content">
+        <div class="function function__lightness"></div>
+        <div class="function function__fontSize">
+          <span>Aa</span>
+          <span>Aa</span>
+        </div>
+        <div class="function function__background">
+          <span class="function__background__white"></span>
+          <span class="function__background__black"></span>
+          <span class="function__background__yellow"></span>
+          <span class="function__background__green"></span>
+        </div>
+        <div class="function function__fontFamily">
+          <select>
+            <option>標楷體</option>
+          </select>
+        </div>
+        <div class="function function__pageMode">
+          <div class="function__pageMode__title">翻頁模式</div>
+          <div class="function__pageMode__content">
+            <span>捲動</span>
+            <span class="active">翻頁-單欄</span>
+            <span>翻頁-雙欄</span>
           </div>
         </div>
       </div>
@@ -43,7 +39,8 @@
   justify-items: center;
   flex-flow: row nowrap;
 
-  > span, > select {
+  > span,
+  > select {
     border: 1px solid $lightGray;
     border-radius: 6px;
     text-align: center;
@@ -60,7 +57,6 @@
     height: 40px;
     background: $white;
     font-weight: 300;
-
   }
 
   > span + span {
@@ -139,15 +135,11 @@
         background: $lightGray;
         color: $white;
       }
-
     }
   }
 }
-
 </style>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
