@@ -1,9 +1,10 @@
 <template>
   <div>
     <ul>
-      <li>
-        <img :src="require('@/assets/menu/burger.svg')">
-      </li>
+      <router-link
+        tag="li"
+        :to="{ name: 'index'}"
+      ><img :src="require('@/assets/menu/burger.svg')"></router-link>
       <li>
         <img :src="require('@/assets/menu/aa.png')">
       </li>
@@ -20,10 +21,6 @@
   </div>
 </template>
 <style lang="scss" scoped>
-// #main {
-//   height: 66px;
-//   align-items: center;
-// }
 ul {
   margin: 0;
   padding: 0;

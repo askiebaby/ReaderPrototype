@@ -12,6 +12,9 @@
 </template>
 
 <style lang="scss" scoped>
+
+@import '@/assets/scss/modules/_button.scss';
+
 .taskPage {
   display: flex;
   justify-content: center;

@@ -23,6 +23,7 @@
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/modules/_font.scss';
 #resetPosition {
   text-align: right;
   padding: 38px 37px 0 0;

@@ -3,9 +3,12 @@
     <div class="index__backround"></div>
     <div class="index__container">
       <nav>
-        <img :src="require('@/assets/menu/back.svg')">
-        <!-- <div class="back-direction"></div> -->
-        <div>返回</div>
+        <router-link
+          tag="div"
+          :to="{ name: 'cover'}">
+          <img :src="require('@/assets/menu/back.svg')">
+          <span>返回</span>
+        </router-link>
       </nav>
       <ul class="index__outline">
         <li>封面</li>
@@ -53,6 +56,7 @@
 </template>
 
 <style lang="scss" scoped>
+
 .index {
   position: fixed;
   top: 0;
@@ -76,17 +80,17 @@
     padding-left: 20px;
     border-bottom: 2px solid $gray-3;
     line-height: 2.8em;
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // width: 100%;
     img{
       margin-right: 24px;
+    }
+    > div {
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
     }
   }
 
   &__outline {
-    margin-top: 50px;
     padding-left: 0;
     padding-bottom: 3em;
     overflow: auto;

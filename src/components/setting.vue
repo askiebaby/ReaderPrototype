@@ -34,6 +34,7 @@
 </template>
 
 <style lang="scss" scoped>
+
 .function {
   display: flex;
   justify-items: center;

@@ -69,7 +69,8 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+
 .wholeTask {
   padding: 55px 31px;
   font-size: $contentSize;

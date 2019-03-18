@@ -4,8 +4,3 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-#app {
-  img{}
-}
-</style>
