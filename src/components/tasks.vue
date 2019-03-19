@@ -27,5 +27,11 @@
 
 
 <script>
-export default {};
+export default {
+  // computed: {
+  //   isDone() {
+  //     return this.$store.getters.gender;
+  //   }
+  // }
+};
 </script>
