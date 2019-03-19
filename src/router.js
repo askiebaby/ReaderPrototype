@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./components/home.vue";
+import home from "./components/home.vue";
 import login from "./components/login.vue";
 import tasks from "./components/tasks.vue";
 import taskDescription from "./components/taskDescription.vue";
@@ -17,7 +17,7 @@ export default new Router({
   routes: [{
       path: "/",
       name: "home",
-      component: Home
+      component: home
     },
     {
       path: "/login/:id/:gender",
