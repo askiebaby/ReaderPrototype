@@ -15,12 +15,12 @@
               class="task"
               v-for="n in 5"
         >{{n}}</router-link>-->
-        <div class="task" v-for="n in 15" @click="toLogin(n,'M')">
+        <div class="task" v-for="n in 15" @click="toLogin('M'+n)">
           <span>{{n}}</span>
         </div>
       </div>
       <div class="taskList__tasks-type2">
-        <div class="task" v-for="n in 15" @click="toLogin(n,'F')">
+        <div class="task" v-for="n in 15" @click="toLogin('F'+n)">
           <span>{{n}}</span>
         </div>
       </div>
@@ -70,7 +70,6 @@
 </template>
 
 <style lang="scss" >
-
 .wholeTask {
   padding: 55px 31px;
   font-size: $contentSize;
@@ -156,8 +155,9 @@
 
 export default {
   methods: {
-    toLogin(id, gender) {
-      this.$router.push({ name: "login", params: { id: id, gender: gender } });
+    toLogin(id) {
+      console.log(id);
+      this.$router.push({ name: "login", params: { id } });
     }
   }
 };

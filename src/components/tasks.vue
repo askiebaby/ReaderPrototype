@@ -32,8 +32,8 @@
 <script>
 export default {
   // computed: {
-  //   isDone() {
-  //     return this.$store.getters.gender;
+  //   getMember() {
+  //     return this.$store.getters.getMember;
   //   }
   // }
 };
