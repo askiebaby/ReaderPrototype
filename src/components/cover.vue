@@ -14,24 +14,14 @@
 </template>
 
 <style lang="scss" scoped>
-.cover {
-  height: 100vh;
-  overflow: hidden;
-  text-align: center;
-  &__img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: calc(100% - 80px);
-  }
-}
-
 .touch {
   width: 100%;
+  max-width: 768px;
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
+  left: auto;
+  right: auto;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -42,8 +32,6 @@
     width: 25%;
     height: 100%;
   }
-  // &__previous {}
-  // &__next {}
   &__navigation {
     background: rgba(0, 0, 0, 0.2);
     width: 50%;

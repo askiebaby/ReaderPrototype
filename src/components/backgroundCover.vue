@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div id="img">
-      <img :src="require('@/assets/cover.png')">
+    <div class="cover">
+      <img :src="require('@/assets/cover.png')" class="cover__img">
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-
-#img {
-  height: 907px;
+.cover {
+  height: 100vh;
+  overflow: hidden;
   text-align: center;
-}
-img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
+  &__img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100% - 80px);
+  }
 }
 </style>

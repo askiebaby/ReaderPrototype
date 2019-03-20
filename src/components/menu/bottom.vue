@@ -25,8 +25,10 @@
 .nav {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: auto;
+  right: auto;
   width: 100%;
+  max-width: 768px;
   border-top: 1px solid #eee;
   background: $white;
 }
