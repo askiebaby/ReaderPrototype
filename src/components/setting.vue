@@ -1,7 +1,7 @@
 <template>
   <!-- 任務題目 -->
   <div class="lightBox setting">
-    <div class="lightBox__background"></div>
+    <div class="lightBox__background" @click="hideSetting"></div>
     <div class="lightBox__bubbleLittle">
       <div class="lightBox__content">
         <div class="function function__lightness"></div>
@@ -34,6 +34,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/modules/_lightBox.scss";
+@import "@/assets/scss/modules/_button.scss";
 
 .function {
   display: flex;
@@ -142,5 +144,12 @@
 </style>
 
 <script>
-export default {};
+export default {
+  methods: {
+    hideSetting () {
+      console.log('4567')
+      this.$emit("hideSetting", false)
+    }
+  }
+};
 </script>

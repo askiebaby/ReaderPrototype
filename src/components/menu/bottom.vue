@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="nav">
     <ul>
       <router-link
         tag="li"
-        :to="{ name: 'index'}"
+        :to="{name: 'index'}"
       ><img :src="require('@/assets/menu/burger.svg')"></router-link>
-      <li>
+      <li @click="changeSettingStatus">
         <img :src="require('@/assets/menu/aa.png')">
       </li>
       <li>
@@ -20,7 +20,17 @@
     </ul>
   </div>
 </template>
+
 <style lang="scss" scoped>
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #eee;
+  background: $white;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -28,7 +38,20 @@ ul {
   justify-content: space-evenly;
   list-style-type: none;
   align-items: center;
+
+  img {
+    padding: 20px 15px;
+    cursor: pointer;
+  }
 }
 </style>
 
-I
+<script>
+export default {
+  methods: {
+    changeSettingStatus () {
+      this.$emit("showSettingBubble", true)
+    }
+  }
+}
+</script>

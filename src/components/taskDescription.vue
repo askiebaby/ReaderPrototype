@@ -1,6 +1,9 @@
 <template>
   <div>
     <!-- 任務題目 -->
+    <div class="cover">
+      <img :src="require('@/assets/cover.png')" class="cover__img">
+    </div>
     <div class="lightBox taskName">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -27,8 +30,19 @@
   </div>
 </template>
 <style lang="scss" scoped>
-@import '@/assets/scss/modules/_lightBox.scss';
-@import '@/assets/scss/modules/_button.scss';
+@import "@/assets/scss/modules/_lightBox.scss";
+@import "@/assets/scss/modules/_button.scss";
+.cover {
+  height: 100vh;
+  overflow: hidden;
+  text-align: center;
+  &__img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100% - 80px);
+  }
+}
 </style>
 
 <script>

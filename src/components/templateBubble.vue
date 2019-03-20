@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 任務題目 -->
+    <!-- 任務題目 V: taskDescription -->
     <div class="lightBox taskName">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -16,7 +16,7 @@
         <button class="button button__default taskPage__button">取消</button>
       </div>
     </div>
-    <!-- 完成任務 -->
+    <!-- 完成任務 V -->
     <div class="lightBox missionCompleted">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -37,7 +37,7 @@
         <button class="button button__default taskPage__button">重新測試</button>
       </div>
     </div>
-    <!-- 刷新紀錄 -->
+    <!-- 刷新紀錄 V -->
     <div class="lightBox deleteRecord">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -52,7 +52,7 @@
         <button class="button button__default taskPage__button">清除記錄</button>
       </div>
     </div>
-    <!-- 任務重新測試 -->
+    <!-- 任務重新測試 V -->
     <div class="lightBox missionCompleted">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -73,7 +73,7 @@
         <button class="button button__default taskPage__button">重新測試</button>
       </div>
     </div>
-    <!-- 離開任務 -->
+    <!-- 離開任務 V -->
     <div class="lightBox leaveMission">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -82,7 +82,7 @@
         <button class="button button__default taskPage__button">我要離開</button>
       </div>
     </div>
-    <!-- 離開任務 確認 -->
+    <!-- 離開任務 確認 V -->
     <div class="lightBox leaveMission">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <!-- 離開重新測試 確認 -->
+    <!-- 離開重新測試 確認 V -->
     <div class="lightBox deleteRecordConfirm">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">

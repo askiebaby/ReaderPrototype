@@ -5,7 +5,10 @@
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleLarge">離開任務</h3>
-        <button class="button button__primary taskPage__button">回到任務</button>
+        <router-link
+        tag="button"
+        :to="{name: 'cover'}"
+        class="button button__primary taskPage__button">回到任務</router-link>
         <button class="button button__default taskPage__button">我要離開</button>
       </div>
     </div>
