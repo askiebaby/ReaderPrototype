@@ -6,8 +6,8 @@
       <div class="lightBox__content">
         <div class="function function__lightness"></div>
         <div class="function function__fontSize">
-          <span>Aa</span>
-          <span>Aa</span>
+          <span class="changeSize">Aa <span class="small"></span></span>
+          <span class="changeSize">Aa <span class="enlarge"></span></span>
         </div>
         <div class="function function__background">
           <span class="function__background__white"></span>
@@ -68,8 +68,25 @@
 
   &__fontSize {
     margin-bottom: 28px;
-    span {
+    .changeSize {
       background: $lightGray-2;
+      position: relative;
+    }
+    .small, .enlarge {
+      border: transparent 10px solid;
+      display: inline-block;
+      position: absolute;
+      margin-left: 7px;
+      border-left-width: 5px;
+      border-right-width: 5px;
+    }
+    .small {
+      border-top-color: #4394ff;
+      top: 15px;
+    }
+    .enlarge {
+      border-bottom-color: #4394ff;
+      top: 5px;
     }
   }
 
