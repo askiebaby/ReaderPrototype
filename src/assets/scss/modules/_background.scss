@@ -7,3 +7,54 @@
     background: $red;
   }
 }
+
+
+.background__change {
+  &__white {
+    .book {
+      background: $white;
+      color: $black-2;
+      &__chapter, &__content {
+        color: $black-2;
+      }
+    }
+  }
+  &__black {
+    .main {
+      p{
+        color: $white;
+      }
+      img {
+        filter: invert(100%);
+      }
+    }
+    .book {
+      background: $black;
+      color: $white;
+      &__chapter, &__content {
+        color: $white;
+      }
+    }
+  }
+  
+
+  &__green {
+    .book {
+      background: $green-2;
+      color: $black;
+      &__chapter, &__content {
+        color: $black;
+      }
+    }
+  }
+
+  &__yellow {
+    .book {
+      background: $yellow;
+      color: $black;
+      &__chapter, &__content {
+        color: $black;
+      }
+    }
+  }
+}

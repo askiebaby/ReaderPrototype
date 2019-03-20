@@ -30,6 +30,8 @@ $max-height: 1024px;
 .wrapper {
   position: relative;
   max-width: $max-width;
+  height: $max-height;
+  // height: 100vh;
   max-height: $max-height;
   margin: auto;
 }

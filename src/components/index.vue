@@ -5,7 +5,7 @@
       <nav>
         <router-link
           tag="div"
-          :to="{ name: 'cover'}">
+          :to="{name: 'book'}">
           <img :src="require('@/assets/menu/back.svg')">
           <span>返回</span>
         </router-link>

@@ -6,6 +6,7 @@
 </template>
 <style lang="scss" scoped>
 @import '@/assets/scss/modules/_font.scss';
+@import "@/assets/scss/modules/_background.scss";
 .main {
   display: flex;
   align-items: center;

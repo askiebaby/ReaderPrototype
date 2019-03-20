@@ -101,13 +101,14 @@
 
 .task {
   margin-left: 8px;
+  margin-bottom: 10px;
 }
 
 .taskList {
   background: $gray-2;
   color: $white;
   border-radius: 0 30px 30px 0;
-  padding: 18px 29px 17px 15px;
+  padding: 18px 29px 7px 15px;
   display: flex;
   min-height: 222px;
 

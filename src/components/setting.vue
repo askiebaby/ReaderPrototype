@@ -6,18 +6,20 @@
       <div class="lightBox__content">
         <div class="function function__lightness"></div>
         <div class="function function__fontSize">
-          <span class="changeSize">Aa <span class="small"></span></span>
-          <span class="changeSize">Aa <span class="enlarge"></span></span>
+          <span class="changeSize" @click="changeFontSize('small')">Aa <span class="small"></span></span>
+          <span class="changeSize" @click="changeFontSize('enlarge')">Aa <span class="enlarge"></span></span>
         </div>
         <div class="function function__background">
-          <span class="function__background__white"></span>
-          <span class="function__background__black"></span>
-          <span class="function__background__yellow"></span>
-          <span class="function__background__green"></span>
+          <span class="function__background__white" @click="changeBackground('background__change__white')"></span>
+          <span class="function__background__black" @click="changeBackground('background__change__black')"></span>
+          <span class="function__background__yellow" @click="changeBackground('background__change__yellow')"></span>
+          <span class="function__background__green" @click="changeBackground('background__change__green')"></span>
         </div>
         <div class="function function__fontFamily">
-          <select>
-            <option>標楷體</option>
+          <select @change="changeFontFamily($event)">
+            <option selected value="book__fontFamily__ming">明體</option>
+            <option value="book__fontFamily__kai">楷體</option>
+            <option value="book__fontFamily__noto">黑體</option>
           </select>
         </div>
         <div class="function function__pageMode">
@@ -162,10 +164,31 @@
 
 <script>
 export default {
+  data () {
+    return {
+      sizeLevel: 5,
+      fontSizeLevel: [10, 12, 14, 16, 18, 20, 24, 30, 36, 42, 48]
+    }
+  },
   methods: {
     hideSetting () {
-      console.log('4567')
       this.$emit("hideSetting", false)
+    },
+    changeBackground (color) {
+      this.$emit("changeBackground", color)
+    },
+    changeFontFamily (event) {
+      let family = event.target.value
+      this.$emit("changeFontFamily", family)
+    },
+    changeFontSize (action) {
+      if (action === 'small') {
+        if (this.sizeLevel > 0) this.sizeLevel -= 1
+      } else if (action === 'enlarge') {
+        if (this.sizeLevel < this.fontSizeLevel.length -1) this.sizeLevel += 1
+      }
+      let fontSize = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`
+      this.$emit("changeFontSize", fontSize)
     }
   }
 };

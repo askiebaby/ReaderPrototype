@@ -17,7 +17,7 @@
         </div>
         <router-link
           tag="button"
-          :to="{ name: 'cover'}"
+          :to="{ name: 'book'}"
           class="button button__primary taskPage__button"
         >開始</router-link>
         <router-link
