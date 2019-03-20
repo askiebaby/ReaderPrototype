@@ -1,6 +1,6 @@
 <template>
   <div class="input-center background__male">
-    <div class="member_id">編號:{{gender}}{{id}}</div>
+    <div class="member_id">編號:{{id}}</div>
     <input type="text" placeholder="姓名:王小明" v-model="name">
     <div class="buttons">
       <router-link
@@ -28,7 +28,6 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      gender: this.$route.params.gender,
       name: ""
     };
   },
@@ -39,8 +38,7 @@ export default {
         return;
       }
       let info = {
-        num: this.id,
-        gender: this.gender,
+        id: this.id,
         name: this.name
       };
       this.$store.commit("memberInfo", info);

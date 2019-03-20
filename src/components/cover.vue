@@ -1,21 +1,15 @@
 <template>
   <div>
     <menu-top @showLeaveBubble="isLeaveMission=$event" v-show="isShowNavigation"></menu-top>
-    <div class="cover">
-      <img :src="require('@/assets/cover.png')" class="cover__img">
-    </div>
+    <background-cover></background-cover>
     <div class="touch">
       <div class="touch__previous"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next"></div>
     </div>
-    <setting
-    v-show="isShowSetting"
-    @hideSetting="isShowSetting=$event"></setting>
-    <leave-mission v-show="isLeaveMission"></leave-mission>
-    <menu-bottom
-    v-show="isShowNavigation"
-    @showSettingBubble="isShowSetting=$event"></menu-bottom>
+    <setting v-show="isShowSetting" @hideSetting="isShowSetting=$event"></setting>
+    <leave-mission v-show="isLeaveMission" @cancelLeaveBubble="isLeaveMission=$event"></leave-mission>
+    <menu-bottom v-show="isShowNavigation" @showSettingBubble="isShowSetting=$event"></menu-bottom>
   </div>
 </template>
 
@@ -42,52 +36,54 @@
   justify-content: flex-start;
   align-items: flex-start;
 
-  &__previous, &__next {
-    background: rgba(0,0,0,.1);
+  &__previous,
+  &__next {
+    background: rgba(0, 0, 0, 0.1);
     width: 25%;
     height: 100%;
   }
   // &__previous {}
   // &__next {}
   &__navigation {
-    background: rgba(0,0,0,.2);
+    background: rgba(0, 0, 0, 0.2);
     width: 50%;
     height: 100%;
   }
 }
-
 </style>
+    
 
 <script>
-import top from "@/components/menu/top.vue";
-import bottom from "@/components/menu/bottom.vue";
+import menuTop from "@/components/menu/top.vue";
+import menuBottom from "@/components/menu/bottom.vue";
 import leaveMission from "@/components/lightBox/leaveMission.vue";
 import setting from "@/components/setting.vue";
-
+import backgroundCover from "@/components/backgroundCover.vue";
 export default {
-  data () {
+  data() {
     return {
       isLeaveMission: false,
       isShowNavigation: false,
       isShowSetting: false
-    }
+    };
   },
-  methods:{
-    showLeaveBubble (fff) {
-      console.log(fff)
+  methods: {
+    showLeaveBubble(fff) {
+      console.log(fff);
     },
-    toggleNavigation () {
-      this.isShowNavigation = (this.isShowNavigation) ? false : true;
+    toggleNavigation() {
+      this.isShowNavigation = this.isShowNavigation ? false : true;
     },
-    showSetting () {
-      this.isShowSetting = (this.isShowNavigation) ? false : true;
+    showSetting() {
+      this.isShowSetting = this.isShowNavigation ? false : true;
     }
   },
   components: {
-    leaveMission: leaveMission,
-    menuTop: top,
-    menuBottom: bottom,
-    setting: setting
+    leaveMission,
+    menuTop,
+    backgroundCover,
+    menuBottom,
+    setting
   }
 };
 </script>
