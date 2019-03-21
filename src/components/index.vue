@@ -51,7 +51,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 .index {
   width: 100%;
   height: 100vh;
@@ -74,7 +73,7 @@
     padding-left: 20px;
     border-bottom: 2px solid $gray-3;
     line-height: 2.8em;
-    img{
+    img {
       margin-right: 24px;
     }
     > div {
@@ -145,6 +144,12 @@ export default {
   },
   beforeMount () {
     // let indexJson = this.indexJson;
-  }
+  },finishTask() {
+      let index = 0;
+      this.$store.commit("setTask", index);
+      console.log(this.$store.getters.getTask);
+    }
+
 }
+
 </script>

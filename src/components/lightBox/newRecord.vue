@@ -18,6 +18,11 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+@import "@/assets/scss/modules/_lightBox.scss";
+@import "@/assets/scss/modules/_button.scss";
+</style>
+
 <script>
 export default {
   
