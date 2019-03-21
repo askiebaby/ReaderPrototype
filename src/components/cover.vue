@@ -3,9 +3,11 @@
     <menu-top @showLeaveBubble="isLeaveMission=$event" v-show="isShowNavigation"></menu-top>
     <background-cover></background-cover>
     <div class="touch">
+      <!-- <button @click="test">555</button> -->
       <div class="touch__previous"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next"></div>
+      <!-- <button @click="test111">599</button> -->
     </div>
     <setting v-show="isShowSetting" @hideSetting="isShowSetting=$event"></setting>
     <leave-mission v-show="isLeaveMission" @cancelLeaveBubble="isLeaveMission=$event"></leave-mission>
@@ -68,14 +70,31 @@ export default {
     };
   },
   methods: {
-    showLeaveBubble(fff) {
-      console.log(fff);
-    },
+    // showLeaveBubble(fff) {
+    //   console.log(fff);
+    // },
+    // test() {
+    //   let index = 0;
+    //   this.$store.commit("setTask", index);
+    //   console.log(this.$store.getters.getTask);
+    // },
+    // test111() {
+    //   // $cookies.set('1','555')
+    //   // console.log($cookies.get('1'));
+    //   // return;
+    //   this.$store.commit("FinsihToCookie");
+    //   console.log(this.$store.getters.getID);
+    //   let user = $cookies.get(this.$store.getters.getID);
+    //   console.log(user);
+    // },
     toggleNavigation() {
       this.isShowNavigation = this.isShowNavigation ? false : true;
     },
     showSetting() {
       this.isShowSetting = this.isShowNavigation ? false : true;
+    },
+    addTask1() {
+      this.$store.commit("memberInfo", info);
     }
   },
   components: {

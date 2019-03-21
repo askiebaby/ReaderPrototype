@@ -10,7 +10,8 @@
         <h3 class="lightBox__titleMiddle">請依序完成指定任務</h3>
         <div class="lightBox__content">
           <p class="lightBox__subtitle">任務一：</p>
-          <p class="lightBox__taskDescription">（1-1）翻到第一章 “有目的的練習” 。
+          <p class="lightBox__taskDescription">
+            （1-1）翻到第一章 “有目的的練習” 。
             <br>（1-2）將字體設定成最大。
             <br>（1-3）將閱讀模式調成黑底白字的夜間模式。
           </p>
@@ -19,6 +20,7 @@
           tag="button"
           :to="{ name: 'cover'}"
           class="button button__primary taskPage__button"
+          @click.native="taskStart"
         >開始</router-link>
         <router-link
           tag="button"
@@ -46,5 +48,15 @@
 </style>
 
 <script>
-export default {};
+export default {
+  methods: {
+    taskStart() {
+      let index = 0;
+      this.$store.commit("setTask", index);
+    }
+    //   getTask() {
+    //     console.log(this.$store.getters.getTask);
+    //   }
+  }
+};
 </script>

@@ -4,6 +4,7 @@
       tag="button"
       :to="{ name: 'taskDescription'}"
       class="button buttonBig button__primary taskPage__button"
+      @click.native="taskDefault"
     >Task 1</router-link>
     <!-- <button class="button buttonBig button__primary taskPage__button">Task 1</button> -->
     <button class="button buttonBig button__primary taskPage__button">Task 2</button>
@@ -12,8 +13,7 @@
 </template>
 
 <style lang="scss" scoped>
-
-@import '@/assets/scss/modules/_button.scss';
+@import "@/assets/scss/modules/_button.scss";
 
 .taskPage {
   display: flex;
@@ -36,5 +36,10 @@ export default {
   //     return this.$store.getters.getMember;
   //   }
   // }
+  methods: {
+    taskDefault() {
+      this.$store.commit("taskDefault", 0);
+    }
+  }
 };
 </script>

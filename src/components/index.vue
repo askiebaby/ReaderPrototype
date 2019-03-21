@@ -3,9 +3,7 @@
     <div class="index__backround"></div>
     <div class="index__container">
       <nav>
-        <router-link
-          tag="div"
-          :to="{ name: 'cover'}">
+        <router-link tag="div" :to="{ name: 'cover'}">
           <img :src="require('@/assets/menu/back.svg')">
           <span>返回</span>
         </router-link>
@@ -56,7 +54,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 .index {
   position: fixed;
   top: 0;
@@ -80,7 +77,7 @@
     padding-left: 20px;
     border-bottom: 2px solid $gray-3;
     line-height: 2.8em;
-    img{
+    img {
       margin-right: 24px;
     }
     > div {
@@ -130,5 +127,13 @@
 
 
 <script>
-export default {};
+export default {
+  methods: {
+    finishTask() {
+      let index = 0;
+      this.$store.commit("setTask", index);
+      console.log(this.$store.getters.getTask);
+    }
+  }
+};
 </script>
