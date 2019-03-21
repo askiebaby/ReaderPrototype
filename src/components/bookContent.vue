@@ -4,7 +4,7 @@
       <h2 class="book__chapter">第 1 章　有目的的練習</h2>
       <div class="book__content">
         <!-- <h3 class="book__subtitle">史蒂夫的超強記憶力</h3> -->
-        <p>{{ test }}</p>
+        <p>{{loadContent}}</p>
       </div>
     </div>
     <div class="page">-1-</div>
@@ -22,6 +22,9 @@
     display: flex;
     justify-content: center;
     padding: 89px 72px;
+    max-width: 768px;
+    margin: auto;
+    position: relative;
     // max-height: 100vh;
     height: 1024px;
     &__fontFamily__ming > div {
@@ -43,9 +46,7 @@
     }
     &__content {
       overflow: hidden;
-      // TODO
       position: absolute;
-      // left: 72px;
       column-fill: auto;
       transform: translate(0, 0px);
       * {
@@ -55,7 +56,7 @@
       }
     }
 
-    &__subtitle {}
+    // &__subtitle {}
 
     p {
       line-height: 1.75em;
@@ -63,18 +64,7 @@
       text-align: justify;
     }
   }
-  //12, 14, 16, 18, 20, 24, 30, 36, 42, 48, 52
-  // .fontSize__10px {
-  //   .book__content {
-  //     font-size: 10px;
-  //     // max-height: 59.5em;
-  //     max-height: 71.75em;
-  //     // TODO
-  //     width: 99em;
-  //     column-gap: 10em;
-  //     column-width: 30em;
-  //   }
-  // }
+
   .fontSize__12px {
     .book__content {
       font-size: 12px;
@@ -200,17 +190,16 @@
 </style>
 
 <script>
-import introJson from '@/assets/json/intro.json';
+import introJson from '@/assets/document.json';
 export default {
+  props: ['loadContent'],
   data() {
     return {
-      introJson:introJson
+      introJson: introJson
     }
   },
-  computed:{
-    test(){
-      return this.introJson
-    }
+  beforeMount() {
+      console.log(this.introJson)
   }
 }
 </script>

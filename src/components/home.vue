@@ -111,6 +111,8 @@
   padding: 18px 29px 7px 15px;
   display: flex;
   min-height: 222px;
+  max-width: 706px;
+  margin: auto;
 
   &__tasks-type1 {
     .task {

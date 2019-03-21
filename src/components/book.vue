@@ -9,14 +9,18 @@
 
     <bookContent
       v-if="isShowContent"
-      :class="[fontFamilyClass, fontSizeClass]"></bookContent>
+      :class="[fontFamilyClass, fontSizeClass]"
+      :loadContent="contentKey"></bookContent>
 
     <div class="touch">
       <div class="touch__previous"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent"></div>
     </div>
-
+    <index
+      v-if="isShowIndex"
+      @closeIndexStatus="isShowIndex=$event"
+      @emitContentKey="findContent($event)"></index>
     <setting
       v-show="isShowSetting"
       @hideSetting="isShowSetting=$event"
@@ -33,6 +37,7 @@
     <menu-bottom
       v-show="isShowNavigation"
       @showSettingBubble="isShowSetting=$event"
+      @openIndexStatus="isShowIndex=$event"
     ></menu-bottom>
   </div>
 </template>
@@ -43,7 +48,6 @@
 
 .touch {
   width: 100%;
-  max-width: 768px;
   height: 100vh;
   position: fixed;
   top: 0;
@@ -54,14 +58,9 @@
   align-items: flex-start;
 
   &__previous,
-  &__next {
-    // background: rgba(0, 0, 0, 0.1);
-    width: 25%;
-    height: 100%;
-  }
+  &__next,
   &__navigation {
-    // background: rgba(0, 0, 0, 0.2);
-    width: 50%;
+    width: 33.33333%;
     height: 100%;
   }
 }
@@ -71,9 +70,11 @@
 import menuTop from "@/components/menu/top.vue";
 import menuBottom from "@/components/menu/bottom.vue";
 import leaveMission from "@/components/lightBox/leaveMission.vue";
+import index from "@/components/index.vue";
 import setting from "@/components/setting.vue";
 import backgroundCover from "@/components/backgroundCover.vue";
 import bookContent from "@/components/bookContent.vue";
+
 
 export default {
   data() {
@@ -83,9 +84,11 @@ export default {
       isShowSetting: false,
       isShowCover: true,
       isShowContent: false,
+      isShowIndex: false,
       backgroundColor: 'background__change__white',
       fontFamilyClass: 'book__fontFamily__ming',
-      fontSizeClass: 'fontSize__24px'
+      fontSizeClass: 'fontSize__24px',
+      contentKey:{}
     };
   },
   methods: {
@@ -104,6 +107,12 @@ export default {
     },
     changefontSizeClass (fontClass) {
       this.fontSizeClass = fontClass
+    },
+    findContent (arr) {
+      this.contentKey = arr;
+      this.isShowCover = false
+      this.isShowContent = true
+      console.log(arr, 'findContent')
     }
   },
   components: {
@@ -112,7 +121,8 @@ export default {
     backgroundCover,
     bookContent,
     menuBottom,
-    setting
+    setting,
+    index
   }
 };
 </script>

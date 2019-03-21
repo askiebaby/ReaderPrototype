@@ -3,53 +3,48 @@
     <div class="index__backround"></div>
     <div class="index__container">
       <nav>
-        <router-link
-          tag="div"
-          :to="{name: 'book'}">
+        <div @click="closeIndexStatus">
           <img :src="require('@/assets/menu/back.svg')">
           <span>返回</span>
-        </router-link>
+        </div>
       </nav>
       <ul class="index__outline">
         <li>封面</li>
-        <li>目錄</li>
-        <li>引言</li>
+        <li @click="emitContentKey(1)">目錄</li>
+        <li @click="emitContentKey(2, 1)">引言</li>
         <li class="index__chapter">
-          <span>第 1 章</span>
+          <span @click="emitContentKey(3, 1)">第 1 章 <span>有目的的練習</span></span>
           <ul>
-            <li>有目的的練習</li>
-            <li>史蒂夫的超強記憶力</li>
-            <li>各領域的傑出人物都靠大量練習</li>
-            <li>從有目的的練習講起</li>
-            <li>遇到瓶頸怎麼辦</li>
-            <li>有目的的練習還不夠</li>
+            <li @click="emitContentKey(3, 2, 0)">史蒂夫的超強記憶力</li>
+            <li @click="emitContentKey(3, 2, 1)">各領域的傑出人物都靠大量練習</li>
+            <li @click="emitContentKey(3, 2, 2)">從有目的的練習講起</li>
+            <li @click="emitContentKey(3, 2, 3)">遇到瓶頸怎麼辦</li>
+            <li @click="emitContentKey(3, 2, 4)">有目的的練習還不夠</li>
+          </ul>
+        </li>
+        <!-- <li class="index__chapter">
+          <span @click="emitContentKey(4, 1)">第 2 章 <span>大腦的適應力</span></span>
+          <ul>
+            <li @click="emitContentKey('倫敦計程車司機的大腦')">倫敦計程車司機的大腦</li>
+            <li @click="emitContentKey('大腦擁有無限的適應能力')">大腦擁有無限的適應能力</li>
+            <li @click="emitContentKey('走出舒適區的重要性')">走出舒適區的重要性</li>
+            <li @click="emitContentKey('練習改變大腦結構')"></li>
+            <li @click="emitContentKey('潛能可以被構築')">潛能可以被構築</li>
           </ul>
         </li>
         <li class="index__chapter">
-          <span>第 2 章</span>
+          <span @click="emitContentKey(5, 1)">第 3 章 <span>心裡表徵</span></span>
           <ul>
-            <li>大腦的適應力</li>
-            <li>倫敦計程車司機的大腦</li>
-            <li>走出舒適區的重要性</li>
-            <li>練習改變大腦結構</li>
-            <li>潛能可以被構築</li>
+            <li @click="emitContentKey('偶然的盲棋大師')">偶然的盲棋大師</li>
+            <li @click="emitContentKey('大師比新手強在哪裡')">大師比新手強在哪裡</li>
+            <li @click="emitContentKey('心裡表徵是什麼')">心裡表徵是什麼</li>
+            <li @click="emitContentKey('心裡表徵有助於找出規律')">心裡表徵有助於找出規律</li>
+            <li @click="emitContentKey('心理表徵有助於解釋資訊')">心理表徵有助於解釋資訊</li>
+            <li @click="emitContentKey('心理表徵有助於組織資訊')">心理表徵有助於組織資訊</li>
+            <li @click="emitContentKey('心理表徵有助於制訂計劃')">心理表徵有助於制訂計劃</li>
+            <li @click="emitContentKey('心理表徵有助於高效學習')">心理表徵有助於高效學習</li>
           </ul>
-        </li>
-        <li class="index__chapter">
-          <span>第 3 章</span>
-          <ul>
-            <li>心裡表徵</li>
-            <li>偶然的盲棋大師</li>
-            <li>大師比新手強在哪裡</li>
-            <li>心裡表徵是什麼</li>
-            <li>心裡表徵有助於找出規律</li>
-            <li>心裡表徵</li>
-            <li>偶然的盲棋大師</li>
-            <li>大師比新手強在哪裡</li>
-            <li>心裡表徵是什麼</li>
-            <li>心裡表徵有助於找出規律</li>
-          </ul>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>
@@ -61,6 +56,9 @@
   width: 100%;
   height: 100vh;
   background: rgba(155, 155, 155, 0.9);
+  position: fixed;
+  top: 0;
+  z-index: 100;
 
   &__container {
     position: relative;
@@ -88,7 +86,7 @@
 
   &__outline {
     padding-left: 0;
-    padding-bottom: 3em;
+    padding-bottom: 6em;
     overflow: auto;
     height: 100%;
 
@@ -103,28 +101,50 @@
 
       > span {
         line-height: 2.8em;
+        > span {
+          margin-left: 10px;
+        }
       }
 
       > ul {
         // 章節名稱
-        position: relative;
-        top: -2.75rem;
-        padding-left: 65px;
+        padding-left: 0;
+        > li {
+          position: relative;
+          padding-left: 65px;
+        }
       }
     }
     > li {
       padding-left: 34px;
     }
   }
-
-  &__chapter + &__chapter {
-    position: relative;
-    margin-top: -2.75em;
-  }
 }
 </style>
 
 
 <script>
-export default {};
+
+// import indexJson from '@/assets/json/index.json';
+
+export default {
+  data () {
+    return {
+      // indexJson: indexJson
+    }
+  },
+  methods: {
+    closeIndexStatus () {
+      this.$emit("closeIndexStatus", false)
+    },
+    emitContentKey (index, level, key) {
+      // console.log(index, level, key)
+      this.$emit("emitContentKey", {index, level, key})
+
+    }
+  },
+  beforeMount () {
+    // let indexJson = this.indexJson;
+  }
+}
 </script>

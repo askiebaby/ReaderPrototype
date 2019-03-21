@@ -8,11 +8,10 @@
   }
 }
 
-
 .background__change {
   &__white {
+    background: $white;
     .book {
-      background: $white;
       color: $black-2;
       &__chapter, &__content {
         color: $black-2;
@@ -28,8 +27,8 @@
         filter: invert(100%);
       }
     }
+    background: $black;
     .book {
-      background: $black;
       color: $white;
       &__chapter, &__content {
         color: $white;
@@ -39,8 +38,8 @@
   
 
   &__green {
+    background: $green-2;
     .book {
-      background: $green-2;
       color: $black;
       &__chapter, &__content {
         color: $black;
@@ -49,8 +48,8 @@
   }
 
   &__yellow {
+    background: $yellow;
     .book {
-      background: $yellow;
       color: $black;
       &__chapter, &__content {
         color: $black;
