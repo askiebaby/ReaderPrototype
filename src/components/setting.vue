@@ -167,7 +167,7 @@ export default {
   data () {
     return {
       sizeLevel: 5,
-      fontSizeLevel: [10, 12, 14, 16, 18, 20, 24, 30, 36, 42, 48]
+      fontSizeLevel: [12, 14, 16, 18, 20, 24, 30, 36, 42, 48, 52]
     }
   },
   methods: {

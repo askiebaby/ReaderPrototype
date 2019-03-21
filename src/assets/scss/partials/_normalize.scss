@@ -34,4 +34,5 @@ $max-height: 1024px;
   // height: 100vh;
   max-height: $max-height;
   margin: auto;
+  overflow: hidden;
 }

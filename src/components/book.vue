@@ -85,7 +85,7 @@ export default {
       isShowContent: false,
       backgroundColor: 'background__change__white',
       fontFamilyClass: 'book__fontFamily__ming',
-      fontSizeClass: 'fontSize__20px'
+      fontSizeClass: 'fontSize__24px'
     };
   },
   methods: {
