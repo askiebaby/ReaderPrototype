@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import moment from "vue-moment";
-import VueCookies from 'vue-cookies';
+import VueCookies from "vue-cookies";
 Vue.use(Vuex);
 Vue.use(moment);
 export const store = new Vuex.Store({
@@ -9,7 +9,13 @@ export const store = new Vuex.Store({
     totalCounts: 0,
     id: "",
     name: "",
-    task: []
+    task: [],
+    bookContent: {
+      chapter: "",
+      h1title: "",
+      h3title: "",
+      content: ""
+    }
   },
   getters: {
     getID: state => {
@@ -23,11 +29,20 @@ export const store = new Vuex.Store({
     },
     getNowCounts: state => {
       return state.totalCounts;
-    }
+    },
+    getBookContent: state => {
+      return state.bookContent;
+    },
   },
   mutations: {
     addTotalCounts(state) {
       state.totalCounts++;
+    },
+    setBook(state, payload) {
+      state.bookContent.chapter = payload.chapter;
+      state.bookContent.h1title = payload.h1title;
+      state.bookContent.h3title = payload.h3title;
+      state.bookContent.content = payload.content;
     },
     memberInfo(state, payload) {
       state.id = payload.id;

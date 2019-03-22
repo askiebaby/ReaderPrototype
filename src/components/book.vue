@@ -1,16 +1,14 @@
 <template>
   <div :class="backgroundColor">
-    <menu-top 
-      @showLeaveBubble="isLeaveMission=$event"
-      v-show="isShowNavigation"
-    ></menu-top>
+    <menu-top @showLeaveBubble="isLeaveMission=$event" v-show="isShowNavigation"></menu-top>
 
     <background-cover v-if="isShowCover"></background-cover>
 
     <bookContent
       v-if="isShowContent"
       :class="[fontFamilyClass, fontSizeClass]"
-      :loadContent="contentKey"></bookContent>
+      :loadContent="contentKey"
+    ></bookContent>
 
     <div class="touch">
       <div class="touch__previous"></div>
@@ -20,7 +18,8 @@
     <index
       v-if="isShowIndex"
       @closeIndexStatus="isShowIndex=$event"
-      @emitContentKey="findContent($event)"></index>
+      @emitContentKey="findContent()"
+    ></index>
     <setting
       v-show="isShowSetting"
       @hideSetting="isShowSetting=$event"
@@ -29,10 +28,7 @@
       @changeFontSize="changefontSizeClass($event)"
     ></setting>
 
-    <leave-mission
-      v-show="isLeaveMission" 
-      @cancelLeaveBubble="isLeaveMission=$event"
-    ></leave-mission>
+    <leave-mission v-show="isLeaveMission" @cancelLeaveBubble="isLeaveMission=$event"></leave-mission>
 
     <menu-bottom
       v-show="isShowNavigation"
@@ -43,7 +39,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 @import "@/assets/scss/modules/_background.scss";
 
 .touch {
@@ -75,7 +70,6 @@ import setting from "@/components/setting.vue";
 import backgroundCover from "@/components/backgroundCover.vue";
 import bookContent from "@/components/bookContent.vue";
 
-
 export default {
   data() {
     return {
@@ -85,10 +79,10 @@ export default {
       isShowCover: true,
       isShowContent: false,
       isShowIndex: false,
-      backgroundColor: 'background__change__white',
-      fontFamilyClass: 'book__fontFamily__ming',
-      fontSizeClass: 'fontSize__24px',
-      contentKey:{}
+      backgroundColor: "background__change__white",
+      fontFamilyClass: "book__fontFamily__ming",
+      fontSizeClass: "fontSize__24px",
+      contentKey: {}
     };
   },
   methods: {
@@ -99,20 +93,20 @@ export default {
       this.isShowSetting = this.isShowNavigation ? false : true;
     },
     loadBookContent() {
-      this.isShowCover = false
-      this.isShowContent = true
+      this.isShowCover = false;
+      this.isShowContent = true;
     },
-    changefontFamilyClass (famliyClass) {
-      this.fontFamilyClass = famliyClass
+    changefontFamilyClass(famliyClass) {
+      this.fontFamilyClass = famliyClass;
     },
-    changefontSizeClass (fontClass) {
-      this.fontSizeClass = fontClass
+    changefontSizeClass(fontClass) {
+      this.fontSizeClass = fontClass;
     },
-    findContent (arr) {
-      this.contentKey = arr;
-      this.isShowCover = false
-      this.isShowContent = true
-      console.log(arr, 'findContent')
+    findContent() {
+      // this.contentKey = arr;
+      this.isShowCover = false;
+      this.isShowContent = true;
+      console.log("findContent");
     }
   },
   components: {
