@@ -9,16 +9,16 @@
         </div>
       </nav>
       <ul class="index__outline">
-        <li class="index__chapter" v-for="index in document.indexs">
+        <li class="index__chapter" v-for="(book, bookIndex) in document.books">
           <span>
-            {{index.chapter}}
-            <span>{{index.title}}</span>
+            {{book.chapter}}
+            <span>{{book.title}}</span>
           </span>
           <ul>
             <li
-              v-for="section in index.sections"
-              v-if="ShowSubTitle(index.chapter)"
-              @click="emitContent(index.chapter,index.title,section.title,section.content)"
+              v-for="(section, sectionIndex) in book.sections"
+              v-if="ShowSubTitle(book.chapter)"
+              @click="loadBookContent(book, bookIndex, section, sectionIndex)"
             >{{section.title}}</li>
           </ul>
         </li>
@@ -149,16 +149,29 @@ export default {
     closeIndexStatus() {
       this.$emit("closeIndexStatus", false);
     },
-    emitContent(chapter,h1title,h3title,content) {
-      // console.log(index, level, key)
-      let data={
-        chapter:chapter,
-        h1title:h1title,
-        h3title:h3title,
-        content:content
+    loadBookContent(book, bookIndex , section, sectionIndex) {
+
+      let bookContent = {
+        chapter: book.chapter,
+        h1title: book.title,
+        h3title: section.title,
+        content: section.content
       }
-      this.$store.commit("setBook", data);
-       console.log(this.$store.getters.getBookContent);
+
+      let bookLocation = {
+        bookIndex: bookIndex,
+        bookChapters: this.document.books.length,
+        sectionIndex: sectionIndex,
+        sections: this.document.books[bookIndex].sections.length
+      }
+
+      this.$store.commit("setBookContent", bookContent);
+      this.$store.commit("setBookLocation", bookLocation);
+      // console.log(this.$store.getters.getBookContent)
+      
+      console.log(book, bookIndex, book.length, section, section.length, sectionIndex);
+      console.log(this.document.books.length)
+      console.log(this.document.books[bookIndex].sections.length)
       this.$emit("emitContentKey");
     },
     ShowSubTitle(chapter) {
@@ -172,7 +185,7 @@ export default {
       let index = 0;
       this.$store.commit("setTask", index);
       console.log(this.$store.getters.getTask);
-    }
+    },
   }
 };
 </script>

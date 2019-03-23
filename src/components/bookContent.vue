@@ -1,8 +1,9 @@
 <template>
   <div class="book">
     <div>
-      <h2 class="book__chapter">{{bookContent.chapter}}{{bookContent.h1title}}</h2>
-      <div class="book__content">
+      <h2 class="book__chapter">{{bookContent.chapter}} {{bookContent.h1title}}</h2>
+      <div class="book__content"
+      :style="pageDistance">
         <h3 class="book__subtitle">
           {{bookContent.h3title}}
         </h3>
@@ -12,6 +13,11 @@
       </div>
     </div>
     <div class="page">-1-</div>
+    <div class="touch">
+      <div class="touch__previous" @click="loadBookContent('prev')"></div>
+      <div class="touch__navigation" @click="toggleNavigation"></div>
+      <div class="touch__next" @click="loadBookContent('next')"></div>
+    </div>
   </div>
 </template>
 
@@ -77,6 +83,9 @@
     width: 120em;
     column-gap: 16em;
     column-width: 30em;
+    h3 {
+      font-size: 12px;
+    }
   }
 }
 .fontSize__14px {
@@ -87,6 +96,9 @@
     width: 112em;
     column-gap: 23em;
     column-width: 30em;
+    h3 {
+      font-size: 14px;
+    }
   }
 }
 .fontSize__16px {
@@ -97,6 +109,9 @@
     width: 88em;
     column-gap: 10em;
     column-width: 30em;
+    h3 {
+      font-size: 16px;
+    }
   }
 }
 .fontSize__18px {
@@ -107,6 +122,9 @@
     width: 96em;
     column-gap: 27em;
     column-width: 30em;
+    h3 {
+      font-size: 18px;
+    }
   }
 }
 .fontSize__20px {
@@ -117,6 +135,9 @@
     width: 72em;
     column-gap: 10em;
     column-width: 30em;
+    h3 {
+      font-size: 20px;
+    }
   }
 }
 .fontSize__24px {
@@ -124,9 +145,12 @@
     font-size: 24px;
     height: 29.75em;
     left: 3em;
-    width: 96em;
+    width: 131em;
     column-gap: 9em;
     column-width: 23em;
+    h3 {
+      font-size: 24px;
+    }
   }
 }
 .fontSize__30px {
@@ -137,6 +161,9 @@
     width: 70em;
     column-gap: 4em;
     column-width: 20em;
+    h3 {
+      font-size: 30px;
+    }
   }
 }
 .fontSize__36px {
@@ -148,6 +175,9 @@
     height: 22.75em;
     column-gap: 10em;
     column-width: 17em;
+    h3 {
+      font-size: 36px;
+    }
   }
 }
 .fontSize__42px {
@@ -159,6 +189,9 @@
     height: 22.75em;
     column-gap: 10em;
     column-width: 12em;
+    h3 {
+      font-size: 42px;
+    }
   }
 }
 .fontSize__48px {
@@ -166,11 +199,13 @@
     font-size: 48px;
     max-height: 14em;
     left: 1.5em;
-    // TODO
     width: 33em;
     height: 22.75em;
     column-gap: 7em;
     column-width: 12em;
+    h3 {
+      font-size: 48px;
+    }
   }
 }
 .fontSize__52px {
@@ -181,6 +216,9 @@
     width: 82em;
     column-gap: 6em;
     column-width: 10em;
+    h3 {
+      font-size: 52px;
+    }
   }
 }
 
@@ -194,41 +232,65 @@
 </style>
 
 <script>
-// import document from "@/assets/document.json";
+import document from "@/assets/document.json";
+
 export default {
-  // props: ["loadContent"],
+  props: ["sizeLevel"],
   data() {
     return {
-      bookContent:{}
+      document,
+      nowWordsCount: 0,
+      maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
+      pagesDistance: [0, 0, 0, 0, 58.5, 35, 0, 27.5, 25, 20, 0],
+      pageDistance: { transform: 'translate(0, 0)'}
     };
   },
   methods: {
-    // computedContent() {
-    //   return this.loadContent;
-    //   if (this.loadContent.level == 1) {
-    //     this.content.text = document.index[this.loadContent.index].content;
-    //     this.content.subTitle = "";
-    //   } else {
-    //     this.content.text =
-    //       document.index[this.loadContent.index].sections[
-    //         this.loadContent.key
-    //       ].content;
-    //     this.content.subTitle =
-    //       document.index[this.loadContent.index].sections[
-    //         this.loadContent.key
-    //       ].title;
-    //   }
-    // }
+
+    toggleNavigation() {
+      this.$emit("toggleNavigation")
+    },
+    loadBookContent (action) {
+      this.$emit("loadBookContent")
+      this.nowWordsCount = this.bookContent.content.length
+      this.togglePage(action)
+      console.log(this.bookContent, this.nowWordsCount, 'sizeLevel: ')
+
+    },
+    togglePage (action) {
+      if(action==='next'){
+        if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
+          console.log('有第二頁', this.bookLocation)
+          this.pageDistance = {transform: `translate(-${this.pagesDistance[this.sizeLevel]}em, 0)`}
+        } else {
+          console.log('只有第一頁')
+          // 載入下一個章節
+        }
+      }else if (action==='prev') {
+        if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
+          // console.log('只有第一頁')
+            this.pageDistance = {transform: `translate(0, 0)`}
+            console.log(this.bookLocation)
+          // 載入上一個頁面
+        } else {
+          console.log('只有第一頁')
+          console.log(this.bookLocation)
+
+        }
+      }
+    }
   },
-  created() {
-    // console.log(this.document.index,'1');
-    // console.log(this.Content,'2');
-    // console.log(this.Content.index,'3');
-    // this.title =
-    //   document.index[this.loadContent.index].chapter +
-    //   " " +
-    //   document.index[this.loadContent.index].title;
-    this.bookContent=this.$store.getters.getBookContent
+  computed: {
+    bookContent () {
+      return this.$store.getters.getBookContent
+    },
+    bookLocation () {
+      return this.$store.getters.getBookLocation
+      // bookIndex, bookChapters, sectionIndex, sections
+    }
   }
+  // created() {
+  //   this.bookContent = this.$store.getters.getBookContent
+  // }
 };
 </script>

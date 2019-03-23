@@ -187,8 +187,8 @@ export default {
       } else if (action === 'enlarge') {
         if (this.sizeLevel < this.fontSizeLevel.length -1) this.sizeLevel += 1
       }
-      let fontSize = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`
-      this.$emit("changeFontSize", fontSize)
+      let fontSizeClass = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`
+      this.$emit("changeFontSize", {fontSizeClass: fontSizeClass, sizeLevel: this.sizeLevel})
     }
   }
 };

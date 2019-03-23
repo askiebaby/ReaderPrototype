@@ -15,6 +15,12 @@ export const store = new Vuex.Store({
       h1title: "",
       h3title: "",
       content: ""
+    },
+    bookLocation: {
+      bookIndex: 0,
+      bookChapters: 0,
+      sectionIndex: 0,
+      sections: 0
     }
   },
   getters: {
@@ -33,16 +39,26 @@ export const store = new Vuex.Store({
     getBookContent: state => {
       return state.bookContent;
     },
+    getBookLocation: state => {
+      return state.bookLocation;
+    }
+
   },
   mutations: {
     addTotalCounts(state) {
       state.totalCounts++;
     },
-    setBook(state, payload) {
+    setBookContent(state, payload) {
       state.bookContent.chapter = payload.chapter;
       state.bookContent.h1title = payload.h1title;
       state.bookContent.h3title = payload.h3title;
       state.bookContent.content = payload.content;
+    },
+    setBookLocation(state, payload) {
+      state.bookLocation.bookIndex = payload.bookIndex;
+      state.bookLocation.bookChapters = payload.bookChapters;
+      state.bookLocation.sectionIndex = payload.sectionIndex;
+      state.bookLocation.sections = payload.sections;
     },
     memberInfo(state, payload) {
       state.id = payload.id;
