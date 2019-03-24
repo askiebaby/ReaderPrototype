@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="wrapper">
+  <div id="app" class="wrapper" @click="totalCounts">
     <div class="real">
       <router-view />
     </div>

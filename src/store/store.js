@@ -81,7 +81,7 @@ export const store = new Vuex.Store({
     },
     setTask(state, index) {
       let counts = state.totalCounts;
-      let time = Vue.moment().format("YYYY.MM.DD HH:mm:ss.SS");
+      let time = Vue.moment();
       state.task[index].time.push(time);
       state.task[index].counts.push(counts);
     },

@@ -39,7 +39,8 @@ export default {
   methods: {
     taskDefault() {
       this.$store.commit("taskDefault", 0);
-    }
+      console.log(this.$store.getters.getTask);
+    },
   }
 };
 </script>

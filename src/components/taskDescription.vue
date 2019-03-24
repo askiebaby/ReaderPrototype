@@ -49,14 +49,19 @@
 
 <script>
 export default {
+  data() {
+    return {
+      task: this.$store.getters.getTask
+    };
+  },
   methods: {
     taskStart() {
       let index = 0;
-      this.$store.commit("setTask", index);
+      if (this.task.length > 0) {
+        this.$store.commit("setTask", index);
+        console.log(this.$store.getters.getTask);
+      }
     }
-    //   getTask() {
-    //     console.log(this.$store.getters.getTask);
-    //   }
   }
 };
 </script>

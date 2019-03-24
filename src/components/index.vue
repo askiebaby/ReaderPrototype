@@ -12,7 +12,9 @@
         <li class="index__chapter" v-for="(book, bookIndex) in document.books">
           <span>
             {{book.chapter}}
-            <span>{{book.title}}</span>
+            <span
+              @click="emitContent(book.chapter,book.title,'',book.content)"
+            >{{book.title}}</span>
           </span>
           <ul>
             <li
@@ -22,42 +24,6 @@
             >{{section.title}}</li>
           </ul>
         </li>
-        <!-- <li>封面</li>
-        <li @click="emitContentKey(1)">目錄</li>
-        <li @click="emitContentKey(2, 1)">引言</li>
-        <li class="index__chapter">
-          <span @click="emitContentKey(3, 1)">第 1 章 <span>有目的的練習</span></span>
-          <ul>
-            <li @click="emitContentKey(3, 2, 0)">史蒂夫的超強記憶力</li>
-            <li @click="emitContentKey(3, 2, 1)">各領域的傑出人物都靠大量練習</li>
-            <li @click="emitContentKey(3, 2, 2)">從有目的的練習講起</li>
-            <li @click="emitContentKey(3, 2, 3)">遇到瓶頸怎麼辦</li>
-            <li @click="emitContentKey(3, 2, 4)">有目的的練習還不夠</li>
-          </ul>
-        </li>-->
-        <!-- <li class="index__chapter">
-          <span @click="emitContentKey(4, 1)">第 2 章 <span>大腦的適應力</span></span>
-          <ul>
-            <li @click="emitContentKey('倫敦計程車司機的大腦')">倫敦計程車司機的大腦</li>
-            <li @click="emitContentKey('大腦擁有無限的適應能力')">大腦擁有無限的適應能力</li>
-            <li @click="emitContentKey('走出舒適區的重要性')">走出舒適區的重要性</li>
-            <li @click="emitContentKey('練習改變大腦結構')"></li>
-            <li @click="emitContentKey('潛能可以被構築')">潛能可以被構築</li>
-          </ul>
-        </li>
-        <li class="index__chapter">
-          <span @click="emitContentKey(5, 1)">第 3 章 <span>心裡表徵</span></span>
-          <ul>
-            <li @click="emitContentKey('偶然的盲棋大師')">偶然的盲棋大師</li>
-            <li @click="emitContentKey('大師比新手強在哪裡')">大師比新手強在哪裡</li>
-            <li @click="emitContentKey('心裡表徵是什麼')">心裡表徵是什麼</li>
-            <li @click="emitContentKey('心裡表徵有助於找出規律')">心裡表徵有助於找出規律</li>
-            <li @click="emitContentKey('心理表徵有助於解釋資訊')">心理表徵有助於解釋資訊</li>
-            <li @click="emitContentKey('心理表徵有助於組織資訊')">心理表徵有助於組織資訊</li>
-            <li @click="emitContentKey('心理表徵有助於制訂計劃')">心理表徵有助於制訂計劃</li>
-            <li @click="emitContentKey('心理表徵有助於高效學習')">心理表徵有助於高效學習</li>
-          </ul>
-        </li>-->
       </ul>
     </div>
   </div>
@@ -149,29 +115,45 @@ export default {
     closeIndexStatus() {
       this.$emit("closeIndexStatus", false);
     },
-    loadBookContent(book, bookIndex , section, sectionIndex) {
-
+    loadBookContent(book, bookIndex, section, sectionIndex) {
       let bookContent = {
         chapter: book.chapter,
         h1title: book.title,
         h3title: section.title,
         content: section.content
-      }
+      };
 
       let bookLocation = {
         bookIndex: bookIndex,
         bookChapters: this.document.books.length,
         sectionIndex: sectionIndex,
         sections: this.document.books[bookIndex].sections.length
-      }
+      };
 
       this.$store.commit("setBookContent", bookContent);
       this.$store.commit("setBookLocation", bookLocation);
       // console.log(this.$store.getters.getBookContent)
-      
-      console.log(book, bookIndex, book.length, section, section.length, sectionIndex);
-      console.log(this.document.books.length)
-      console.log(this.document.books[bookIndex].sections.length)
+
+      console.log(
+        book,
+        bookIndex,
+        book.length,
+        section,
+        section.length,
+        sectionIndex
+      );
+      console.log(this.document.books.length);
+      console.log(this.document.books[bookIndex].sections.length);
+    },
+    emitContent(chapter, h1title, h3title, content) {
+      let data = {
+        chapter: chapter,
+        h1title: h1title,
+        h3title: h3title,
+        content: content
+      };
+      this.$store.commit("setBookContent", data);
+      //  console.log(this.$store.getters.getBookContent);
       this.$emit("emitContentKey");
     },
     ShowSubTitle(chapter) {
@@ -185,7 +167,7 @@ export default {
       let index = 0;
       this.$store.commit("setTask", index);
       console.log(this.$store.getters.getTask);
-    },
+    }
   }
 };
 </script>

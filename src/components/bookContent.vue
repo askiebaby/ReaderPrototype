@@ -1,16 +1,9 @@
 <template>
   <div class="book">
-    <div>
-      <h2 class="book__chapter">{{bookContent.chapter}} {{bookContent.h1title}}</h2>
-      <div class="book__content"
-      :style="pageDistance">
-        <h3 class="book__subtitle">
-          {{bookContent.h3title}}
-        </h3>
-        <p>
-          {{bookContent.content}}
-        </p>
-      </div>
+    <h2 class="book__chapter">{{bookContent.chapter}}{{checkFinishStep1}}</h2>
+    <div class="book__content" :style="pageDistance">
+      <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
+      <p>{{bookContent.content}}</p>
     </div>
     <div class="page">-1-</div>
     <div class="touch">
@@ -242,55 +235,68 @@ export default {
       nowWordsCount: 0,
       maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
       pagesDistance: [0, 0, 0, 0, 58.5, 35, 0, 27.5, 25, 20, 0],
-      pageDistance: { transform: 'translate(0, 0)'}
+      pageDistance: { transform: "translate(0, 0)" },
+      bookContent: {},
+      task: this.$store.getters.getTask,
+      index: 0
     };
   },
   methods: {
-
     toggleNavigation() {
-      this.$emit("toggleNavigation")
+      this.$emit("toggleNavigation");
     },
-    loadBookContent (action) {
-      this.$emit("loadBookContent")
-      this.nowWordsCount = this.bookContent.content.length
-      this.togglePage(action)
-      console.log(this.bookContent, this.nowWordsCount, 'sizeLevel: ')
-
+    loadBookContent(action) {
+      this.$emit("loadBookContent");
+      this.nowWordsCount = this.bookContent.content.length;
+      this.togglePage(action);
+      console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ");
     },
-    togglePage (action) {
-      if(action==='next'){
+    togglePage(action) {
+      if (action === "next") {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          console.log('有第二頁', this.bookLocation)
-          this.pageDistance = {transform: `translate(-${this.pagesDistance[this.sizeLevel]}em, 0)`}
+          console.log("有第二頁", this.bookLocation);
+          this.pageDistance = {
+            transform: `translate(-${this.pagesDistance[this.sizeLevel]}em, 0)`
+          };
         } else {
-          console.log('只有第一頁')
+          console.log("只有第一頁");
           // 載入下一個章節
         }
-      }else if (action==='prev') {
+      } else if (action === "prev") {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           // console.log('只有第一頁')
-            this.pageDistance = {transform: `translate(0, 0)`}
-            console.log(this.bookLocation)
+          this.pageDistance = { transform: `translate(0, 0)` };
+          console.log(this.bookLocation);
           // 載入上一個頁面
         } else {
-          console.log('只有第一頁')
-          console.log(this.bookLocation)
-
+          console.log("只有第一頁");
+          console.log(this.bookLocation);
         }
       }
     }
   },
   computed: {
-    bookContent () {
-      return this.$store.getters.getBookContent
-    },
-    bookLocation () {
-      return this.$store.getters.getBookLocation
+    // bookContent() {
+    //   return this.$store.getters.getBookContent;
+    // },
+    bookLocation() {
+      return this.$store.getters.getBookLocation;
       // bookIndex, bookChapters, sectionIndex, sections
+    },
+    checkFinishStep1() {
+      if (this.bookContent.h1title === "有目的的練習") {
+        if (this.task.length > 0) {
+          if (this.task[this.index].time.length === 1) {
+            this.$store.commit("setTask", this.index);
+            console.log(this.task);
+          }
+        }
+      }
+      return this.bookContent.h1title;
     }
+  },
+  created() {
+    this.bookContent = this.$store.getters.getBookContent;
   }
-  // created() {
-  //   this.bookContent = this.$store.getters.getBookContent
-  // }
 };
 </script>

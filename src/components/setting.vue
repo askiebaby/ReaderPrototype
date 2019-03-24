@@ -6,14 +6,32 @@
       <div class="lightBox__content">
         <div class="function function__lightness"></div>
         <div class="function function__fontSize">
-          <span class="changeSize" @click="changeFontSize('small')">Aa <span class="small"></span></span>
-          <span class="changeSize" @click="changeFontSize('enlarge')">Aa <span class="enlarge"></span></span>
+          <span class="changeSize" @click="changeFontSize('small')">
+            Aa
+            <span class="small"></span>
+          </span>
+          <span class="changeSize" @click="changeFontSize('enlarge')">
+            Aa
+            <span class="enlarge"></span>
+          </span>
         </div>
         <div class="function function__background">
-          <span class="function__background__white" @click="changeBackground('background__change__white')"></span>
-          <span class="function__background__black" @click="changeBackground('background__change__black')"></span>
-          <span class="function__background__yellow" @click="changeBackground('background__change__yellow')"></span>
-          <span class="function__background__green" @click="changeBackground('background__change__green')"></span>
+          <span
+            class="function__background__white"
+            @click="changeBackground('background__change__white')"
+          ></span>
+          <span
+            class="function__background__black"
+            @click="changeBackground('background__change__black')"
+          ></span>
+          <span
+            class="function__background__yellow"
+            @click="changeBackground('background__change__yellow')"
+          ></span>
+          <span
+            class="function__background__green"
+            @click="changeBackground('background__change__green')"
+          ></span>
         </div>
         <div class="function function__fontFamily">
           <select @change="changeFontFamily($event)">
@@ -74,7 +92,8 @@
       background: $lightGray-2;
       position: relative;
     }
-    .small, .enlarge {
+    .small,
+    .enlarge {
       border: transparent 10px solid;
       display: inline-block;
       position: absolute;
@@ -164,28 +183,41 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       sizeLevel: 5,
-      fontSizeLevel: [12, 14, 16, 18, 20, 24, 30, 36, 42, 48, 52]
-    }
+      fontSizeLevel: [12, 14, 16, 18, 20, 24, 30, 36, 42, 48, 52],
+      task: this.$store.getters.getTask,
+      index: 0
+    };
   },
   methods: {
-    hideSetting () {
-      this.$emit("hideSetting", false)
+    hideSetting() {
+      this.$emit("hideSetting", false);
     },
-    changeBackground (color) {
-      this.$emit("changeBackground", color)
+    changeBackground(color) {
+      this.$emit("changeBackground", color);
     },
-    changeFontFamily (event) {
-      let family = event.target.value
-      this.$emit("changeFontFamily", family)
+    changeFontFamily(event) {
+      let family = event.target.value;
+      this.$emit("changeFontFamily", family);
     },
-    changeFontSize (action) {
-      if (action === 'small') {
-        if (this.sizeLevel > 0) this.sizeLevel -= 1
-      } else if (action === 'enlarge') {
-        if (this.sizeLevel < this.fontSizeLevel.length -1) this.sizeLevel += 1
+    changeFontSize(action) {
+      if (action === "small") {
+        if (this.sizeLevel > 0) {
+          this.sizeLevel -= 1;
+        }
+      } else if (action === "enlarge") {
+        if (this.sizeLevel < this.fontSizeLevel.length - 1) {
+          this.sizeLevel += 1;
+          if (this.fontSizeLevel[this.sizeLevel] === 52) {
+            if (this.task.length > 0) {
+              if (this.task[this.index].time.length === 2) {
+                this.$store.commit("setTask", this.index);
+              }
+            }
+          }
+        }
       }
       let fontSizeClass = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`
       this.$emit("changeFontSize", {fontSizeClass: fontSizeClass, sizeLevel: this.sizeLevel})
