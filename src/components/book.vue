@@ -18,7 +18,7 @@
     <index
       v-if="isShowIndex"
       @closeIndexStatus="isShowIndex=$event"
-      @emitContentKey="findContent()"
+      @emitContent="findContent"
     ></index>
 
     <keep-alive>
@@ -122,11 +122,9 @@ export default {
       }
     },
     findContent() {
-      // this.contentKey = arr;
       this.isShowCover = false;
       this.isShowContent = true;
       this.isShowIndex = false;
-      // console.log("findContent");
     }
   },
   components: {

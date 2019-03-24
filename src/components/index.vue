@@ -144,6 +144,7 @@ export default {
       );
       console.log(this.document.books.length);
       console.log(this.document.books[bookIndex].sections.length);
+      this.$emit("emitContent")
     },
     emitContent(chapter, h1title, h3title, content) {
       let data = {
@@ -154,7 +155,7 @@ export default {
       };
       this.$store.commit("setBookContent", data);
       //  console.log(this.$store.getters.getBookContent);
-      this.$emit("emitContentKey");
+      this.$emit("emitContent");
     },
     ShowSubTitle(chapter) {
       let show = true;
