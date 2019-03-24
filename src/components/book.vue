@@ -2,7 +2,7 @@
   <div :class="backgroundColor">
     <menu-top @showLeaveBubble="isLeaveMission=$event" v-show="isShowNavigation"></menu-top>
 
-    <background-cover v-if="isShowCover"></background-cover>
+    <!-- <background-cover v-if="isShowCover"></background-cover> -->
 
     <bookContent
       v-if="isShowContent"
@@ -23,13 +23,13 @@
     <setting
       v-show="isShowSetting"
       @hideSetting="isShowSetting=$event"
-      @changeBackground="backgroundColor=$event"
-      @changeFontFamily="changefontFamilyClass($event)"
-      @changeFontSize="changefontSizeClass($event)"
+      @changeBackground="changebackgroundColor_chickFinish($event)"
+      @changeFontFamily="fontFamilyClass=$event"
+      @changeFontSize="fontSizeClass=$event"
     ></setting>
 
     <leave-mission v-show="isLeaveMission" @cancelLeaveBubble="isLeaveMission=$event"></leave-mission>
-
+    <complete-mission v-if="isShowComplete"></complete-mission>
     <menu-bottom
       v-show="isShowNavigation"
       @showSettingBubble="isShowSetting=$event"
@@ -67,8 +67,9 @@ import menuBottom from "@/components/menu/bottom.vue";
 import leaveMission from "@/components/lightBox/leaveMission.vue";
 import index from "@/components/index.vue";
 import setting from "@/components/setting.vue";
-import backgroundCover from "@/components/backgroundCover.vue";
+// import backgroundCover from "@/components/backgroundCover.vue";
 import bookContent from "@/components/bookContent.vue";
+import completeMission from "@/components/lightBox/completeMission.vue";
 
 export default {
   data() {
@@ -79,10 +80,13 @@ export default {
       isShowCover: true,
       isShowContent: false,
       isShowIndex: false,
+      isShowComplete: false,
       backgroundColor: "background__change__white",
       fontFamilyClass: "book__fontFamily__ming",
       fontSizeClass: "fontSize__24px",
-      contentKey: {}
+      contentKey: {},
+      task: this.$store.getters.getTask,
+      index: 0
     };
   },
   methods: {
@@ -96,27 +100,41 @@ export default {
       this.isShowCover = false;
       this.isShowContent = true;
     },
-    changefontFamilyClass(famliyClass) {
-      this.fontFamilyClass = famliyClass;
+    changebackgroundColor_chickFinish(color) {
+      this.backgroundColor = color;
+      if (color === "background__change__black") {
+        if (this.task.length > 0) {
+          if (this.task[this.index].time.length === 3) {
+            this.$store.commit("setTask", this.index);
+            setTimeout(() => {
+              this.isShowComplete = true;
+            }, 3000);
+          }
+        }
+      }
     },
-    changefontSizeClass(fontClass) {
-      this.fontSizeClass = fontClass;
-    },
+    // changefontFamilyClass(famliyClass) {
+    //   this.fontFamilyClass = famliyClass;
+    // },
+    // changefontSizeClass(fontClass) {
+    //   this.fontSizeClass = fontClass;
+    // },
     findContent() {
       // this.contentKey = arr;
       this.isShowCover = false;
       this.isShowContent = true;
-      console.log("findContent");
+      // console.log("findContent");
     }
   },
   components: {
     leaveMission,
     menuTop,
-    backgroundCover,
+    // backgroundCover,
     bookContent,
     menuBottom,
     setting,
-    index
+    index,
+    completeMission
   }
 };
 </script>

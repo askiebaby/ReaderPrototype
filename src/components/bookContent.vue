@@ -1,14 +1,10 @@
 <template>
   <div class="book">
     <div>
-      <h2 class="book__chapter">{{bookContent.chapter}}{{bookContent.h1title}}</h2>
+      <h2 class="book__chapter">{{bookContent.chapter}}{{checkFinishStep1}}</h2>
       <div class="book__content">
-        <h3 class="book__subtitle">
-          {{bookContent.h3title}}
-        </h3>
-        <p>
-          {{bookContent.content}}
-        </p>
+        <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
+        <p>{{bookContent.content}}</p>
       </div>
     </div>
     <div class="page">-1-</div>
@@ -199,36 +195,26 @@ export default {
   // props: ["loadContent"],
   data() {
     return {
-      bookContent:{}
+      bookContent: {},
+      task: this.$store.getters.getTask,
+      index: 0
     };
   },
-  methods: {
-    // computedContent() {
-    //   return this.loadContent;
-    //   if (this.loadContent.level == 1) {
-    //     this.content.text = document.index[this.loadContent.index].content;
-    //     this.content.subTitle = "";
-    //   } else {
-    //     this.content.text =
-    //       document.index[this.loadContent.index].sections[
-    //         this.loadContent.key
-    //       ].content;
-    //     this.content.subTitle =
-    //       document.index[this.loadContent.index].sections[
-    //         this.loadContent.key
-    //       ].title;
-    //   }
-    // }
+  computed: {
+    checkFinishStep1() {
+      if (this.bookContent.h1title === "有目的的練習") {
+        if (this.task.length > 0) {
+          if (this.task[this.index].time.length === 1) {
+            this.$store.commit("setTask", this.index);
+            console.log(this.task);
+          }
+        }
+      }
+      return this.bookContent.h1title;
+    }
   },
   created() {
-    // console.log(this.document.index,'1');
-    // console.log(this.Content,'2');
-    // console.log(this.Content.index,'3');
-    // this.title =
-    //   document.index[this.loadContent.index].chapter +
-    //   " " +
-    //   document.index[this.loadContent.index].title;
-    this.bookContent=this.$store.getters.getBookContent
+    this.bookContent = this.$store.getters.getBookContent;
   }
 };
 </script>
