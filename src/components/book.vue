@@ -115,11 +115,12 @@ export default {
       let introLocation = {
         bookChapters: this.document.books.length,
         bookIndex: 2 + 1,
-        sections: this.document.books[3].sections.length,
-        sectionIndex: 0 + 1,
+        sections: this.document.books[2].sections.length,
+        sectionIndex: 0,
         page: 1
       };
 
+      // console.log(this.document.books[2].sections.length)
       this.$store.commit("setBookContent", intro);
       this.$store.commit("setBookLocation", introLocation);
     },

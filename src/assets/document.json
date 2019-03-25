@@ -64,8 +64,11 @@
     {
       "chapter": "第2章",
       "title": "大腦的適應能力",
-      "content": "",
       "sections": [{
+        "title": "大腦的適應能力",
+        "content": "大腦的適應能力內容"
+        },
+        {
           "title": "倫敦計程車司機的大腦",
           "content": ""
         },
@@ -90,8 +93,10 @@
     {
       "chapter": "第3章",
       "title": "心理表徵",
-      "content": "",
       "sections": [{
+          "title": "心理表徵",
+          "content": ""
+        },{
           "title": "偶然的盲棋大師",
           "content": ""
         },
