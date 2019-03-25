@@ -28,6 +28,14 @@
       }
     }
     background: $black;
+    p {
+      color: $white;
+    }
+    
+    img {
+      filter: invert(1);
+    }
+
     .book {
       color: $white;
       &__chapter, &__content {
