@@ -36,6 +36,9 @@
     background: $white;
     color: $gray-3;
   }
+  &__completed{
+    background: $gray-1;
+  }
 
   &__callToAction {
     background: $callToActionColor;

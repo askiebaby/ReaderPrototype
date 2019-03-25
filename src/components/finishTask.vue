@@ -5,8 +5,8 @@
         <button class="button button__alert button__reset" @click="isShowligtBox">清除紀錄</button>
       </div>
       <div class="input-center">
-        <div class="member_id">編號:</div>
-        <input type="text" value="王小明">
+        <div class="member_id">編號:{{id}}</div>
+        <input type="text" v-model="member.name">
         <div class="buttons">
           <router-link
             tag="button"
@@ -25,19 +25,16 @@
     <div class="lightBox deleteRecord" v-if="restCheck">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
-        <h3 class="lightBox__titleLarge">清除此編號
+        <h3 class="lightBox__titleLarge">
+          清除此編號
           <br>所有紀錄
         </h3>
         <p class="lightBox__subtitle">
-          <span>編號：M1</span>
-          <span>王小明</span>
+          <span>編號：{{id}}</span>
+          <span>{{member.name}}</span>
         </p>
         <button class="button button__primary taskPage__button" @click="isShowligtBox">取消</button>
-        <router-link
-            tag="button"
-            :to="{ name: 'home'}"
-            class="button button__default taskPage__button"
-          >清除記錄</router-link>
+        <button class="button button__default taskPage__button" @click="restRecord">清除記錄</button>
       </div>
     </div>
   </div>
@@ -65,15 +62,29 @@
 export default {
   data() {
     return {
+      id: this.$route.params.id,
       finishTadk: true,
-      restCheck: false
+      restCheck: false,
+      member: {}
     };
   },
   methods: {
     isShowligtBox() {
       this.finishTadk = !this.finishTadk;
       this.restCheck = !this.restCheck;
+    },
+    restRecord() {
+      $cookies.remove(this.id);
+      this.$router.push({ name: "home" });
     }
+  },
+  mounted() {
+    this.member = $cookies.get(this.id);
+    let info = {
+      id: this.id,
+      name: this.member.name
+    };
+    this.$store.commit("memberInfo", info);
   }
 };
 </script>

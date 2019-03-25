@@ -8,6 +8,7 @@ import finishTask from "./components/finishTask.vue";
 import book from "./components/book.vue";
 import bookIndex from "./components/index.vue";
 import setting from "./components/setting.vue";
+import taskRecord from "./components/taskRecord.vue";
 
 
 Vue.use(Router);
@@ -35,7 +36,7 @@ export default new Router({
       component: taskDescription
     },
     {
-      path: "/finishTask",
+      path: "/finishTask/:id",
       name: "finishTask",
       component: finishTask
     },
@@ -53,6 +54,11 @@ export default new Router({
       path: "/setting",
       name: "setting",
       component: setting
+    },
+    {
+      path: "/taskRecord",
+      name: "taskRecord",
+      component: taskRecord
     }
     // {
     // path: "/about",

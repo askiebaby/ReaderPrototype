@@ -6,28 +6,54 @@
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleLarge">任務已完成</h3>
         <p class="lightBox__subtitle">
-          <span>M2 王小明</span>
-          <span>2019.02.26</span>
-          <span>13:27</span>
+          <span>{{id}} {{member.name}}</span>
+          <span>{{member.task[0].finishTime}}</span>
         </p>
         <div class="lightBox__content">
           <p class="lightBox__subtitle">任務一完成時間/點擊次數</p>
-          <p class="lightBox__taskDescription">（1-1）28.52秒/8次
-            <br>（1-2）14.23秒/12次
-            <br>（1-3）2.96秒/2次
+          <p class="lightBox__taskDescription">
+            （1-1）{{member.task[0].time[0]}}秒/{{member.task[0].counts[0]}}次
+            <br>
+            （1-2）{{member.task[0].time[1]}}秒/{{member.task[0].counts[1]}}次
+            <br>
+            （1-3）{{member.task[0].time[2]}}秒/{{member.task[0].counts[2]}}次
           </p>
         </div>
-        <button class="button button__primary taskPage__button">上一頁</button>
-        <button class="button button__default taskPage__button">重新測試</button>
+        <router-link
+          tag="button"
+          :to="{ name: 'tasks'}"
+          class="button button__primary taskPage__button"
+        >上一頁</router-link>
+        <!-- <button class="button button__primary taskPage__button">上一頁</button> -->
+        <button class="button button__default taskPage__button" @click="rest">重新測試</button>
       </div>
     </div>
   </div>
 </template>
+<style lang="scss" scoped>
+@import "@/assets/scss/modules/_lightBox.scss";
+@import "@/assets/scss/modules/_button.scss";
+</style>
 
 
 <script>
 export default {
-  
-}
+  data() {
+    return {
+      id: this.$store.getters.getID,
+      member: {}
+    };
+  },
+  methods:{
+    rest(){
+      this.$emit('showConfirm')
+    }
+  },
+  mounted() {
+    console.log($cookies.get(this.id));
+    this.member = $cookies.get(this.id);
+    console.log(this.member);
+  }
+};
 </script>
 

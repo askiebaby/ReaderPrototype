@@ -214,6 +214,7 @@ export default {
             if (this.task.length > 0) {
               if (this.task[this.index].time.length === 2) {
                 this.$store.commit("setTask", this.index);
+                console.log(this.task)
               }
             }
           }

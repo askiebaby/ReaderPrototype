@@ -114,6 +114,7 @@ export default {
         if (this.task.length > 0) {
           if (this.task[this.index].time.length === 3) {
             this.$store.commit("setTask", this.index);
+            console.log(this.task);
             setTimeout(() => {
               this.isShowComplete = true;
             }, 3000);

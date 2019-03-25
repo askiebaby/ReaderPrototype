@@ -45,15 +45,6 @@ export default {
       this.$router.push({ name: "tasks" });
     }
   }
-  // computed: {
-  //   isDone() {
-  //     return this.$store.getters.isDone;
-  //   }
-  // }
-  // created() {
-  //   if ((this.gender = "M")) {
-  //   }
-  // }
 };
 </script>
 

@@ -15,17 +15,27 @@
               class="task"
               v-for="n in 5"
         >{{n}}</router-link>-->
-        <div class="task" v-for="n in 15" @click="toLogin('M'+n)">
+        <div
+          class="task"
+          v-for="n in 15"
+          :class="{task__completed:isFinish('M'+n)}"
+          @click="nextPage('M'+n)"
+        >
           <span>{{n}}</span>
         </div>
       </div>
       <div class="taskList__tasks-type2">
-        <div class="task" v-for="n in 15" @click="toLogin('F'+n)">
+        <div
+          class="task"
+          v-for="n in 15"
+          :class="{task__completed:isFinish('F'+n)}"
+          @click="nextPage('F'+n)"
+        >
           <span>{{n}}</span>
         </div>
       </div>
     </div>
-    <div class="taskList">
+    <!-- <div class="taskList">
       <div class="taskList__description">
         <div class="taskList__description__word">文</div>
         <div class="taskList__description__word">橫</div>
@@ -65,7 +75,7 @@
           <span>5</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -157,10 +167,27 @@
 // @ is an alias to /src
 
 export default {
+  data() {
+    return {
+      finishId: []
+    };
+  },
   methods: {
-    toLogin(id) {
-      console.log(id);
-      this.$router.push({ name: "login", params: { id } });
+    isFinish(id) {
+      let result = false;
+      if ($cookies.get(id) !== null) {
+        console.log($cookies.get(id));
+        result = true;
+      }
+      return result;
+    },
+    nextPage(id) {
+      let result = this.isFinish(id);
+      if (result) {
+        this.$router.push({ name: "finishTask", params: { id } });
+      } else {
+        this.$router.push({ name: "login", params: { id } });
+      }
     }
   }
 };

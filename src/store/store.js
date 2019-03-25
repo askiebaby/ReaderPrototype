@@ -63,15 +63,6 @@ export const store = new Vuex.Store({
     memberInfo(state, payload) {
       state.id = payload.id;
       state.name = payload.name;
-      // task: [{
-      //   childTask: [false, false, false]
-      // }]
-      // task: [{
-      //   time: [],
-      //   counters: []
-      // }]
-
-      // Cookies.set(payload.id, state.member);
     },
     taskDefault(state, payload) {
       state.task[payload] = {
