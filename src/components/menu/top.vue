@@ -1,6 +1,6 @@
 <template>
   <div class="topMenu">
-    <div class="topMenu__back">
+    <div class="topMenu__back" @click="backTask">
       <img :src="require('@/assets/menu/back.svg')" >
       <p>回到書櫃</p>
     </div>
@@ -36,6 +36,9 @@ export default {
   methods: {
     changeLeaveStatus () {
       this.$emit("showLeaveBubble", true)
+    },
+    backTask(){
+      this.$router.push({ name: "tasks" });
     }
   }
 }
