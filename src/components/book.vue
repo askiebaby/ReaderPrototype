@@ -114,7 +114,7 @@ export default {
 
       let introLocation = {
         bookChapters: this.document.books.length,
-        bookIndex: 2 + 1,
+        bookIndex: 2,
         sections: this.document.books[2].sections.length,
         sectionIndex: 0,
         page: 1

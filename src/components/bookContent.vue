@@ -254,90 +254,29 @@ export default {
     loadBookContent(action) {
       this.$emit("loadBookContent");
       this.nowWordsCount = this.bookContent.content.length;
-      this.togglePage2(action);
+      this.togglePage(action);
       console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
     },
     togglePage(action) {
-      if (action === "prev") {
+
+      if (action === 'prev') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          this.pageDistance = { transform: `translate(0, 0)` };
-          console.log("有第二頁", this.bookContent, this.bookLocation, this.pageDistance);
-          // TODO 載入上一個頁面
-        } else {
-          console.log("只有第一頁", this.bookContent, this.bookLocation);
-          if (this.bookContent.chapter === "引言") {
-            this.$emit("loadCoverContent")
-          }
-        }
-      } else if (action === "next") {
-
-        let addLocation = {
-          bookChapters: this.document.books.length,
-          bookIndex: this.bookLocation.bookIndex,
-          sections: this.bookLocation.sections,
-          sectionIndex: 0,
-          page: 1
-        };
-
-        let addContent = this.$store.getters.getBookContent;
-          // this.$store.commit("setBookContent", );
-
-        if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          
-          console.log("有第二頁，最後一頁", this.bookContent, this.bookLocation, this.pageDistance);
-          // 單純更動頁數
-          
-          if(addLocation.page === 1) {
-            this.pageDistance = {
-              transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
-            };
-            addLocation.page = this.bookLocation.page + 1
-            this.$store.commit("setBookLocation", addLocation);
-          } else if (addLocation.page === 2 ){
-            // 最後一頁
+          // 超過一頁
+          if (this.addLocation.page === 1) {
+            this.changeSection("prev")
+          } else if (this.addLocation.page > 1) {
+            this.addLocation.page -= 1
+            this.$store.commit("setBookLocation", this.addLocation);
             this.pageDistance = {
               transform: `translateX(0)`
             };
-            
-            if (this.bookLocation.sectionIndex < this.bookLocation.sections) {
-            // 不是最後一個 section
-            addLocation.sectionIndex = this.bookLocation.sectionIndex + 1
-            this.$store.commit("setBookLocation", addLocation);
-
-            addContent.h3title = this.document.books[addLocation.bookIndex].sections[addLocation.sectionIndex].title
-            addContent.content = this.document.books[addLocation.bookIndex].sections[addLocation.sectionIndex].content
-
-            console.log("不是最後一個 section", addLocation)
-          } else if (this.bookLocation.sectionIndex === this.bookLocation.sections) {
-            // 當前 chapter 的最後一個 section
-            console.log("當前 chapter 的最後一個 section")
-          }
           }
 
         } else {
-          console.log("只有第一頁", this.bookContent, this.bookLocation);
-          // TODO 載入下一個章節
-          if (this.bookLocation.sectionIndex < this.bookLocation.sections) {
-            // 不是最後一個 section
-            addLocation.sectionIndex = this.bookLocation.sectionIndex + 1
-            this.$store.commit("setBookLocation", addLocation);
-
-            addContent.h3title = this.document.books[addLocation.bookIndex].sections[addLocation.sectionIndex].title
-            addContent.content = this.document.books[addLocation.bookIndex].sections[addLocation.sectionIndex].content
-
-            console.log("不是最後一個 section", addLocation)
-          } else if (this.bookLocation.sectionIndex === this.bookLocation.sections) {
-            // 當前 chapter 的最後一個 section
-            console.log("當前 chapter 的最後一個 section")
-          }
-
+          // 只有一頁
+          console.log("只有一頁")
+          this.changeSection("prev")
         }
-      }
-    },
-    togglePage2(action) {
-
-      if (action === 'prev') {
-
       } else if(action === 'next') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           // 超過一頁
@@ -345,7 +284,7 @@ export default {
           this.$store.commit("setBookLocation", this.addLocation);
           
           if (this.addLocation.page > 2) {
-            this.changeSection()
+            this.changeSection("next")
           } else {
             this.pageDistance = {
               transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
@@ -355,28 +294,45 @@ export default {
         } else {
           // 只有一頁
           console.log("只有一頁")
-          this.changeSection()
+          this.changeSection("next")
         }
       }
     },
-    changeSection(){
-      console.log("changeSection")
-      if (this.bookLocation.sectionIndex < this.bookLocation.sections -1) {
-        // 不是最後一個 section
-        console.log("changeSection, 不是最後一個 section")
-        this.addLocation.sectionIndex += 1
-        this.$store.commit("setBookLocation", this.addLocation);
-        this.changeContent("nextSection")
-        
-      } else {
-        // 當前 chapter 的最後一個 section
-        // TODO 最後一章的最後一個 section 要 return
-          this.addLocation.sections = this.document.books[this.bookLocation.bookIndex].sections.length
+    changeSection(action){
+      
+      if (action==="prev") {
+        if (this.bookLocation.sectionIndex === 0) {
+          console.log("changeSection: prev, first section")
+
+          this.addLocation.sections = this.document.books[this.bookLocation.bookIndex-1].sections.length
           this.$store.commit("setBookLocation", this.addLocation);
-          this.changeContent("nextChapter")
-          console.log("changeSection, 當前 chapter 的最後一個 section")
-        
+          this.changeContent("prevChapter")
+        } else {
+          // 不是第一個 section
+          console.log("changeSection: prev, 不是第一個 section")
+          this.addLocation.sectionIndex -= 1
+          this.$store.commit("setBookLocation", this.addLocation);
+          this.changeContent("prevSection")
+        }
+      } else if (action==="next") {
+        if (this.bookLocation.sectionIndex < this.bookLocation.sections -1) {
+          // 不是最後一個 section
+          console.log("changeSection, 不是最後一個 section")
+          this.addLocation.sectionIndex += 1
+          this.$store.commit("setBookLocation", this.addLocation);
+          this.changeContent("nextSection")
+          
+        } else {
+          // 當前 chapter 的最後一個 section
+          // TODO 最後一章的最後一個 section 要 return
+            this.addLocation.sections = this.document.books[this.bookLocation.bookIndex+1].sections.length
+            this.$store.commit("setBookLocation", this.addLocation);
+            this.changeContent("nextChapter")
+            console.log("changeSection, 當前 chapter 的最後一個 section")
+          
+        }
       }
+      
     },
     changeContent (action) {
 
@@ -386,30 +342,45 @@ export default {
         addContent = {
           chapter: addContent.chapter,
           h1title: addContent.h1title,
-          h3title: this.document.books[this.addLocation.bookIndex-1].sections[this.addLocation.sectionIndex].title,
-          content: this.document.books[this.addLocation.bookIndex-1].sections[this.addLocation.sectionIndex].content
+          h3title: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].title,
+          content: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].content
         }
         this.$store.commit("setBookContent", addContent);
         this.resetDefault()
-      } else {
+      } else if (action === "nextChapter") {
         // 切換章節
         console.log(this.addLocation.bookChapters);
         addContent = {
-          chapter: this.document.books[this.addLocation.bookIndex].chapter,
-          h1title: this.document.books[this.addLocation.bookIndex].title,
-          h3title: this.document.books[this.addLocation.bookIndex].sections[0].title,
-          content: this.document.books[this.addLocation.bookIndex].sections[0].content
+          chapter: this.document.books[this.addLocation.bookIndex+1].chapter,
+          h1title: this.document.books[this.addLocation.bookIndex+1].title,
+          h3title: this.document.books[this.addLocation.bookIndex+1].sections[0].title,
+          content: this.document.books[this.addLocation.bookIndex+1].sections[0].content
         }
         this.$store.commit("setBookContent", addContent);
-        console.log("changeChapter")
-        // if(this.addLocation.bookIndex < this.addLocation.bookChapters-1){
-          this.addLocation.bookIndex += 1
-          this.addLocation.sectionIndex = 1
-          this.resetDefault()
-          
-        // } else if (this.addLocation.bookIndex < this.addLocation.bookChapters) {
-
-        // }
+        this.addLocation.bookIndex += 1
+        this.addLocation.sectionIndex = 0
+        this.resetDefault()
+      } else if (action === "prevSection") {
+        addContent = {
+          chapter: addContent.chapter,
+          h1title: addContent.h1title,
+          h3title: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].title,
+          content: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].content
+        }
+        this.$store.commit("setBookContent", addContent);
+        this.resetDefault()
+      } else if (action === "prevChapter") {
+        console.log("準備更新chap")
+        addContent = {
+          chapter: this.document.books[this.addLocation.bookIndex-1].chapter,
+          h1title: this.document.books[this.addLocation.bookIndex-1].title,
+          h3title: this.document.books[this.addLocation.bookIndex-1].sections[this.addLocation.sections-1].title,
+          content: this.document.books[this.addLocation.bookIndex-1].sections[this.addLocation.sections-1].content
+        }
+        this.$store.commit("setBookContent", addContent);
+        this.addLocation.bookIndex -= 1
+        this.addLocation.sectionIndex = this.addLocation.sections
+        this.resetDefault()
       }
       
     },

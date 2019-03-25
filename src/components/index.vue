@@ -10,12 +10,12 @@
       </nav>
       <ul class="index__outline">
         <li class="index__chapter" v-for="(book, bookIndex) in document.books">
-          <!-- <span>
+          <span v-if="(bookIndex<3)">
             {{book.chapter}}
             <span
               @click="emitContent(book.chapter,book.title,'',book.content)"
             >{{book.title}}</span>
-          </span> -->
+          </span>
           <ul>
             <li
               v-for="(section, sectionIndex) in book.sections"
@@ -132,9 +132,9 @@ export default {
 
       let bookLocation = {
         bookChapters: this.document.books.length,
-        bookIndex: bookIndex + 1,
+        bookIndex: bookIndex,
         sections: this.document.books[bookIndex].sections.length,
-        sectionIndex: sectionIndex + 1,
+        sectionIndex: sectionIndex,
         page: 1
       };
 
