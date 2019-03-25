@@ -238,7 +238,7 @@ export default {
       nowWordsCount: 0,
       maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
       pagesDistance: [138, 115.5, 101, 89.5, 79, 105, 74, 42.75, 50, 37, 35],
-      pageDistance: { transform: "translate(0, 0)" },
+      pageDistance: { transform: "translateX(0)" },
       // bookContent: {},
       task: this.$store.getters.getTask,
       index: 0
@@ -255,25 +255,28 @@ export default {
       console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
     },
     togglePage(action) {
-      if (action === "next") {
+      if (action === "prev") {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          this.pageDistance = {
-            transform: `translate(-${this.pagesDistance[this.sizeLevel]}em, 0)`
-          };
-          console.log("有第二頁", this.bookLocation, this.pageDistance);
-        } else {
-          console.log("只有第一頁");
-          // 載入下一個章節
-        }
-      } else if (action === "prev") {
-        if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          // console.log('只有第一頁')
           this.pageDistance = { transform: `translate(0, 0)` };
-          console.log(this.bookLocation, this.pageDistance);
+          console.log("有第二頁", this.bookContent, this.bookLocation, this.pageDistance);
           // 載入上一個頁面
         } else {
-          console.log("只有第一頁");
-          console.log(this.bookLocation);
+          console.log("只有第一頁", this.bookContent, this.bookLocation);
+          if (this.bookContent.chapter === "引言") {
+            this.$emit("loadCoverContent")
+          }
+        }
+      } else if (action === "next") {
+        if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
+          this.pageDistance = {
+            transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
+          };
+          console.log("有第二頁", this.bookContent, this.bookLocation, this.pageDistance);
+        } else {
+          console.log("只有第一頁", this.bookContent, this.bookLocation);
+          // 載入下一個章節
+          
+
         }
       }
     }

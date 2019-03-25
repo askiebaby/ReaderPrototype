@@ -12,6 +12,7 @@
       v-show="isShowContent"
       :class="[fontFamilyClass, fontSizeClass]"
       @toggleNavigation="toggleNavigation"
+      @loadCoverContent="loadCoverContent"
       :sizeLevel="sizeLevel"
     ></bookContent>
 
@@ -88,6 +89,10 @@ export default {
     },
     showSetting() {
       this.isShowSetting = this.isShowNavigation ? false : true;
+    },
+    loadCoverContent() {
+      this.isShowCover = true;
+      this.isShowContent = false;
     },
     loadIntroContent() {
       this.isShowCover = false;

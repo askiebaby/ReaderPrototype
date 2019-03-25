@@ -124,9 +124,9 @@ export default {
       };
 
       let bookLocation = {
-        bookIndex: bookIndex,
+        bookIndex: bookIndex + 1,
         bookChapters: this.document.books.length,
-        sectionIndex: sectionIndex,
+        sectionIndex: sectionIndex + 1,
         sections: this.document.books[bookIndex].sections.length
       };
 
