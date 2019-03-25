@@ -1,22 +1,20 @@
 <template>
   <div>
     <div class="background__male" v-if="finishTadk">
-      <div id="resetPosition">
-        <button class="button button__alert button__reset" @click="isShowligtBox">清除紀錄</button>
-      </div>
+      <button class="button button__alert button__reset positionTopRight" @click="isShowligtBox">清除紀錄</button>
       <div class="input-center">
         <div class="member_id">編號:{{id}}</div>
-        <input type="text" v-model="member.name">
+        <input type="text" v-model="member.name" disabled>
         <div class="buttons">
           <router-link
             tag="button"
             :to="{ name: 'home'}"
-            class="button button__space button__default2"
+            class="button button__space button__default"
           >上一頁</router-link>
           <router-link
             tag="button"
             :to="{ name: 'tasks'}"
-            class="button button__space button__default2"
+            class="button button__space button__default"
           >紀錄</router-link>
         </div>
       </div>
@@ -45,10 +43,13 @@
 @import "@/assets/scss/modules/_background.scss";
 @import "@/assets/scss/modules/_input.scss";
 @import "@/assets/scss/modules/_button.scss";
-#resetPosition {
-  text-align: right;
-  padding: 38px 37px 0 0;
+
+.positionTopRight {
+  position: absolute;
+  right: 37px;
+  top: 38px;
 }
+
 .input-center {
   padding: 276px 0 443px 0;
 }

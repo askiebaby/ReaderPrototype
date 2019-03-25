@@ -95,7 +95,7 @@ export default {
       this.isShowContent = false;
       let coverLocation = {
         bookChapters: this.document.books.length,
-        bookIndex: 0 + 1,
+        bookIndex: 0,
         sections: null,
         sectionIndex: null,
         page: 1

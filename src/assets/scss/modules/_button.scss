@@ -36,17 +36,18 @@
     background: $white;
     color: $gray-3;
   }
+  
+  &__cancel {
+    background: $white;
+    color: $gray-4;
+  }
+
   &__completed{
     background: $gray-1;
   }
 
   &__callToAction {
     background: $callToActionColor;
-  }
-
-  &__default2 {
-    background: $white;
-    color: $gray-4;
   }
 
   &__space {

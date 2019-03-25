@@ -6,7 +6,7 @@
       <router-link
         tag="button"
         :to="{ name: 'home'}"
-        class="button button__space button__default2"
+        class="button button__space button__cancel"
       >取消</router-link>
       <button class="button button__space button__callToAction" @click="missionStart">開始</button>
     </div>
@@ -20,7 +20,7 @@
 @import '@/assets/scss/modules/_button.scss';
 
 .input-center {
-  padding: 356px 0 443px 0;
+  min-height: 100vh;
 }
 </style>
 <script>
