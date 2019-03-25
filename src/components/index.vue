@@ -10,7 +10,7 @@
       </nav>
       <ul class="index__outline">
         <li class="index__chapter" v-for="(book, bookIndex) in document.books">
-          <span>
+          <span v-if="(bookIndex<3)">
             {{book.chapter}}
             <span
               @click="emitContent(book.chapter,book.title,'',book.content)"
@@ -21,7 +21,9 @@
               v-for="(section, sectionIndex) in book.sections"
               v-if="ShowSubTitle(book.chapter)"
               @click="loadBookContent(book, bookIndex, section, sectionIndex)"
-            >{{section.title}}</li>
+            >
+            <span v-if="sectionIndex === 0" class="index__chapterName">{{book.chapter}}</span> <span>{{section.title}}</span>
+            </li>
           </ul>
         </li>
       </ul>
@@ -60,6 +62,11 @@
       justify-content: center;
       cursor: pointer;
     }
+  }
+
+  &__chapterName {
+    position: absolute;
+    left: 0;
   }
 
   &__outline {
@@ -124,10 +131,11 @@ export default {
       };
 
       let bookLocation = {
-        bookIndex: bookIndex,
         bookChapters: this.document.books.length,
+        bookIndex: bookIndex,
+        sections: this.document.books[bookIndex].sections.length,
         sectionIndex: sectionIndex,
-        sections: this.document.books[bookIndex].sections.length
+        page: 1
       };
 
       this.$store.commit("setBookContent", bookContent);
@@ -144,6 +152,7 @@ export default {
       );
       console.log(this.document.books.length);
       console.log(this.document.books[bookIndex].sections.length);
+      this.$emit("emitContent")
     },
     emitContent(chapter, h1title, h3title, content) {
       let data = {
@@ -154,7 +163,7 @@ export default {
       };
       this.$store.commit("setBookContent", data);
       //  console.log(this.$store.getters.getBookContent);
-      this.$emit("emitContentKey");
+      this.$emit("emitContent");
     },
     ShowSubTitle(chapter) {
       let show = true;

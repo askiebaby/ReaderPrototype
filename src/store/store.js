@@ -20,7 +20,8 @@ export const store = new Vuex.Store({
       bookIndex: 0,
       bookChapters: 0,
       sectionIndex: 0,
-      sections: 0
+      sections: 0,
+      page: 1
     }
   },
   getters: {
@@ -59,6 +60,7 @@ export const store = new Vuex.Store({
       state.bookLocation.bookChapters = payload.bookChapters;
       state.bookLocation.sectionIndex = payload.sectionIndex;
       state.bookLocation.sections = payload.sections;
+      state.bookLocation.page = payload.page;
     },
     memberInfo(state, payload) {
       state.id = payload.id;

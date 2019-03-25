@@ -12,13 +12,14 @@
       v-show="isShowContent"
       :class="[fontFamilyClass, fontSizeClass]"
       @toggleNavigation="toggleNavigation"
+      @loadCoverContent="loadCoverContent"
       :sizeLevel="sizeLevel"
     ></bookContent>
 
     <index
       v-if="isShowIndex"
       @closeIndexStatus="isShowIndex=$event"
-      @emitContentKey="findContent()"
+      @emitContent="findContent"
     ></index>
 
     <keep-alive>
@@ -89,6 +90,18 @@ export default {
     showSetting() {
       this.isShowSetting = this.isShowNavigation ? false : true;
     },
+    loadCoverContent() {
+      this.isShowCover = true;
+      this.isShowContent = false;
+      let coverLocation = {
+        bookChapters: this.document.books.length,
+        bookIndex: 0 + 1,
+        sections: null,
+        sectionIndex: null,
+        page: 1
+      };
+      this.$store.commit("setBookLocation", coverLocation);
+    },
     loadIntroContent() {
       this.isShowCover = false;
       this.isShowContent = true;
@@ -98,7 +111,18 @@ export default {
         h3title: this.document.books[2].sections[0].title,
         content: this.document.books[2].sections[0].content
       };
+
+      let introLocation = {
+        bookChapters: this.document.books.length,
+        bookIndex: 2,
+        sections: this.document.books[2].sections.length,
+        sectionIndex: 0,
+        page: 1
+      };
+
+      // console.log(this.document.books[2].sections.length)
       this.$store.commit("setBookContent", intro);
+      this.$store.commit("setBookLocation", introLocation);
     },
     changefontFamilyClass(famliyClass) {
       this.fontFamilyClass = famliyClass;
@@ -123,11 +147,9 @@ export default {
       }
     },
     findContent() {
-      // this.contentKey = arr;
       this.isShowCover = false;
       this.isShowContent = true;
       this.isShowIndex = false;
-      // console.log("findContent");
     }
   },
   components: {

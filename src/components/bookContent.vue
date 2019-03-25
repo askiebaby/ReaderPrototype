@@ -1,8 +1,10 @@
 <template>
   <div class="book">
-    <h2 class="book__chapter">{{bookContent.chapter}}{{checkFinishStep1}}</h2>
+    <h2 class="book__chapter">{{bookContent.chapter}} {{checkFinishStep1}}</h2>
     <div class="book__content" :style="pageDistance">
+      <!-- <h3 class="book__subtitle">{{(this.bookLocation.sectionIndex===1)?'' : bookContent.h3title}}</h3> -->
       <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
+
       <p>{{bookContent.content}}</p>
     </div>
     <div class="page">-1-</div>
@@ -24,6 +26,8 @@
   text-align: center;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  flex-flow: row wrap;
   padding: 89px 72px;
   max-width: 768px;
   margin: auto;
@@ -52,6 +56,7 @@
     position: absolute;
     column-fill: auto;
     transform: translate(0, 0px);
+    top: 165px;
     * {
       font-weight: normal;
       line-height: 1.75em;
@@ -73,8 +78,8 @@
     font-size: 12px;
     max-height: 59.5em;
     left: 6em;
-    width: 120em;
-    column-gap: 16em;
+    width: 190em;
+    column-gap: 86em;
     column-width: 30em;
     h3 {
       font-size: 12px;
@@ -86,8 +91,8 @@
     font-size: 14px;
     max-height: 50.75em;
     left: 5.142em;
-    width: 112em;
-    column-gap: 23em;
+    width: 160em;
+    column-gap: 71em;
     column-width: 30em;
     h3 {
       font-size: 14px;
@@ -99,8 +104,8 @@
     font-size: 16px;
     max-height: 45.5em;
     left: 4.5em;
-    width: 88em;
-    column-gap: 10em;
+    width: 140em;
+    column-gap: 62em;
     column-width: 30em;
     h3 {
       font-size: 16px;
@@ -112,8 +117,8 @@
     font-size: 18px;
     height: 40.25em;
     left: 4em;
-    width: 96em;
-    column-gap: 27em;
+    width: 124em;
+    column-gap: 55em;
     column-width: 30em;
     h3 {
       font-size: 18px;
@@ -125,8 +130,8 @@
     font-size: 20px;
     left: 3.6em;
     height: 35em;
-    width: 72em;
-    column-gap: 10em;
+    width: 110em;
+    column-gap: 48em;
     column-width: 30em;
     h3 {
       font-size: 20px;
@@ -139,7 +144,7 @@
     height: 29.75em;
     left: 3em;
     width: 131em;
-    column-gap: 9em;
+    column-gap: 79em;
     column-width: 23em;
     h3 {
       font-size: 24px;
@@ -151,8 +156,8 @@
     font-size: 30px;
     height: 22.75em;
     left: 2.4em;
-    width: 70em;
-    column-gap: 4em;
+    width: 95em;
+    column-gap: 53em;
     column-width: 20em;
     h3 {
       font-size: 30px;
@@ -164,9 +169,9 @@
     font-size: 36px;
     max-height: 19.25em;
     left: 2em;
-    width: 45em;
+    width: 103em;
     height: 22.75em;
-    column-gap: 10em;
+    column-gap: 25em;
     column-width: 17em;
     h3 {
       font-size: 36px;
@@ -180,7 +185,7 @@
     left: 1.714em;
     width: 65em;
     height: 22.75em;
-    column-gap: 10em;
+    column-gap: 35em;
     column-width: 12em;
     h3 {
       font-size: 42px;
@@ -192,9 +197,9 @@
     font-size: 48px;
     max-height: 14em;
     left: 1.5em;
-    width: 33em;
+    width: 50em;
     height: 22.75em;
-    column-gap: 7em;
+    column-gap: 24em;
     column-width: 12em;
     h3 {
       font-size: 48px;
@@ -207,7 +212,7 @@
     max-height: 14em;
     left: 1.384em;
     width: 82em;
-    column-gap: 6em;
+    column-gap: 24em;
     column-width: 10em;
     h3 {
       font-size: 52px;
@@ -234,11 +239,12 @@ export default {
       document,
       nowWordsCount: 0,
       maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
-      pagesDistance: [0, 0, 0, 0, 58.5, 35, 0, 27.5, 25, 20, 0],
-      pageDistance: { transform: "translate(0, 0)" },
-      bookContent: {},
+      pagesDistance: [138, 115.5, 101, 89.5, 79, 105, 74, 42.75, 50, 37, 35],
+      pageDistance: { transform: "translateX(0)" },
+      // bookContent: {},
       task: this.$store.getters.getTask,
-      index: 0
+      index: 0,
+      addLocation:"",
     };
   },
   methods: {
@@ -249,36 +255,147 @@ export default {
       this.$emit("loadBookContent");
       this.nowWordsCount = this.bookContent.content.length;
       this.togglePage(action);
-      console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ");
+      console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
     },
     togglePage(action) {
-      if (action === "next") {
+
+      if (action === 'prev') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          console.log("有第二頁", this.bookLocation);
-          this.pageDistance = {
-            transform: `translate(-${this.pagesDistance[this.sizeLevel]}em, 0)`
-          };
+          // 超過一頁
+          if (this.addLocation.page === 1) {
+            this.changeSection("prev")
+          } else if (this.addLocation.page > 1) {
+            this.addLocation.page -= 1
+            this.$store.commit("setBookLocation", this.addLocation);
+            this.pageDistance = {
+              transform: `translateX(0)`
+            };
+          }
+
         } else {
-          console.log("只有第一頁");
-          // 載入下一個章節
+          // 只有一頁
+          console.log("只有一頁")
+          this.changeSection("prev")
         }
-      } else if (action === "prev") {
+      } else if(action === 'next') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
-          // console.log('只有第一頁')
-          this.pageDistance = { transform: `translate(0, 0)` };
-          console.log(this.bookLocation);
-          // 載入上一個頁面
+          // 超過一頁
+          this.addLocation.page += 1
+          this.$store.commit("setBookLocation", this.addLocation);
+          
+          if (this.addLocation.page > 2) {
+            this.changeSection("next")
+          } else {
+            this.pageDistance = {
+              transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
+            };
+          }
+
         } else {
-          console.log("只有第一頁");
-          console.log(this.bookLocation);
+          // 只有一頁
+          console.log("只有一頁")
+          this.changeSection("next")
         }
       }
+    },
+    changeSection(action){
+      
+      if (action==="prev") {
+        if (this.bookLocation.sectionIndex === 0) {
+          console.log("changeSection: prev, first section")
+
+          this.addLocation.sections = this.document.books[this.bookLocation.bookIndex-1].sections.length
+          this.$store.commit("setBookLocation", this.addLocation);
+          this.changeContent("prevChapter")
+        } else {
+          // 不是第一個 section
+          console.log("changeSection: prev, 不是第一個 section")
+          this.addLocation.sectionIndex -= 1
+          this.$store.commit("setBookLocation", this.addLocation);
+          this.changeContent("prevSection")
+        }
+      } else if (action==="next") {
+        if (this.bookLocation.sectionIndex < this.bookLocation.sections -1) {
+          // 不是最後一個 section
+          console.log("changeSection, 不是最後一個 section")
+          this.addLocation.sectionIndex += 1
+          this.$store.commit("setBookLocation", this.addLocation);
+          this.changeContent("nextSection")
+          
+        } else {
+          // 當前 chapter 的最後一個 section
+          // TODO 最後一章的最後一個 section 要 return
+            this.addLocation.sections = this.document.books[this.bookLocation.bookIndex+1].sections.length
+            this.$store.commit("setBookLocation", this.addLocation);
+            this.changeContent("nextChapter")
+            console.log("changeSection, 當前 chapter 的最後一個 section")
+          
+        }
+      }
+      
+    },
+    changeContent (action) {
+
+      let addContent = this.$store.getters.getBookContent;
+      if (action === "nextSection"){
+        // 切換 section
+        addContent = {
+          chapter: addContent.chapter,
+          h1title: addContent.h1title,
+          h3title: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].title,
+          content: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].content
+        }
+        this.$store.commit("setBookContent", addContent);
+        this.resetDefault()
+      } else if (action === "nextChapter") {
+        // 切換章節
+        console.log(this.addLocation.bookChapters);
+        addContent = {
+          chapter: this.document.books[this.addLocation.bookIndex+1].chapter,
+          h1title: this.document.books[this.addLocation.bookIndex+1].title,
+          h3title: this.document.books[this.addLocation.bookIndex+1].sections[0].title,
+          content: this.document.books[this.addLocation.bookIndex+1].sections[0].content
+        }
+        this.$store.commit("setBookContent", addContent);
+        this.addLocation.bookIndex += 1
+        this.addLocation.sectionIndex = 0
+        this.resetDefault()
+      } else if (action === "prevSection") {
+        addContent = {
+          chapter: addContent.chapter,
+          h1title: addContent.h1title,
+          h3title: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].title,
+          content: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].content
+        }
+        this.$store.commit("setBookContent", addContent);
+        this.resetDefault()
+      } else if (action === "prevChapter") {
+        console.log("準備更新chap")
+        addContent = {
+          chapter: this.document.books[this.addLocation.bookIndex-1].chapter,
+          h1title: this.document.books[this.addLocation.bookIndex-1].title,
+          h3title: this.document.books[this.addLocation.bookIndex-1].sections[this.addLocation.sections-1].title,
+          content: this.document.books[this.addLocation.bookIndex-1].sections[this.addLocation.sections-1].content
+        }
+        this.$store.commit("setBookContent", addContent);
+        this.addLocation.bookIndex -= 1
+        this.addLocation.sectionIndex = this.addLocation.sections
+        this.resetDefault()
+      }
+      
+    },
+    resetDefault() {
+      this.addLocation.page = 1
+      this.$store.commit("setBookLocation", this.addLocation);
+      this.pageDistance = {
+        transform: `translateX(0)`
+      };
     }
   },
   computed: {
-    // bookContent() {
-    //   return this.$store.getters.getBookContent;
-    // },
+    bookContent() {
+      return this.$store.getters.getBookContent;
+    },
     bookLocation() {
       return this.$store.getters.getBookLocation;
       // bookIndex, bookChapters, sectionIndex, sections
@@ -296,7 +413,7 @@ export default {
     }
   },
   created() {
-    this.bookContent = this.$store.getters.getBookContent;
+    this.addLocation = this.$store.getters.getBookLocation;
   }
 };
 </script>
