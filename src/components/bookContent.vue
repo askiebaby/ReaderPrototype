@@ -1,8 +1,8 @@
 <template>
   <div class="book">
-    <h2 class="book__chapter">{{bookContent.chapter}}{{checkFinishStep1}}</h2>
+    <h2 class="book__chapter">{{bookContent.chapter}} {{checkFinishStep1}}</h2>
     <div class="book__content" :style="pageDistance">
-      <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
+      <h3 class="book__subtitle">{{(this.bookLocation.sectionIndex===1)?'' : bookContent.h3title}}</h3>
       <p>{{bookContent.content}}</p>
     </div>
     <div class="page">-1-</div>
@@ -259,7 +259,7 @@ export default {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           this.pageDistance = { transform: `translate(0, 0)` };
           console.log("有第二頁", this.bookContent, this.bookLocation, this.pageDistance);
-          // 載入上一個頁面
+          // TODO 載入上一個頁面
         } else {
           console.log("只有第一頁", this.bookContent, this.bookLocation);
           if (this.bookContent.chapter === "引言") {
@@ -267,15 +267,50 @@ export default {
           }
         }
       } else if (action === "next") {
+
+        let addLocation = {
+          bookChapters: this.document.books.length,
+          bookIndex: this.bookLocation.bookIndex,
+          sections: this.bookLocation.sections,
+          sectionIndex: 0,
+          page: 1
+        };
+
+        // let addContent = this.$store.getters.getBookContent;
+
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           this.pageDistance = {
             transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
           };
-          console.log("有第二頁", this.bookContent, this.bookLocation, this.pageDistance);
+          console.log("有第二頁，最後一頁", this.bookContent, this.bookLocation, this.pageDistance);
+          // 單純更動頁數
+          addLocation.page = this.bookLocation.page + 1
+          this.$store.commit("setBookLocation", addLocation);
+          
+          let addContent = {
+            chapter: this.document.books[this.bookLocation.bookIndex]
+            // h1title: book.title,
+            // h3title: section.title,
+            // content: section.content
+          }
+          console.log(addContent)
+
+          // this.$store.commit("setBookContent", );
+
         } else {
           console.log("只有第一頁", this.bookContent, this.bookLocation);
-          // 載入下一個章節
-          
+          // TODO 載入下一個章節
+          if (this.bookLocation.sectionIndex < this.bookLocation.sections) {
+            // 不是最後一個 section
+            addLocation.sectionIndex = this.bookLocation.sectionIndex + 1
+            // addLocation.page = this.bookLocation.page + 1
+            this.$store.commit("setBookLocation", addLocation);
+
+            console.log("不是最後一個 section", addLocation)
+          } else if (this.bookLocation.sectionIndex === this.bookLocation.sections) {
+            // 當前 chapter 的最後一個 section
+            console.log("當前 chapter 的最後一個 section")
+          }
 
         }
       }

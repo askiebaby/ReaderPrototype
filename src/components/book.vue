@@ -93,6 +93,14 @@ export default {
     loadCoverContent() {
       this.isShowCover = true;
       this.isShowContent = false;
+      let coverLocation = {
+        bookChapters: this.document.books.length,
+        bookIndex: 0 + 1,
+        sections: null,
+        sectionIndex: null,
+        page: 1
+      };
+      this.$store.commit("setBookLocation", coverLocation);
     },
     loadIntroContent() {
       this.isShowCover = false;
@@ -103,7 +111,17 @@ export default {
         h3title: this.document.books[2].sections[0].title,
         content: this.document.books[2].sections[0].content
       };
+
+      let introLocation = {
+        bookChapters: this.document.books.length,
+        bookIndex: 2 + 1,
+        sections: this.document.books[3].sections.length,
+        sectionIndex: 0 + 1,
+        page: 1
+      };
+
       this.$store.commit("setBookContent", intro);
+      this.$store.commit("setBookLocation", introLocation);
     },
     changefontFamilyClass(famliyClass) {
       this.fontFamilyClass = famliyClass;
