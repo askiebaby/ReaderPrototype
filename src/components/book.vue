@@ -155,7 +155,6 @@ export default {
   components: {
     leaveMission,
     menuTop,
-    // backgroundCover,
     bookContent,
     menuBottom,
     setting,
