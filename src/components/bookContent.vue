@@ -1,13 +1,12 @@
 <template>
-  <div class="book">
+  <div class="book" @laad="positionContent">
     <h2 class="book__chapter">{{bookContent.chapter}} {{checkFinishStep1}}</h2>
     <div class="book__content" :style="pageDistance">
       <!-- <h3 class="book__subtitle">{{(this.bookLocation.sectionIndex===1)?'' : bookContent.h3title}}</h3> -->
       <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
-
       <p>{{bookContent.content}}</p>
     </div>
-    <div class="page">-1-</div>
+    <div class="page">- {{wholePage}} -</div>
     <div class="touch">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
@@ -76,7 +75,7 @@
 .fontSize__12px {
   .book__content {
     font-size: 12px;
-    max-height: 59.5em;
+    height: 59.5em;
     left: 6em;
     width: 190em;
     column-gap: 86em;
@@ -89,7 +88,7 @@
 .fontSize__14px {
   .book__content {
     font-size: 14px;
-    max-height: 50.75em;
+    height: 50.75em;
     left: 5.142em;
     width: 160em;
     column-gap: 71em;
@@ -102,7 +101,7 @@
 .fontSize__16px {
   .book__content {
     font-size: 16px;
-    max-height: 45.5em;
+    height: 45.5em;
     left: 4.5em;
     width: 140em;
     column-gap: 62em;
@@ -222,7 +221,7 @@
 
 .page {
   position: absolute;
-  bottom: 16px;
+  bottom: 80px;
   color: $gray-3;
   font-size: 20px;
   line-height: 1.75;
@@ -245,9 +244,13 @@ export default {
       task: this.$store.getters.getTask,
       index: 0,
       addLocation:"",
+      wholePage: 0
     };
   },
   methods: {
+    loadPageNumber () {
+      console.log('loadPageNumber')
+    },
     toggleNavigation() {
       this.$emit("toggleNavigation");
     },
@@ -255,35 +258,46 @@ export default {
       this.$emit("loadBookContent");
       this.nowWordsCount = this.bookContent.content.length;
       this.togglePage(action);
-      console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
+      // console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
+      // console.log('bookContent: loadBookContent', this.sizeLevel)
     },
     togglePage(action) {
 
       if (action === 'prev') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           // 超過一頁
-          if (this.addLocation.page === 1) {
+          if (this.bookLocation.bookIndex === 1 && this.bookLocation.sectionIndex === 0) {
+            this.$emit("loadCoverContent")
+            this.addLocation.sectionPage = 1
+            this.$store.commit("setBookLocation", this.addLocation);
+          } else if (this.addLocation.sectionPage === 1) {
             this.changeSection("prev")
-          } else if (this.addLocation.page > 1) {
-            this.addLocation.page -= 1
+          } else if (this.addLocation.sectionPage > 1) {
+            this.addLocation.sectionPage -= 1
             this.$store.commit("setBookLocation", this.addLocation);
             this.pageDistance = {
               transform: `translateX(0)`
             };
+
+            // console.log(this.pageDistance, 'togglePage: prev')
           }
 
         } else {
           // 只有一頁
-          console.log("只有一頁")
-          this.changeSection("prev")
+          // console.log("只有一頁")
+          if (this.bookLocation.bookIndex === 1 && this.bookLocation.sectionIndex === 0) {
+            this.$emit("loadCoverContent")
+          } else {
+            this.changeSection("prev")
+          }
         }
       } else if(action === 'next') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           // 超過一頁
-          this.addLocation.page += 1
+          this.addLocation.sectionPage += 1
           this.$store.commit("setBookLocation", this.addLocation);
           
-          if (this.addLocation.page > 2) {
+          if (this.addLocation.sectionPage > 2) {
             this.changeSection("next")
           } else {
             this.pageDistance = {
@@ -303,7 +317,6 @@ export default {
       if (action==="prev") {
         if (this.bookLocation.sectionIndex === 0) {
           console.log("changeSection: prev, first section")
-
           this.addLocation.sections = this.document.books[this.bookLocation.bookIndex-1].sections.length
           this.$store.commit("setBookLocation", this.addLocation);
           this.changeContent("prevChapter")
@@ -337,6 +350,7 @@ export default {
     changeContent (action) {
 
       let addContent = this.$store.getters.getBookContent;
+      
       if (action === "nextSection"){
         // 切換 section
         addContent = {
@@ -346,7 +360,7 @@ export default {
           content: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].content
         }
         this.$store.commit("setBookContent", addContent);
-        this.resetDefault()
+        this.resetDefault('firstPage')
       } else if (action === "nextChapter") {
         // 切換章節
         console.log(this.addLocation.bookChapters);
@@ -359,7 +373,7 @@ export default {
         this.$store.commit("setBookContent", addContent);
         this.addLocation.bookIndex += 1
         this.addLocation.sectionIndex = 0
-        this.resetDefault()
+        this.resetDefault('firstPage')
       } else if (action === "prevSection") {
         addContent = {
           chapter: addContent.chapter,
@@ -368,8 +382,9 @@ export default {
           content: this.document.books[this.addLocation.bookIndex].sections[this.addLocation.sectionIndex].content
         }
         this.$store.commit("setBookContent", addContent);
-        this.resetDefault()
+        this.resetDefault('lastPage')
       } else if (action === "prevChapter") {
+
         console.log("準備更新chap")
         addContent = {
           chapter: this.document.books[this.addLocation.bookIndex-1].chapter,
@@ -380,16 +395,30 @@ export default {
         this.$store.commit("setBookContent", addContent);
         this.addLocation.bookIndex -= 1
         this.addLocation.sectionIndex = this.addLocation.sections
-        this.resetDefault()
+        this.resetDefault('lastPage')
       }
+      this.nowWordsCount = this.bookContent.content.length;
       
     },
-    resetDefault() {
-      this.addLocation.page = 1
-      this.$store.commit("setBookLocation", this.addLocation);
-      this.pageDistance = {
-        transform: `translateX(0)`
-      };
+    resetDefault(setting) {
+      
+      if (setting === 'firstPage') {
+        // 定位 section 第一頁
+        this.addLocation.sectionPage = 1
+        this.$store.commit("setBookLocation", this.addLocation);
+        this.pageDistance = {
+          transform: `translateX(0)`
+        };
+      } else if (setting === 'lastPage') {
+        // 定位 section 最後一頁
+        this.addLocation.sectionPage = 2
+        this.$store.commit("setBookLocation", this.addLocation);
+        this.pageDistance = {
+          transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
+        };
+      }
+      
+      
     }
   },
   computed: {
@@ -410,6 +439,21 @@ export default {
         }
       }
       return this.bookContent.h1title;
+    },
+    positionContent () {
+      console.log(this.bookLocation.sectionPage)
+      if (this.bookLocation.sectionPage === 1) {
+        this.pageDistance = { transform: `translateX(0)` }
+      } else if (this.bookLocation.sectionPage > 1) {
+        if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
+          // 超過一頁
+          console.log('positionContent', this.nowWordsCount, this.maxWordsCount[this.sizeLevel])
+          this.pageDistance = { transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)` }
+        } else {
+          this.pageDistance = { transform: `translateX(0)` }
+        }
+      }
+      return this.pageDistance
     }
   },
   created() {
