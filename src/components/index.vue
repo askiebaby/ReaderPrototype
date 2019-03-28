@@ -10,7 +10,8 @@
       </nav>
       <ul class="index__outline">
         <li class="index__chapter" v-for="(book, bookIndex) in document.books">
-          <span v-if="(bookIndex<3)">
+          <span v-if="ShowChapter(bookIndex)"
+          @click="loadChapter(bookIndex,book)">
             {{book.chapter}}
             <span
               @click="emitContent(book.chapter,book.title,'',book.content)"
@@ -22,7 +23,8 @@
               v-if="ShowSubTitle(book.chapter)"
               @click="loadBookContent(book, bookIndex, section, sectionIndex)"
             >
-            <span v-if="sectionIndex === 0" class="index__chapterName">{{book.chapter}}</span> <span>{{section.title}}</span>
+              <span v-if="sectionIndex === 0" class="index__chapterName">{{book.chapter}}</span>
+              <span>{{section.title}}</span>
             </li>
           </ul>
         </li>
@@ -152,7 +154,7 @@ export default {
       );
       console.log(this.document.books.length);
       console.log(this.document.books[bookIndex].sections.length);
-      this.$emit("emitContent")
+      this.$emit("emitContent");
     },
     emitContent(chapter, h1title, h3title, content) {
       let data = {
@@ -171,6 +173,22 @@ export default {
         show = false;
       }
       return show;
+    },
+    ShowChapter(bookIndex) {
+      let show = true;
+      if (bookIndex == 1 | bookIndex == 3 | bookIndex == 4) {
+        show = false;
+      }
+      return show;
+    },
+    loadChapter(bookIndex,book){
+      console.log(bookIndex,book)
+      if (bookIndex==0){
+        this.$router.push({ name: "bookCover" });
+      }
+      else if(bookIndex==2){
+        this.emitContent(book.chapter,book.title,book.sections[0].title,book.sections[0].content)
+      }
     },
     finishTask() {
       let index = 0;

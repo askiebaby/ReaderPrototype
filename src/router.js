@@ -9,6 +9,7 @@ import book from "./components/book.vue";
 import bookIndex from "./components/index.vue";
 import setting from "./components/setting.vue";
 import taskRecord from "./components/taskRecord.vue";
+import bookCover from "./components/bookCover.vue";
 
 
 Vue.use(Router);
@@ -39,6 +40,11 @@ export default new Router({
       path: "/finishTask/:id",
       name: "finishTask",
       component: finishTask
+    },
+    {
+      path: "/bookCover",
+      name: "bookCover",
+      component: bookCover
     },
     {
       path: "/book",

@@ -18,7 +18,7 @@
         </div>
         <router-link
           tag="button"
-          :to="{ name: 'book'}"
+          :to="{ name: 'bookCover'}"
           class="button button__primary taskPage__button"
           @click.native="taskStart"
         >開始</router-link>
