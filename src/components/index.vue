@@ -176,7 +176,7 @@ export default {
     },
     ShowChapter(bookIndex) {
       let show = true;
-      if ((bookIndex == 1) | (bookIndex == 3) | (bookIndex == 4)) {
+      if ((bookIndex == 2) | (bookIndex == 3)) {
         show = false;
       }
       return show;
@@ -185,7 +185,7 @@ export default {
       console.log(bookIndex, book);
       if (bookIndex == 0) {
         this.$router.push({ name: "bookCover" });
-      } else if (bookIndex == 2) {
+      } else if (bookIndex == 1) {
         this.emitContent(
           book.chapter,
           book.title,
