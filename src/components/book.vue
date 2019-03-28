@@ -74,7 +74,7 @@ export default {
       backgroundColor: "background__change__white",
       fontFamilyClass: "book__fontFamily__ming",
       fontSizeClass: "fontSize__24px",
-      sizeLevel: "5",
+      sizeLevel: 5,
       document,
       chapterIndex: "",
       sectionIndex: "",

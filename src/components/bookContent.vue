@@ -1,13 +1,12 @@
 <template>
-  <div class="book">
+  <div class="book" @laad="positionContent">
     <h2 class="book__chapter">{{bookContent.chapter}} {{checkFinishStep1}}</h2>
     <div class="book__content" :style="pageDistance">
       <!-- <h3 class="book__subtitle">{{(this.bookLocation.sectionIndex===1)?'' : bookContent.h3title}}</h3> -->
       <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
-
       <p>{{bookContent.content}}</p>
     </div>
-    <div class="page">-1-</div>
+    <div class="page">- 1 -</div>
     <div class="touch">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
@@ -222,7 +221,7 @@
 
 .page {
   position: absolute;
-  bottom: 16px;
+  bottom: 80px;
   color: $gray-3;
   font-size: 20px;
   line-height: 1.75;
@@ -256,6 +255,7 @@ export default {
       this.nowWordsCount = this.bookContent.content.length;
       this.togglePage(action);
       console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
+      // console.log('bookContent: loadBookContent', this.sizeLevel)
     },
     togglePage(action) {
 
@@ -410,6 +410,14 @@ export default {
         }
       }
       return this.bookContent.h1title;
+    },
+    positionContent () {
+      if (this.bookLocation.page === 1) {
+        this.pageDistance = { transform: `translateX(0)` }
+      } else {
+        this.pageDistance = { transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)` }
+      }
+      return this.pageDistance
     }
   },
   created() {
