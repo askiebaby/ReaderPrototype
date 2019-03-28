@@ -1,34 +1,34 @@
 <template>
   <div class="index">
-    <div class="index__backround"></div>
-    <div class="index__container">
-      <nav>
-        <div @click="closeIndexStatus">
-          <img :src="require('@/assets/menu/back.svg')">
-          <span>返回</span>
-        </div>
-      </nav>
-      <ul class="index__outline">
-        <li class="index__chapter" v-for="(book, bookIndex) in document.books">
-          <span v-if="ShowChapter(bookIndex)"
-          @click="loadChapter(bookIndex,book)">
-            {{book.chapter}}
-            <span
-              @click="emitContent(book.chapter,book.title,'',book.content)"
-            >{{book.title}}</span>
-          </span>
-          <ul>
-            <li
-              v-for="(section, sectionIndex) in book.sections"
-              v-if="ShowSubTitle(book.chapter)"
-              @click="loadBookContent(book, bookIndex, section, sectionIndex)"
-            >
-              <span v-if="sectionIndex === 0" class="index__chapterName">{{book.chapter}}</span>
-              <span>{{section.title}}</span>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class="index__backround" @click="closeIndexStatus">
+      <div class="index__container">
+        <nav>
+          <div @click="closeIndexStatus">
+            <img :src="require('@/assets/menu/back.svg')">
+            <span>返回</span>
+          </div>
+        </nav>
+        <ul class="index__outline">
+          <li class="index__chapter" v-for="(book, bookIndex) in document.books">
+            <span v-if="ShowChapter(bookIndex)" @click="loadChapter(bookIndex,book)">
+              {{book.chapter}}
+              <span
+                @click="emitContent(book.chapter,book.title,'',book.content)"
+              >{{book.title}}</span>
+            </span>
+            <ul>
+              <li
+                v-for="(section, sectionIndex) in book.sections"
+                v-if="ShowSubTitle(book.chapter)"
+                @click="loadBookContent(book, bookIndex, section, sectionIndex)"
+              >
+                <span v-if="sectionIndex === 0" class="index__chapterName">{{book.chapter}}</span>
+                <span>{{section.title}}</span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -176,18 +176,22 @@ export default {
     },
     ShowChapter(bookIndex) {
       let show = true;
-      if (bookIndex == 1 | bookIndex == 3 | bookIndex == 4) {
+      if ((bookIndex == 1) | (bookIndex == 3) | (bookIndex == 4)) {
         show = false;
       }
       return show;
     },
-    loadChapter(bookIndex,book){
-      console.log(bookIndex,book)
-      if (bookIndex==0){
+    loadChapter(bookIndex, book) {
+      console.log(bookIndex, book);
+      if (bookIndex == 0) {
         this.$router.push({ name: "bookCover" });
-      }
-      else if(bookIndex==2){
-        this.emitContent(book.chapter,book.title,book.sections[0].title,book.sections[0].content)
+      } else if (bookIndex == 2) {
+        this.emitContent(
+          book.chapter,
+          book.title,
+          book.sections[0].title,
+          book.sections[0].content
+        );
       }
     },
     finishTask() {
