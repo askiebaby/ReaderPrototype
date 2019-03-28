@@ -10,7 +10,7 @@
       </nav>
       <ul class="index__outline">
         <li class="index__chapter" v-for="(book, bookIndex) in document.books">
-          <span v-if="(bookIndex<3)">
+          <span v-if="(bookIndex<2)">
             {{book.chapter}}
             <span
               @click="emitContent(book.chapter,book.title,'',book.content)"

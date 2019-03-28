@@ -106,16 +106,16 @@ export default {
       this.isShowCover = false;
       this.isShowContent = true;
       let intro = {
-        chapter: this.document.books[2].chapter,
+        chapter: this.document.books[1].chapter,
         h1title: "",
-        h3title: this.document.books[2].sections[0].title,
-        content: this.document.books[2].sections[0].content
+        h3title: this.document.books[1].sections[0].title,
+        content: this.document.books[1].sections[0].content
       };
 
       let introLocation = {
         bookChapters: this.document.books.length,
-        bookIndex: 2,
-        sections: this.document.books[2].sections.length,
+        bookIndex: 1,
+        sections: this.document.books[1].sections.length,
         sectionIndex: 0,
         page: 1
       };
