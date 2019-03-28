@@ -221,7 +221,7 @@
 
 .page {
   position: absolute;
-  bottom: 80px;
+  bottom: 95px;
   color: $gray-3;
   font-size: 20px;
   line-height: 1.75;
@@ -244,7 +244,7 @@ export default {
       task: this.$store.getters.getTask,
       index: 0,
       addLocation:"",
-      wholePage: 0
+      wholePage: 1
     };
   },
   methods: {

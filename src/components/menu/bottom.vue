@@ -41,6 +41,11 @@ ul {
   max-width: 768px;
   margin: auto;
 
+  li {
+    min-width: 65px;
+    text-align: center;
+  }
+
   img {
     padding: 20px 15px;
     cursor: pointer;

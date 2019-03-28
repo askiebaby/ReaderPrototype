@@ -81,7 +81,7 @@
 
 <style lang="scss" >
 .wholeTask {
-  padding: 55px 31px;
+  padding: 55px 31px 55px 0;
   font-size: $contentSize;
 }
 
@@ -122,7 +122,7 @@
   display: flex;
   min-height: 222px;
   max-width: 706px;
-  margin: auto;
+  margin: 0;
 
   &__tasks-type1 {
     .task {
