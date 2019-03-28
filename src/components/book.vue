@@ -117,7 +117,7 @@ export default {
         bookIndex: 1,
         sections: this.document.books[1].sections.length,
         sectionIndex: 0,
-        page: 1
+        sectinPage: 1
       };
 
       // console.log(this.document.books[2].sections.length)
