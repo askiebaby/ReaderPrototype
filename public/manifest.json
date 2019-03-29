@@ -6,7 +6,7 @@
   "display": "fullscreen",
   "orientation": "portrait",
   "Scope": "/",
-  "start_url": "/",
+  "start_url": "/ReaderPrototype/",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",
