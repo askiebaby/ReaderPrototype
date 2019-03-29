@@ -6,7 +6,7 @@ import { store } from "./store/store";
 import moment from "vue-moment";
 
 Vue.config.productionTip = false;
-
+cookies.config("90d");
 Vue.use(moment);
 new Vue({
   cookies,
