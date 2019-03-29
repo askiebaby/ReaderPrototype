@@ -1,6 +1,6 @@
 <template>
   <div class="book" @laad="positionContent">
-    <h2 class="book__chapter">{{bookContent.chapter}} {{checkFinishStep1}}</h2>
+    <h2 class="book__chapter">{{checkFinishStep1}} {{bookContent.h1title}}</h2>
     <div class="book__content" :style="pageDistance">
       <!-- <h3 class="book__subtitle">{{(this.bookLocation.sectionIndex===1)?'' : bookContent.h3title}}</h3> -->
       <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
@@ -430,7 +430,7 @@ export default {
       // bookIndex, bookChapters, sectionIndex, sections
     },
     checkFinishStep1() {
-      if (this.bookContent.h1title === "有目的的練習") {
+      if (this.bookContent.chapter == "第1章") {
         if (this.task.length > 0) {
           if (this.task[this.index].time.length === 1) {
             this.$store.commit("setTask", this.index);
@@ -438,7 +438,7 @@ export default {
           }
         }
       }
-      return this.bookContent.h1title;
+      return this.bookContent.chapter;
     },
     positionContent () {
       console.log(this.bookLocation.sectionPage)
