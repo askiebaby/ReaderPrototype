@@ -2,25 +2,14 @@
   <div :class="backgroundColor">
     <menu-top @showLeaveBubble="isLeaveMission=$event" v-show="isShowNavigation"></menu-top>
 
-    <cover
-      v-show="isShowCover"
-      @toggleNavigation="toggleNavigation"
-      @loadIntroContent="loadIntroContent"
-    ></cover>
-
     <bookContent
-      v-show="isShowContent"
       :class="[fontFamilyClass, fontSizeClass]"
       @toggleNavigation="toggleNavigation"
-      @loadCoverContent="loadCoverContent"
+      @toBookCover="toBookCover"
       :sizeLevel="sizeLevel"
     ></bookContent>
 
-    <index
-      v-if="isShowIndex"
-      @closeIndexStatus="isShowIndex=$event"
-      @emitContent="findContent"
-    ></index>
+    <index v-if="isShowIndex" @closeIndexStatus="isShowIndex=$event" @emitContent="findContent"></index>
 
     <keep-alive>
       <setting
@@ -53,8 +42,6 @@ import menuBottom from "@/components/menu/bottom.vue";
 import leaveMission from "@/components/lightBox/leaveMission.vue";
 import index from "@/components/index.vue";
 import setting from "@/components/setting.vue";
-import backgroundCover from "@/components/backgroundCover.vue";
-import cover from "@/components/cover.vue";
 import bookContent from "@/components/bookContent.vue";
 import completeMission from "@/components/lightBox/completeMission.vue";
 
@@ -67,8 +54,6 @@ export default {
       isLeaveMission: false,
       isShowNavigation: false,
       isShowSetting: false,
-      isShowCover: true,
-      isShowContent: false,
       isShowIndex: false,
       isShowComplete: false,
       backgroundColor: "background__change__white",
@@ -90,9 +75,7 @@ export default {
     showSetting() {
       this.isShowSetting = this.isShowNavigation ? false : true;
     },
-    loadCoverContent() {
-      this.isShowCover = true;
-      this.isShowContent = false;
+    toBookCover() {
       let coverLocation = {
         bookChapters: this.document.books.length,
         bookIndex: 0,
@@ -101,10 +84,9 @@ export default {
         page: 1
       };
       this.$store.commit("setBookLocation", coverLocation);
+      this.$router.push({ name: "bookCover" });
     },
     loadIntroContent() {
-      this.isShowCover = false;
-      this.isShowContent = true;
       let intro = {
         chapter: this.document.books[1].chapter,
         h1title: "",
@@ -147,10 +129,12 @@ export default {
       }
     },
     findContent() {
-      this.isShowCover = false;
       this.isShowContent = true;
       this.isShowIndex = false;
     }
+  },
+  created(){
+    this.loadIntroContent();
   },
   components: {
     leaveMission,
@@ -159,7 +143,6 @@ export default {
     menuBottom,
     setting,
     index,
-    cover,
     completeMission
   }
 };
