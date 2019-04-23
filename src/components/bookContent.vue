@@ -6,7 +6,8 @@
       <p>{{bookContent.content}}</p>
     </div>
     <div class="page">- {{wholePage}} -</div>
-    <div class="touch">
+    <div class="touch" 
+    :style="{ pointerEvents: pointerEvents}" v-long-press="onlongpress">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -19,6 +20,7 @@
 @import url(https://fonts.googleapis.com/earlyaccess/cwtexming.css); // 明體
 @import url(https://fonts.googleapis.com/earlyaccess/cwtexkai.css); // 楷體
 @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css); // 黑體
+
 
 .book {
   text-align: center;
@@ -229,11 +231,17 @@
 
 <script>
 import document from "@/assets/document.json";
+import TextHighlight from "vue-text-highlight";
+
 
 export default {
   props: ["sizeLevel"],
+  components: {
+    "text-highlight": TextHighlight
+  },
   data() {
     return {
+      queries: [],
       document,
       nowWordsCount: 0,
       maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
@@ -243,10 +251,18 @@ export default {
       task: this.$store.getters.getTask,
       index: 0,
       addLocation: "",
-      wholePage: 1
+      wholePage: 1,
+      pointerEvents:'auto'
     };
   },
   methods: {
+    onlongpress(){
+      this.pointerEvents='none';
+      this.$emit("toggleNavigation");
+    },
+    getSelection(allStr) {
+      this.queries = allStr;
+    },
     loadPageNumber() {
       console.log("loadPageNumber");
     },
@@ -473,6 +489,9 @@ export default {
   },
   created() {
     this.addLocation = this.$store.getters.getBookLocation;
+  },
+  mounted() {
+    console.log(this.MdContent);
   }
 };
 </script>
