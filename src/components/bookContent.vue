@@ -231,14 +231,11 @@
 
 <script>
 import document from "@/assets/document.json";
-import TextHighlight from "vue-text-highlight";
+
 
 
 export default {
   props: ["sizeLevel"],
-  components: {
-    "text-highlight": TextHighlight
-  },
   data() {
     return {
       queries: [],
