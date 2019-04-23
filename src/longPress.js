@@ -24,8 +24,8 @@ exports.install = function(Vue, options) {
     },
     unbind: function(el) {
       clearTimeout(this._timeout);
-      el.removeEventListener("mousedown", this._touchstart);
-      document.removeEventListener("mouseup", this._touchend);
+      el.removeEventListener("touchstart", this._touchstart);
+      document.removeEventListener("touchend", this._touchend);
     }
   });
 };
