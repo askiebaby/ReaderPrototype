@@ -7,11 +7,11 @@ exports.install = function(Vue, options) {
       var self = this;
 
       this._timeout = null;
-      this._touchend = function() {
+      this._touchEnd = function() {
         clearTimeout(self._timeout);
       };
 
-      this._touchstart = function(e) {
+      this._touchStart = function(e) {
         var context = this;
 
         self._timeout = setTimeout(function() {
@@ -19,13 +19,13 @@ exports.install = function(Vue, options) {
         }, options.duration);
       };
 
-      el.addEventListener("touchstart", this._touchstart);
-      document.addEventListener("touchend", this._touchend);
+      el.addEventListener("touchstart", this._touchStart);
+      document.addEventListener("touchmove", this._touchEnd);
     },
     unbind: function(el) {
       clearTimeout(this._timeout);
-      el.removeEventListener("touchstart", this._touchstart);
-      document.removeEventListener("touchend", this._touchend);
+      el.removeEventListener("touchstart", this._touchStart);
+      document.removeEventListener("touchmove", this._touchEnd);
     }
   });
 };

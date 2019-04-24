@@ -1,5 +1,5 @@
 <template>
-  <div class="book" @laad="positionContent">
+  <div class="book" @laad="positionContent" @click="backtouch">
     <h2 class="book__chapter">{{checkFinishStep1}} {{bookContent.h1title}}</h2>
     <div class="book__content" :style="pageDistance">
       <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
@@ -253,9 +253,11 @@ export default {
     };
   },
   methods: {
+    backtouch(){
+      this.pointerEvents='auto';
+    },
     onlongpress(){
       this.pointerEvents='none';
-      this.$emit("toggleNavigation");
     },
     getSelection(allStr) {
       this.queries = allStr;
