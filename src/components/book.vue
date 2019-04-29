@@ -37,12 +37,12 @@
 
 <script>
 // components
-import menuTop from "@/components/menu/top.vue";
-import menuBottom from "@/components/menu/bottom.vue";
-import leaveMission from "@/components/lightBox/leaveMission.vue";
-import index from "@/components/index.vue";
-import setting from "@/components/setting.vue";
-import bookContent from "@/components/bookContent.vue";
+import menuTop         from "@/components/menu/top.vue";
+import menuBottom      from "@/components/menu/bottom.vue";
+import leaveMission    from "@/components/lightBox/leaveMission.vue";
+import index           from "@/components/index.vue";
+import setting         from "@/components/setting.vue";
+import bookContent     from "@/components/bookContent.vue";
 import completeMission from "@/components/lightBox/completeMission.vue";
 
 // data
@@ -143,7 +143,8 @@ export default {
     menuBottom,
     setting,
     index,
-    completeMission
+    completeMission,
+
   }
 };
 </script>
