@@ -133,7 +133,7 @@ export default {
       this.isShowIndex = false;
     }
   },
-  created(){
+  created() {
     this.loadIntroContent();
   },
   components: {
@@ -147,4 +147,3 @@ export default {
   }
 };
 </script>
-
