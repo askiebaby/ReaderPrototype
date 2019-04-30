@@ -10,6 +10,7 @@ import bookIndex from "./components/index.vue";
 import setting from "./components/setting.vue";
 import taskRecord from "./components/taskRecord.vue";
 import bookCover from "./components/bookCover.vue";
+import tooltip from "./components/tooltip.vue";
 
 
 Vue.use(Router);
@@ -65,6 +66,11 @@ export default new Router({
       path: "/taskRecord",
       name: "taskRecord",
       component: taskRecord
+    },
+    {
+      path: "/tooltip",
+      name: "tooltip",
+      component: tooltip
     }
     // {
     // path: "/about",
