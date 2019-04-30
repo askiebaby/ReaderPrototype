@@ -1,13 +1,14 @@
 <template>
-  <div class="book" @laad="positionContent" @click="backtouch">
-    <h2 class="book__chapter">{{checkFinishStep1}} {{bookContent.h1title}}</h2>
+  <div class="book" @laad="positionContent">
+    <h2 class="book__chapter">
+      {{ checkFinishStep1 }} {{ bookContent.h1title }}
+    </h2>
     <div class="book__content" :style="pageDistance">
-      <h3 class="book__subtitle">{{bookContent.h3title}}</h3>
-      <p>{{bookContent.content}}</p>
+      <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
+      <p v-html="spanContent" class="bookContainer"></p>
     </div>
-    <div class="page">- {{wholePage}} -</div>
-    <div class="touch" 
-    :style="{ pointerEvents: pointerEvents}" v-long-press="onlongpress">
+    <div class="page">- {{ wholePage }} -</div>
+    <div class="touch" :style="{ pointerEvents: pointerEvents }">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -20,7 +21,6 @@
 @import url(https://fonts.googleapis.com/earlyaccess/cwtexming.css); // 明體
 @import url(https://fonts.googleapis.com/earlyaccess/cwtexkai.css); // 楷體
 @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css); // 黑體
-
 
 .book {
   text-align: center;
@@ -219,7 +219,6 @@
     }
   }
 }
-
 .page {
   position: absolute;
   bottom: 95px;
@@ -230,16 +229,14 @@
 </style>
 
 <script>
-import document from "@/assets/document.json";
-
-
+import documentContent from "@/assets/document.json";
 
 export default {
   props: ["sizeLevel"],
   data() {
     return {
       queries: [],
-      document,
+      documentContent,
       nowWordsCount: 0,
       maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
       pagesDistance: [138, 115.5, 101, 89.5, 79, 105, 74, 42.75, 50, 37, 35],
@@ -249,15 +246,17 @@ export default {
       index: 0,
       addLocation: "",
       wholePage: 1,
-      pointerEvents:'auto'
+      isSelect: true,
+      selected: {
+        start: 0,
+        end: 0
+      }
     };
   },
   methods: {
-    backtouch(){
-      this.pointerEvents='auto';
-    },
-    onlongpress(){
-      this.pointerEvents='none';
+    switchSelect(arg) {
+      this.isSelect = arg;
+      console.log("123", this.isSelect);
     },
     getSelection(allStr) {
       this.queries = allStr;
@@ -271,8 +270,6 @@ export default {
     loadBookContent(action) {
       this.nowWordsCount = this.bookContent.content.length;
       this.togglePage(action);
-      // console.log(this.bookContent, this.nowWordsCount, "sizeLevel: ", this.sizeLevel);
-      // console.log('bookContent: loadBookContent', this.sizeLevel)
     },
     togglePage(action) {
       if (action === "prev") {
@@ -332,7 +329,7 @@ export default {
       if (action === "prev") {
         if (this.bookLocation.sectionIndex === 0) {
           console.log("changeSection: prev, first section");
-          this.addLocation.sections = this.document.books[
+          this.addLocation.sections = this.documentContent.books[
             this.bookLocation.bookIndex - 1
           ].sections.length;
           this.$store.commit("setBookLocation", this.addLocation);
@@ -354,7 +351,7 @@ export default {
         } else {
           // 當前 chapter 的最後一個 section
           // TODO 最後一章的最後一個 section 要 return
-          this.addLocation.sections = this.document.books[
+          this.addLocation.sections = this.documentContent.books[
             this.bookLocation.bookIndex + 1
           ].sections.length;
           this.$store.commit("setBookLocation", this.addLocation);
@@ -371,12 +368,10 @@ export default {
         addContent = {
           chapter: addContent.chapter,
           h1title: addContent.h1title,
-          h3title: this.document.books[this.addLocation.bookIndex].sections[
-            this.addLocation.sectionIndex
-          ].title,
-          content: this.document.books[this.addLocation.bookIndex].sections[
-            this.addLocation.sectionIndex
-          ].content
+          h3title: this.documentContent.books[this.addLocation.bookIndex]
+            .sections[this.addLocation.sectionIndex].title,
+          content: this.documentContent.books[this.addLocation.bookIndex]
+            .sections[this.addLocation.sectionIndex].content
         };
         this.$store.commit("setBookContent", addContent);
         this.resetDefault("firstPage");
@@ -384,11 +379,13 @@ export default {
         // 切換章節
         console.log(this.addLocation.bookChapters);
         addContent = {
-          chapter: this.document.books[this.addLocation.bookIndex + 1].chapter,
-          h1title: this.document.books[this.addLocation.bookIndex + 1].title,
-          h3title: this.document.books[this.addLocation.bookIndex + 1]
+          chapter: this.documentContent.books[this.addLocation.bookIndex + 1]
+            .chapter,
+          h1title: this.documentContent.books[this.addLocation.bookIndex + 1]
+            .title,
+          h3title: this.documentContent.books[this.addLocation.bookIndex + 1]
             .sections[0].title,
-          content: this.document.books[this.addLocation.bookIndex + 1]
+          content: this.documentContent.books[this.addLocation.bookIndex + 1]
             .sections[0].content
         };
         this.$store.commit("setBookContent", addContent);
@@ -399,26 +396,24 @@ export default {
         addContent = {
           chapter: addContent.chapter,
           h1title: addContent.h1title,
-          h3title: this.document.books[this.addLocation.bookIndex].sections[
-            this.addLocation.sectionIndex
-          ].title,
-          content: this.document.books[this.addLocation.bookIndex].sections[
-            this.addLocation.sectionIndex
-          ].content
+          h3title: this.documentContent.books[this.addLocation.bookIndex]
+            .sections[this.addLocation.sectionIndex].title,
+          content: this.documentContent.books[this.addLocation.bookIndex]
+            .sections[this.addLocation.sectionIndex].content
         };
         this.$store.commit("setBookContent", addContent);
         this.resetDefault("lastPage");
       } else if (action === "prevChapter") {
         console.log("準備更新chap");
         addContent = {
-          chapter: this.document.books[this.addLocation.bookIndex - 1].chapter,
-          h1title: this.document.books[this.addLocation.bookIndex - 1].title,
-          h3title: this.document.books[this.addLocation.bookIndex - 1].sections[
-            this.addLocation.sections - 1
-          ].title,
-          content: this.document.books[this.addLocation.bookIndex - 1].sections[
-            this.addLocation.sections - 1
-          ].content
+          chapter: this.documentContent.books[this.addLocation.bookIndex - 1]
+            .chapter,
+          h1title: this.documentContent.books[this.addLocation.bookIndex - 1]
+            .title,
+          h3title: this.documentContent.books[this.addLocation.bookIndex - 1]
+            .sections[this.addLocation.sections - 1].title,
+          content: this.documentContent.books[this.addLocation.bookIndex - 1]
+            .sections[this.addLocation.sections - 1].content
         };
         this.$store.commit("setBookContent", addContent);
         this.addLocation.bookIndex -= 1;
@@ -443,9 +438,72 @@ export default {
           transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
         };
       }
+    },
+    touchStart(e) {
+      if (
+        e.target.classList.contains("char") &&
+        !this.isBetween(parseInt(e.target.getAttribute("index")))
+      ) {
+        this.selected.start = parseInt(e.target.getAttribute("index"));
+      } else {
+        this.clearSelected();
+      }
+    },
+    touchEnd(e) {
+      let changedTouch = e.changedTouches[0];
+      let target = document.elementFromPoint(
+        changedTouch.clientX,
+        changedTouch.clientY
+      );
+      if (target.classList.contains("char") && this.selected.start) {
+        this.selected.end = parseInt(target.getAttribute("index"));
+        this.setSelected();
+      }
+    },
+    clearSelected() {
+      this.selected.start = 0;
+      this.selected.end = 0;
+      document.querySelectorAll(".selected").forEach(obj => {
+        obj.classList.remove("selected");
+      });
+    },
+    setSelected() {
+      document.querySelectorAll(".selected").forEach(obj => {
+        obj.classList.remove("selected");
+      });
+
+      if (this.selected.start > this.selected.end) {
+        for (let i = this.selected.start - 1; i > this.selected.end - 2; i--) {
+          document.querySelectorAll(".char")[i].classList.add("selected");
+        }
+      } else {
+        for (let i = this.selected.start - 1; i < this.selected.end; i++) {
+          document.querySelectorAll(".char")[i].classList.add("selected");
+        }
+      }
+    },
+    isBetween(index) {
+      let min = Math.min(this.selected.start, this.selected.end);
+      let max = Math.max(this.selected.start, this.selected.end);
+      return index >= min && index <= max;
     }
   },
   computed: {
+    pointerEvents() {
+      let result = "auto";
+      if (this.isSelect == true) {
+        result = "none";
+      }
+      return result;
+    },
+    spanContent() {
+      return this.bookContent.content
+        .split("")
+        .map((dom, index) => {
+          return `<span class='char' index='${index + 1}'>${dom}</span>`;
+        })
+        .join("");
+    },
     bookContent() {
       return this.$store.getters.getBookContent;
     },
@@ -467,7 +525,7 @@ export default {
     positionContent() {
       console.log(this.bookLocation.sectionPage);
       if (this.bookLocation.sectionPage === 1) {
-        this.pageDistance = { transform: `translateX(0)` };
+        this.pageDistance == { transform: `translateX(0)` };
       } else if (this.bookLocation.sectionPage > 1) {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           // 超過一頁
@@ -476,11 +534,12 @@ export default {
             this.nowWordsCount,
             this.maxWordsCount[this.sizeLevel]
           );
-          this.pageDistance = {
-            transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
-          };
+          this.pageDistance ==
+            {
+              transform: `translateX(-${this.pagesDistance[this.sizeLevel]}em)`
+            };
         } else {
-          this.pageDistance = { transform: `translateX(0)` };
+          this.pageDistance == { transform: `translateX(0)` };
         }
       }
       return this.pageDistance;
@@ -490,7 +549,11 @@ export default {
     this.addLocation = this.$store.getters.getBookLocation;
   },
   mounted() {
-    console.log(this.MdContent);
+    // console.log(this.MdContent);
+    const el = document.querySelector(".bookContainer");
+    el.addEventListener("touchstart", this.touchStart, false);
+    el.addEventListener("touchmove", this.touchEnd, false);
+    el.addEventListener("touchcancel", this.clearSelected, false);
   }
 };
 </script>

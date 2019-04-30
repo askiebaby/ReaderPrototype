@@ -4,15 +4,14 @@ import cookies from "vue-cookies";
 import router from "./router";
 import { store } from "./store";
 import moment from "vue-moment";
-import longpress from "./longPress";
+// import inobounce from "./inobounce";
 
 Vue.config.productionTip = false;
 cookies.config("90d");
 Vue.use(moment);
-Vue.use(longpress, { duration: 1000 });
+// Vue.use(inobounce);
 
 new Vue({
-  longpress,
   cookies,
   moment,
   router,

@@ -1,3 +1,9 @@
 @import './modules/color';
 @import './modules/font';
 @import './partials/normalize';
+
+.char.selected {
+  color: #fff;
+  background-color: red;
+  border: none;
+}
