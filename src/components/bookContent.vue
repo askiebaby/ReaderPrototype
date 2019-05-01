@@ -11,6 +11,7 @@
       }"
     >
       <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
+      <tooltip v-if="showTooltip"></tooltip>
       <p class="bookContainer" v-html="spanContent"></p>
     </div>
     <div class="page">- {{ wholePage }} -</div>
