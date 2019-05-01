@@ -24,7 +24,8 @@ export const store = new Vuex.Store({
       sectionPage: 1,
       totalPages: 0,
       nowPage: 0
-    }
+    },
+    notes: []
   },
   getters: {
     getID: state => {
@@ -44,6 +45,9 @@ export const store = new Vuex.Store({
     },
     getBookLocation: state => {
       return state.bookLocation;
+    },
+    getNotes: state => {
+      return state.notes;
     }
   },
   mutations: {
@@ -85,6 +89,13 @@ export const store = new Vuex.Store({
         task: state.task
       };
       VueCookies.set(state.id, Obj);
+    },
+    addNotes(state, payload) {
+      let Obj = {
+        selectStart: payload.start,
+        selectEnd: payload.end
+      };
+      state.notes.push(Obj);
     }
   }
 });
