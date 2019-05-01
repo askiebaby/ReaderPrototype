@@ -1,5 +1,6 @@
 <template>
   <div class="book" @laad="positionContent">
+    <tooltip v-if="showTooltip"></tooltip>
     <h2 class="book__chapter">
       {{ checkFinishStep1 }} {{ bookContent.h1title }}
     </h2>
@@ -230,8 +231,11 @@
 
 <script>
 import documentContent from '@/assets/document.json';
-
+import tooltip from './tooltip.vue';
 export default {
+  components: {
+    tooltip
+  },
   props: ['sizeLevel'],
   data() {
     return {
@@ -250,10 +254,14 @@ export default {
       selected: {
         start: 0,
         end: 0
-      }
+      },
+      isShowTooltip: false
     };
   },
   computed: {
+    showTooltip() {
+      return this.isShowTooltip;
+    },
     pointerEvents() {
       let result = 'auto';
       if (this.isSelect == true) {
@@ -317,7 +325,8 @@ export default {
     // console.log(this.MdContent);
     const el = document.querySelector('.bookContainer');
     el.addEventListener('touchstart', this.touchStart, false);
-    el.addEventListener('touchmove', this.touchEnd, false);
+    el.addEventListener('touchmove', this.touchMove, false);
+    el.addEventListener('touchend', this.touchEnd, false);
     el.addEventListener('touchcancel', this.clearSelected, false);
   },
   methods: {
@@ -516,7 +525,12 @@ export default {
         this.clearSelected();
       }
     },
-    touchEnd(e) {
+    touchEnd() {
+      this.$store.commit('addNotes', this.selected);
+      console.log(this.$store.getters.getNotes);
+    },
+    touchMove(e) {
+      // console.log(e.target.getBoundingClientRect());
       let changedTouch = e.changedTouches[0];
       let target = document.elementFromPoint(
         changedTouch.clientX,
@@ -526,6 +540,7 @@ export default {
         this.selected.end = parseInt(target.getAttribute('index'));
         this.setSelected();
       }
+      this.isShowTooltip = true;
     },
     clearSelected() {
       this.selected.start = 0;
@@ -533,12 +548,13 @@ export default {
       document.querySelectorAll('.selected').forEach(obj => {
         obj.classList.remove('selected');
       });
+      this.isShowTooltip = false;
     },
     setSelected() {
       document.querySelectorAll('.selected').forEach(obj => {
         obj.classList.remove('selected');
       });
-
+      this.isShowTooltip = false;
       if (this.selected.start > this.selected.end) {
         for (let i = this.selected.start - 1; i > this.selected.end - 2; i--) {
           document.querySelectorAll('.char')[i].classList.add('selected');
