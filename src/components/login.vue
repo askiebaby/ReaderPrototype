@@ -1,7 +1,12 @@
 <template>
   <div class="input-center background__male">
     <div class="member_id">編號:{{ id }}</div>
-    <input v-model="name" type="text" placeholder="姓名:王小明" />
+    <input 
+      v-model="name"
+      v-on:keyup.enter="missionStart"
+      type="text"
+      placeholder="姓名:王小明"
+    />
     <div class="buttons">
       <router-link
         tag="button"

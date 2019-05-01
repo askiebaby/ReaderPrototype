@@ -1,14 +1,19 @@
 <template>
-  <div class="book" @laad="positionContent">
-    <h2 class="book__chapter">
-      {{ checkFinishStep1 }} {{ bookContent.h1title }}
-    </h2>
-    <div class="book__content" :style="pageDistance">
+  <div class="book" @load="positionContent">
+    <h2 class="book__chapter">{{ checkFinishStep1 }} {{ bookContent.h1title }}</h2>
+    <div
+      class="book__content"
+      ref="bookContainer"
+      v-bind:style="{
+        height: containerHeight
+      }
+    "
+    >
       <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
       <p class="bookContainer" v-html="spanContent"></p>
     </div>
     <div class="page">- {{ wholePage }} -</div>
-    <div class="touch" :style="{ pointerEvents: pointerEvents }">
+    <div class="touch">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -28,7 +33,7 @@
   justify-content: center;
   align-items: flex-start;
   flex-flow: row wrap;
-  padding: 89px 72px;
+  padding: 89px 72px 140px;
   max-width: 768px;
   margin: auto;
   position: relative;
@@ -47,16 +52,18 @@
   &__chapter {
     font-size: 36px;
     font-size: 2.25rem;
-    margin-bottom: 28px;
-    margin-bottom: 1.75rem;
+    // margin-bottom: 28px;
+    // margin-bottom: 1.75rem;
     text-align: center;
   }
   &__content {
     overflow: hidden;
-    position: absolute;
-    column-fill: auto;
+    // position: absolute;
+    position: relative;
+    // column-fill: auto;
+    width: 100%;
     transform: translate(0, 0px);
-    top: 165px;
+    // top: 165px;
     * {
       font-weight: normal;
       line-height: 1.75em;
@@ -77,10 +84,10 @@
   .book__content {
     font-size: 12px;
     height: 59.5em;
-    left: 6em;
-    width: 190em;
-    column-gap: 86em;
-    column-width: 30em;
+    // left: 6em;
+    // width: 190em;
+    // column-gap: 86em;
+    // column-width: 30em;
     h3 {
       font-size: 12px;
     }
@@ -90,10 +97,10 @@
   .book__content {
     font-size: 14px;
     height: 50.75em;
-    left: 5.142em;
-    width: 160em;
-    column-gap: 71em;
-    column-width: 30em;
+    // left: 5.142em;
+    // width: 160em;
+    // column-gap: 71em;
+    // column-width: 30em;
     h3 {
       font-size: 14px;
     }
@@ -103,10 +110,10 @@
   .book__content {
     font-size: 16px;
     height: 45.5em;
-    left: 4.5em;
-    width: 140em;
-    column-gap: 62em;
-    column-width: 30em;
+    // left: 4.5em;
+    // width: 140em;
+    // column-gap: 62em;
+    // column-width: 30em;
     h3 {
       font-size: 16px;
     }
@@ -116,10 +123,10 @@
   .book__content {
     font-size: 18px;
     height: 40.25em;
-    left: 4em;
-    width: 124em;
-    column-gap: 55em;
-    column-width: 30em;
+    // left: 4em;
+    // width: 124em;
+    // column-gap: 55em;
+    // column-width: 30em;
     h3 {
       font-size: 18px;
     }
@@ -128,11 +135,11 @@
 .fontSize__20px {
   .book__content {
     font-size: 20px;
-    left: 3.6em;
     height: 35em;
-    width: 110em;
-    column-gap: 48em;
-    column-width: 30em;
+    // left: 3.6em;
+    // width: 110em;
+    // column-gap: 48em;
+    // column-width: 30em;
     h3 {
       font-size: 20px;
     }
@@ -142,10 +149,10 @@
   .book__content {
     font-size: 24px;
     height: 29.75em;
-    left: 3em;
-    width: 131em;
-    column-gap: 79em;
-    column-width: 23em;
+    // left: 3em;
+    // width: 131em;
+    // column-gap: 79em;
+    // column-width: 23em;
     h3 {
       font-size: 24px;
     }
@@ -155,10 +162,10 @@
   .book__content {
     font-size: 30px;
     height: 22.75em;
-    left: 2.4em;
-    width: 95em;
-    column-gap: 53em;
-    column-width: 20em;
+    // left: 2.4em;
+    // width: 95em;
+    // column-gap: 53em;
+    // column-width: 20em;
     h3 {
       font-size: 30px;
     }
@@ -168,11 +175,11 @@
   .book__content {
     font-size: 36px;
     max-height: 19.25em;
-    left: 2em;
-    width: 103em;
-    height: 22.75em;
-    column-gap: 25em;
-    column-width: 17em;
+    // left: 2em;
+    // width: 103em;
+    // height: 22.75em;
+    // column-gap: 25em;
+    // column-width: 17em;
     h3 {
       font-size: 36px;
     }
@@ -182,11 +189,11 @@
   .book__content {
     font-size: 42px;
     max-height: 15.75em;
-    left: 1.714em;
-    width: 65em;
-    height: 22.75em;
-    column-gap: 35em;
-    column-width: 12em;
+    // left: 1.714em;
+    // width: 65em;
+    // height: 22.75em;
+    // column-gap: 35em;
+    // column-width: 12em;
     h3 {
       font-size: 42px;
     }
@@ -196,11 +203,11 @@
   .book__content {
     font-size: 48px;
     max-height: 14em;
-    left: 1.5em;
-    width: 50em;
-    height: 22.75em;
-    column-gap: 24em;
-    column-width: 12em;
+    // left: 1.5em;
+    // width: 50em;
+    // height: 22.75em;
+    // column-gap: 24em;
+    // column-width: 12em;
     h3 {
       font-size: 48px;
     }
@@ -210,10 +217,10 @@
   .book__content {
     font-size: 52px;
     max-height: 14em;
-    left: 1.384em;
-    width: 82em;
-    column-gap: 24em;
-    column-width: 10em;
+    // left: 1.384em;
+    // width: 82em;
+    // column-gap: 24em;
+    // column-width: 10em;
     h3 {
       font-size: 52px;
     }
@@ -241,7 +248,57 @@ export default {
       maxWordsCount: [1845, 1342, 1024, 791, 626, 447, 262, 188, 142, 96, 82],
       pagesDistance: [138, 115.5, 101, 89.5, 79, 105, 74, 42.75, 50, 37, 35],
       pageDistance: { transform: 'translateX(0)' },
-      // bookContent: {},
+      setting: {
+        lineHeight: 1.75,
+        fontSetting: 5,
+        page: 0
+      },
+      fontSetting: [
+        {
+          fontSize: '12px',
+          line: '34'
+        },
+        {
+          fontSize: '14px',
+          line: '29'
+        },
+        {
+          fontSize: '16px',
+          line: '26'
+        },
+        {
+          fontSize: '18px',
+          line: '23'
+        },
+        {
+          fontSize: '20px',
+          line: '20'
+        },
+        {
+          fontSize: '24px',
+          line: '17'
+        },
+        {
+          fontSize: '30px',
+          line: '13'
+        },
+        {
+          fontSize: '36px',
+          line: '11'
+        },
+        {
+          fontSize: '42px',
+          line: '9'
+        },
+        {
+          fontSize: '20px',
+          line: '8'
+        },
+        {
+          fontSize: '52px',
+          line: '8'
+        }
+      ],
       task: this.$store.getters.getTask,
       index: 0,
       addLocation: '',
@@ -254,6 +311,12 @@ export default {
     };
   },
   computed: {
+    containerHeight() {
+      const lineHeight = this.setting.lineHeight;
+      const line = this.fontSetting[this.setting.fontSetting].line;
+      const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
+      return `calc( ${lineHeight} * ${line} * ${fontSize})`;
+    },
     pointerEvents() {
       let result = 'auto';
       if (this.isSelect == true) {
@@ -287,8 +350,8 @@ export default {
       }
       return this.bookContent.chapter;
     },
-    positionContent() {
-      console.log(this.bookLocation.sectionPage);
+    positionContent1() {
+      console.log('positionContent', this.bookLocation.sectionPage);
       if (this.bookLocation.sectionPage === 1) {
         this.pageDistance == { transform: `translateX(0)` };
       } else if (this.bookLocation.sectionPage > 1) {
@@ -308,6 +371,9 @@ export default {
         }
       }
       return this.pageDistance;
+    },
+    positionContent() {
+      return 'positionContent' + this.pageDistance;
     }
   },
   created() {
@@ -335,10 +401,39 @@ export default {
       this.$emit('toggleNavigation');
     },
     loadBookContent(action) {
+      let bookContainer = this.$refs.bookContainer;
       this.nowWordsCount = this.bookContent.content.length;
-      this.togglePage(action);
+
+      if (action === 'next') {
+        if (
+          bookContainer.scrollHeight - bookContainer.clientHeight <=
+          bookContainer.scrollTop
+        ) {
+          // alert('hit bottom')
+          return;
+        }
+        this.setting.page++;
+        bookContainer.scrollTop =
+          this.setting.page * bookContainer.clientHeight;
+      } else if (action === 'prev') {
+        if (this.setting.page <= 0) {
+          // alert('hit head')
+          return
+        }
+        this.setting.page--
+          bookContainer.scrollTop = this.setting.page * bookContainer.clientHeight
+      }
+      console.log(
+        bookContainer.scrollHeight,
+        bookContainer.clientHeight,
+        bookContainer.scrollTop
+      );
+      // this.togglePage(action);
     },
     togglePage(action) {
+      console.log(action);
+    },
+    togglePage1(action) {
       if (action === 'prev') {
         if (this.nowWordsCount > this.maxWordsCount[this.sizeLevel]) {
           // 超過一頁
@@ -392,7 +487,7 @@ export default {
         }
       }
     },
-    changeSection(action) {
+    changeSection1(action) {
       if (action === 'prev') {
         if (this.bookLocation.sectionIndex === 0) {
           console.log('changeSection: prev, first section');
@@ -427,7 +522,7 @@ export default {
         }
       }
     },
-    changeContent(action) {
+    changeContent1(action) {
       let addContent = this.$store.getters.getBookContent;
 
       if (action === 'nextSection') {
@@ -489,7 +584,7 @@ export default {
       }
       this.nowWordsCount = this.bookContent.content.length;
     },
-    resetDefault(setting) {
+    resetDefault1(setting) {
       if (setting === 'firstPage') {
         // 定位 section 第一頁
         this.addLocation.sectionPage = 1;
