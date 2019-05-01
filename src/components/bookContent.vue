@@ -1,13 +1,14 @@
 <template>
   <div class="book" @load="positionContent">
-    <h2 class="book__chapter">{{ checkFinishStep1 }} {{ bookContent.h1title }}</h2>
+    <h2 class="book__chapter">
+      {{ checkFinishStep1 }} {{ bookContent.h1title }}
+    </h2>
     <div
-      class="book__content"
       ref="bookContainer"
-      v-bind:style="{
+      class="book__content"
+      :style="{
         height: containerHeight
-      }
-    "
+      }"
     >
       <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
       <p class="bookContainer" v-html="spanContent"></p>
@@ -320,6 +321,7 @@ export default {
       const line = this.fontSetting[this.setting.fontSetting].line;
       const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
       return `calc( ${lineHeight} * ${line} * ${fontSize})`;
+    },
     showTooltip() {
       return this.isShowTooltip;
     },
@@ -425,10 +427,11 @@ export default {
       } else if (action === 'prev') {
         if (this.setting.page <= 0) {
           // alert('hit head')
-          return
+          return;
         }
-        this.setting.page--
-          bookContainer.scrollTop = this.setting.page * bookContainer.clientHeight
+        this.setting.page--;
+        bookContainer.scrollTop =
+          this.setting.page * bookContainer.clientHeight;
       }
       console.log(
         bookContainer.scrollHeight,
