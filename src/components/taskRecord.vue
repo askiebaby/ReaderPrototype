@@ -1,15 +1,26 @@
 <template>
   <div>
     <background-cover></background-cover>
-    <mission-again v-if="showMissionAgain" @showConfirm="changelight"></mission-again>
-    <leave-mission-again v-if="showleaveMissionAgain" @backRecord="changelight"></leave-mission-again>
+    <mission-again
+      v-if="showMissionAgain"
+      @showConfirm="changelight"
+    ></mission-again>
+    <leave-mission-again
+      v-if="showleaveMissionAgain"
+      @backRecord="changelight"
+    ></leave-mission-again>
   </div>
 </template>
 <script>
-import backgroundCover from "@/components/backgroundCover.vue";
-import missionAgain from "@/components/lightBox/missionAgain.vue";
-import leaveMissionAgain from "@/components/lightBox/leaveMissionAgain.vue";
+import backgroundCover from '@/components/backgroundCover.vue';
+import missionAgain from '@/components/lightBox/missionAgain.vue';
+import leaveMissionAgain from '@/components/lightBox/leaveMissionAgain.vue';
 export default {
+  components: {
+    backgroundCover,
+    missionAgain,
+    leaveMissionAgain
+  },
   data() {
     return {
       showMissionAgain: true,
@@ -21,11 +32,6 @@ export default {
       this.showMissionAgain = !this.showMissionAgain;
       this.showleaveMissionAgain = !this.showleaveMissionAgain;
     }
-  },
-  components: {
-    backgroundCover,
-    missionAgain,
-    leaveMissionAgain
   }
 };
 </script>

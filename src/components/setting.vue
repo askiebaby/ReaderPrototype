@@ -54,8 +54,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/modules/_lightBox.scss";
-@import "@/assets/scss/modules/_button.scss";
+@import '@/assets/scss/modules/_lightBox.scss';
+@import '@/assets/scss/modules/_button.scss';
 
 .function {
   display: flex;
@@ -193,35 +193,38 @@ export default {
   },
   methods: {
     hideSetting() {
-      this.$emit("hideSetting", false);
+      this.$emit('hideSetting', false);
     },
     changeBackground(color) {
-      this.$emit("changeBackground", color);
+      this.$emit('changeBackground', color);
     },
     changeFontFamily(event) {
       let family = event.target.value;
-      this.$emit("changeFontFamily", family);
+      this.$emit('changeFontFamily', family);
     },
     changeFontSize(action) {
-      if (action === "small") {
+      if (action === 'small') {
         if (this.sizeLevel > 0) {
           this.sizeLevel -= 1;
         }
-      } else if (action === "enlarge") {
+      } else if (action === 'enlarge') {
         if (this.sizeLevel < this.fontSizeLevel.length - 1) {
           this.sizeLevel += 1;
           if (this.fontSizeLevel[this.sizeLevel] === 52) {
             if (this.task.length > 0) {
               if (this.task[this.index].time.length === 2) {
-                this.$store.commit("setTask", this.index);
-                console.log(this.task)
+                this.$store.commit('setTask', this.index);
+                console.log(this.task);
               }
             }
           }
         }
       }
-      let fontSizeClass = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`
-      this.$emit("changeFontSize", {fontSizeClass: fontSizeClass, sizeLevel: this.sizeLevel})
+      let fontSizeClass = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`;
+      this.$emit('changeFontSize', {
+        fontSizeClass: fontSizeClass,
+        sizeLevel: this.sizeLevel
+      });
     }
   }
 };

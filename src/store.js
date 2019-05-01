@@ -1,20 +1,20 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import moment from "vue-moment";
-import VueCookies from "vue-cookies";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import moment from 'vue-moment';
+import VueCookies from 'vue-cookies';
 Vue.use(Vuex);
 Vue.use(moment);
 export const store = new Vuex.Store({
   state: {
     totalCounts: 0,
-    id: "",
-    name: "",
+    id: '',
+    name: '',
     task: [],
     bookContent: {
-      chapter: "",
-      h1title: "",
-      h3title: "",
-      content: ""
+      chapter: '',
+      h1title: '',
+      h3title: '',
+      content: ''
     },
     bookLocation: {
       bookIndex: 0,
@@ -45,7 +45,6 @@ export const store = new Vuex.Store({
     getBookLocation: state => {
       return state.bookLocation;
     }
-
   },
   mutations: {
     addTotalCounts(state) {

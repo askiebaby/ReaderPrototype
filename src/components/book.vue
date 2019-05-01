@@ -1,54 +1,73 @@
 <template>
   <div :class="backgroundColor">
-    <menu-top @showLeaveBubble="isLeaveMission=$event" v-show="isShowNavigation"></menu-top>
+    <menu-top
+      v-show="isShowNavigation"
+      @showLeaveBubble="isLeaveMission = $event"
+    ></menu-top>
 
     <bookContent
       :class="[fontFamilyClass, fontSizeClass]"
+      :size-level="sizeLevel"
       @toggleNavigation="toggleNavigation"
       @toBookCover="toBookCover"
-      :sizeLevel="sizeLevel"
     ></bookContent>
 
-    <index v-if="isShowIndex" @closeIndexStatus="isShowIndex=$event" @emitContent="findContent"></index>
+    <index
+      v-if="isShowIndex"
+      @closeIndexStatus="isShowIndex = $event"
+      @emitContent="findContent"
+    ></index>
 
     <keep-alive>
       <setting
         v-show="isShowSetting"
-        @hideSetting="isShowSetting=$event"
+        @hideSetting="isShowSetting = $event"
         @changeBackground="changebackgroundColor_chickFinish($event)"
-        @changeFontFamily="fontFamilyClass=$event"
+        @changeFontFamily="fontFamilyClass = $event"
         @changeFontSize="changefontSizeClass($event)"
       ></setting>
     </keep-alive>
 
-    <leave-mission v-show="isLeaveMission" @cancelLeaveBubble="isLeaveMission=$event"></leave-mission>
+    <leave-mission
+      v-show="isLeaveMission"
+      @cancelLeaveBubble="isLeaveMission = $event"
+    ></leave-mission>
     <complete-mission v-if="isShowComplete"></complete-mission>
     <menu-bottom
       v-show="isShowNavigation"
-      @showSettingBubble="isShowSetting=$event"
-      @openIndexStatus="isShowIndex=$event"
+      @showSettingBubble="isShowSetting = $event"
+      @openIndexStatus="isShowIndex = $event"
     ></menu-bottom>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/modules/_background.scss";
+@import '@/assets/scss/modules/_background.scss';
 </style>
 
 <script>
 // components
-import menuTop from "@/components/menu/top.vue";
-import menuBottom from "@/components/menu/bottom.vue";
-import leaveMission from "@/components/lightBox/leaveMission.vue";
-import index from "@/components/index.vue";
-import setting from "@/components/setting.vue";
-import bookContent from "@/components/bookContent.vue";
-import completeMission from "@/components/lightBox/completeMission.vue";
+import menuTop from '@/components/menu/top.vue';
+import menuBottom from '@/components/menu/bottom.vue';
+import leaveMission from '@/components/lightBox/leaveMission.vue';
+import index from '@/components/index.vue';
+import setting from '@/components/setting.vue';
+import bookContent from '@/components/bookContent.vue';
+import completeMission from '@/components/lightBox/completeMission.vue';
 
 // data
-import document from "@/assets/document.json";
+import document from '@/assets/document.json';
 
 export default {
+  components: {
+    leaveMission,
+    menuTop,
+    bookContent,
+    menuBottom,
+    setting,
+    index,
+    completeMission
+  },
   data() {
     return {
       isLeaveMission: false,
@@ -56,17 +75,20 @@ export default {
       isShowSetting: false,
       isShowIndex: false,
       isShowComplete: false,
-      backgroundColor: "background__change__white",
-      fontFamilyClass: "book__fontFamily__ming",
-      fontSizeClass: "fontSize__24px",
+      backgroundColor: 'background__change__white',
+      fontFamilyClass: 'book__fontFamily__ming',
+      fontSizeClass: 'fontSize__24px',
       sizeLevel: 5,
       document,
-      chapterIndex: "",
-      sectionIndex: "",
+      chapterIndex: '',
+      sectionIndex: '',
       contentKey: {},
       task: this.$store.getters.getTask,
       index: 0
     };
+  },
+  created() {
+    this.loadIntroContent();
   },
   methods: {
     toggleNavigation() {
@@ -83,13 +105,13 @@ export default {
         sectionIndex: null,
         page: 1
       };
-      this.$store.commit("setBookLocation", coverLocation);
-      this.$router.push({ name: "bookCover" });
+      this.$store.commit('setBookLocation', coverLocation);
+      this.$router.push({ name: 'bookCover' });
     },
     loadIntroContent() {
       let intro = {
         chapter: this.document.books[1].chapter,
-        h1title: "",
+        h1title: '',
         h3title: this.document.books[1].sections[0].title,
         content: this.document.books[1].sections[0].content
       };
@@ -103,8 +125,8 @@ export default {
       };
 
       // console.log(this.document.books[2].sections.length)
-      this.$store.commit("setBookContent", intro);
-      this.$store.commit("setBookLocation", introLocation);
+      this.$store.commit('setBookContent', intro);
+      this.$store.commit('setBookLocation', introLocation);
     },
     changefontFamilyClass(famliyClass) {
       this.fontFamilyClass = famliyClass;
@@ -112,14 +134,14 @@ export default {
     changefontSizeClass(font) {
       this.fontSizeClass = font.fontSizeClass;
       this.sizeLevel = font.sizeLevel;
-      console.log("sizeLevel: ", this.sizeLevel);
+      console.log('sizeLevel: ', this.sizeLevel);
     },
     changebackgroundColor_chickFinish(color) {
       this.backgroundColor = color;
-      if (color === "background__change__black") {
+      if (color === 'background__change__black') {
         if (this.task.length > 0) {
           if (this.task[this.index].time.length === 3) {
-            this.$store.commit("setTask", this.index);
+            this.$store.commit('setTask', this.index);
             console.log(this.task);
             setTimeout(() => {
               this.isShowComplete = true;
@@ -132,18 +154,6 @@ export default {
       this.isShowContent = true;
       this.isShowIndex = false;
     }
-  },
-  created() {
-    this.loadIntroContent();
-  },
-  components: {
-    leaveMission,
-    menuTop,
-    bookContent,
-    menuBottom,
-    setting,
-    index,
-    completeMission
   }
 };
 </script>

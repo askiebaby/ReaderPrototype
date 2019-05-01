@@ -10,12 +10,12 @@
 
   var supportsPassiveOption = false;
   try {
-    var opts = Object.defineProperty({}, "passive", {
+    var opts = Object.defineProperty({}, 'passive', {
       get: function() {
         supportsPassiveOption = true;
       }
     });
-    window.addEventListener("test", null, opts);
+    window.addEventListener('test', null, opts);
   } catch (e) {}
 
   var handleTouchmove = function(evt) {
@@ -39,18 +39,18 @@
       }
 
       // Ignore range input element
-      if (el.nodeName === "INPUT" && el.getAttribute("type") === "range") {
+      if (el.nodeName === 'INPUT' && el.getAttribute('type') === 'range') {
         return;
       }
 
-      var scrolling = style.getPropertyValue("-webkit-overflow-scrolling");
-      var overflowY = style.getPropertyValue("overflow-y");
-      var height = parseInt(style.getPropertyValue("height"), 10);
+      var scrolling = style.getPropertyValue('-webkit-overflow-scrolling');
+      var overflowY = style.getPropertyValue('overflow-y');
+      var height = parseInt(style.getPropertyValue('height'), 10);
 
       // Determine if the element should scroll
       var isScrollable =
-        scrolling === "touch" &&
-        (overflowY === "auto" || overflowY === "scroll");
+        scrolling === 'touch' &&
+        (overflowY === 'auto' || overflowY === 'scroll');
       var canScroll = el.scrollHeight > el.offsetHeight;
 
       if (isScrollable && canScroll) {
@@ -88,12 +88,12 @@
   var enable = function() {
     // Listen to a couple key touch events
     window.addEventListener(
-      "touchstart",
+      'touchstart',
       handleTouchstart,
       supportsPassiveOption ? { passive: false } : false
     );
     window.addEventListener(
-      "touchmove",
+      'touchmove',
       handleTouchmove,
       supportsPassiveOption ? { passive: false } : false
     );
@@ -102,8 +102,8 @@
 
   var disable = function() {
     // Stop listening
-    window.removeEventListener("touchstart", handleTouchstart, false);
-    window.removeEventListener("touchmove", handleTouchmove, false);
+    window.removeEventListener('touchstart', handleTouchstart, false);
+    window.removeEventListener('touchmove', handleTouchmove, false);
     enabled = false;
   };
 
@@ -114,12 +114,12 @@
   // Enable by default if the browser supports -webkit-overflow-scrolling
   // Test this by setting the property with JavaScript on an element that exists in the DOM
   // Then, see if the property is reflected in the computed style
-  var testDiv = document.createElement("div");
+  var testDiv = document.createElement('div');
   document.documentElement.appendChild(testDiv);
-  testDiv.style.WebkitOverflowScrolling = "touch";
+  testDiv.style.WebkitOverflowScrolling = 'touch';
   var scrollSupport =
-    "getComputedStyle" in window &&
-    window.getComputedStyle(testDiv)["-webkit-overflow-scrolling"] === "touch";
+    'getComputedStyle' in window &&
+    window.getComputedStyle(testDiv)['-webkit-overflow-scrolling'] === 'touch';
   document.documentElement.removeChild(testDiv);
 
   if (scrollSupport) {
@@ -133,14 +133,14 @@
     isEnabled: isEnabled
   };
 
-  if (typeof module !== "undefined" && module.exports) {
+  if (typeof module !== 'undefined' && module.exports) {
     // Node.js Support
     module.exports = iNoBounce;
   }
-  if (typeof global.define === "function") {
+  if (typeof global.define === 'function') {
     // AMD Support
     (function(define) {
-      define("iNoBounce", [], function() {
+      define('iNoBounce', [], function() {
         return iNoBounce;
       });
     })(global.define);

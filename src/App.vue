@@ -15,10 +15,8 @@ export default {
   // },
   methods: {
     totalCounts() {
-      this.$store.commit("addTotalCounts");
+      this.$store.commit('addTotalCounts');
     }
   }
 };
 </script>
-
-

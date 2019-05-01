@@ -4,17 +4,24 @@
       <div class="index__container">
         <nav>
           <div @click="closeIndexStatus">
-            <img :src="require('@/assets/menu/back.svg')">
+            <img :src="require('@/assets/menu/back.svg')" />
             <span>返回</span>
           </div>
         </nav>
         <ul class="index__outline">
-          <li class="index__chapter" v-for="(book, bookIndex) in document.books">
-            <span v-if="ShowChapter(bookIndex)" @click="loadChapter(bookIndex,book)">
-              {{book.chapter}}
+          <li
+            v-for="(book, bookIndex) in document.books"
+            class="index__chapter"
+          >
+            <span
+              v-if="ShowChapter(bookIndex)"
+              @click="loadChapter(bookIndex, book)"
+            >
+              {{ book.chapter }}
               <span
-                @click="emitContent(book.chapter,book.title,'',book.content)"
-              >{{book.title}}</span>
+                @click="emitContent(book.chapter, book.title, '', book.content)"
+                >{{ book.title }}</span
+              >
             </span>
             <ul>
               <li
@@ -22,8 +29,10 @@
                 v-if="ShowSubTitle(book.chapter)"
                 @click="loadBookContent(book, bookIndex, section, sectionIndex)"
               >
-                <span v-if="sectionIndex === 0" class="index__chapterName">{{book.chapter}}</span>
-                <span>{{section.title}}</span>
+                <span v-if="sectionIndex === 0" class="index__chapterName">{{
+                  book.chapter
+                }}</span>
+                <span>{{ section.title }}</span>
               </li>
             </ul>
           </li>
@@ -109,9 +118,8 @@
 }
 </style>
 
-
 <script>
-import document from "@/assets/document.json";
+import document from '@/assets/document.json';
 
 export default {
   data() {
@@ -122,7 +130,7 @@ export default {
   },
   methods: {
     closeIndexStatus() {
-      this.$emit("closeIndexStatus", false);
+      this.$emit('closeIndexStatus', false);
     },
     loadBookContent(book, bookIndex, section, sectionIndex) {
       let bookContent = {
@@ -140,8 +148,8 @@ export default {
         sectionPage: 1
       };
 
-      this.$store.commit("setBookContent", bookContent);
-      this.$store.commit("setBookLocation", bookLocation);
+      this.$store.commit('setBookContent', bookContent);
+      this.$store.commit('setBookLocation', bookLocation);
       // console.log(this.$store.getters.getBookContent)
 
       console.log(
@@ -154,7 +162,7 @@ export default {
       );
       console.log(this.document.books.length);
       console.log(this.document.books[bookIndex].sections.length);
-      this.$emit("emitContent");
+      this.$emit('emitContent');
     },
     emitContent(chapter, h1title, h3title, content) {
       let data = {
@@ -163,13 +171,13 @@ export default {
         h3title: h3title,
         content: content
       };
-      this.$store.commit("setBookContent", data);
+      this.$store.commit('setBookContent', data);
       //  console.log(this.$store.getters.getBookContent);
-      this.$emit("emitContent");
+      this.$emit('emitContent');
     },
     ShowSubTitle(chapter) {
       let show = true;
-      if (chapter == "引言") {
+      if (chapter == '引言') {
         show = false;
       }
       return show;
@@ -184,7 +192,7 @@ export default {
     loadChapter(bookIndex, book) {
       console.log(bookIndex, book);
       if (bookIndex == 0) {
-        this.$router.push({ name: "bookCover" });
+        this.$router.push({ name: 'bookCover' });
       } else if (bookIndex == 1) {
         this.emitContent(
           book.chapter,
@@ -196,7 +204,7 @@ export default {
     },
     finishTask() {
       let index = 0;
-      this.$store.commit("setTask", index);
+      this.$store.commit('setTask', index);
       console.log(this.$store.getters.getTask);
     }
   }

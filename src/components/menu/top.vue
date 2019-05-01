@@ -1,14 +1,14 @@
 <template>
   <div class="topMenu">
     <div class="topMenu__back" @click="changeLeaveStatus">
-      <img :src="require('@/assets/menu/back.svg')">
+      <img :src="require('@/assets/menu/back.svg')" />
       <p>回到書櫃</p>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-@import "@/assets/scss/modules/_font.scss";
-@import "@/assets/scss/modules/_background.scss";
+@import '@/assets/scss/modules/_font.scss';
+@import '@/assets/scss/modules/_background.scss';
 .topMenu {
   position: fixed;
   top: 0;
@@ -35,7 +35,7 @@ p {
 export default {
   methods: {
     changeLeaveStatus() {
-      this.$emit("showLeaveBubble", true);
+      this.$emit('showLeaveBubble', true);
     }
     // backTask(){
     //   this.$router.push({ name: "tasks" });
@@ -43,5 +43,3 @@ export default {
   }
 };
 </script>
-
-

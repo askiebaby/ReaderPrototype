@@ -10,10 +10,10 @@
             <div class="tooltip__penColor__green"></div>
           </div>
           <div class="tooltip__function">
-            <div><img src="@/assets/images/icons/copy.svg" alt=""></div>
-            <div><img src="@/assets/images/icons/note.svg" alt=""></div>
-            <div><img src="@/assets/images/icons/share.svg" alt=""></div>
-            <div><img src="@/assets/images/icons/search.png" alt=""></div>
+            <div><img src="@/assets/images/icons/copy.svg" alt="" /></div>
+            <div><img src="@/assets/images/icons/note.svg" alt="" /></div>
+            <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
+            <div><img src="@/assets/images/icons/search.png" alt="" /></div>
           </div>
         </div>
         <div class="tooltip__bottom">
@@ -45,7 +45,8 @@ body {
     justify-content: space-between;
     align-items: center;
   }
-  &__bottom, .arrow {
+  &__bottom,
+  .arrow {
     &::after {
       background: $white;
     }
@@ -60,18 +61,19 @@ body {
       margin-left: -35px;
       overflow: hidden;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         left: 20px;
         top: -20px;
         width: 27px;
         height: 27px;
         transform: rotate(45deg);
-        box-shadow: 6px 5px 9px -9px $black, 5px 5px 7px -5px rgba(0,0,0, 0.6);
+        box-shadow: 6px 5px 9px -9px $black, 5px 5px 7px -5px rgba(0, 0, 0, 0.6);
       }
     }
   }
-  &__penColor, &__function {
+  &__penColor,
+  &__function {
     display: flex;
     justify-content: space-around;
     flex-basis: 50%;
@@ -111,10 +113,8 @@ body {
 
 <script>
 export default {
-  data () {
-    return {
-    
-    }
+  data() {
+    return {};
   }
-}
+};
 </script>

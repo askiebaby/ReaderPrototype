@@ -1,48 +1,65 @@
 <template>
   <div>
-    <div class="background__male" v-if="finishTadk">
-      <button class="button button__alert button__reset positionTopRight" @click="isShowligtBox">清除紀錄</button>
+    <div v-if="finishTadk" class="background__male">
+      <button
+        class="button button__alert button__reset positionTopRight"
+        @click="isShowligtBox"
+      >
+        清除紀錄
+      </button>
       <div class="input-center">
-        <div class="member_id">編號:{{id}}</div>
-        <input type="text" v-model="member.name" disabled>
+        <div class="member_id">編號:{{ id }}</div>
+        <input v-model="member.name" type="text" disabled />
         <div class="buttons">
           <router-link
             tag="button"
-            :to="{ name: 'home'}"
+            :to="{ name: 'home' }"
             class="button button__space button__default"
-          >上一頁</router-link>
+            >上一頁</router-link
+          >
           <router-link
             tag="button"
-            :to="{ name: 'tasks'}"
+            :to="{ name: 'tasks' }"
             class="button button__space button__default"
-          >紀錄</router-link>
+            >紀錄</router-link
+          >
         </div>
       </div>
     </div>
     <!-- 刷新紀錄 -->
-    <div class="lightBox deleteRecord" v-if="restCheck">
+    <div v-if="restCheck" class="lightBox deleteRecord">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleLarge">
           清除此編號
-          <br>所有紀錄
+          <br />所有紀錄
         </h3>
         <p class="lightBox__subtitle">
-          <span>編號：{{id}}</span>
-          <span>{{member.name}}</span>
+          <span>編號：{{ id }}</span>
+          <span>{{ member.name }}</span>
         </p>
-        <button class="button button__primary taskPage__button" @click="isShowligtBox">取消</button>
-        <button class="button button__default taskPage__button" @click="restRecord">清除記錄</button>
+        <button
+          class="button button__primary taskPage__button"
+          @click="isShowligtBox"
+        >
+          取消
+        </button>
+        <button
+          class="button button__default taskPage__button"
+          @click="restRecord"
+        >
+          清除記錄
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/modules/_lightBox.scss";
-@import "@/assets/scss/modules/_background.scss";
-@import "@/assets/scss/modules/_input.scss";
-@import "@/assets/scss/modules/_button.scss";
+@import '@/assets/scss/modules/_lightBox.scss';
+@import '@/assets/scss/modules/_background.scss';
+@import '@/assets/scss/modules/_input.scss';
+@import '@/assets/scss/modules/_button.scss';
 
 .positionTopRight {
   position: absolute;
@@ -69,6 +86,14 @@ export default {
       member: {}
     };
   },
+  mounted() {
+    this.member = $cookies.get(this.id);
+    let info = {
+      id: this.id,
+      name: this.member.name
+    };
+    this.$store.commit('memberInfo', info);
+  },
   methods: {
     isShowligtBox() {
       this.finishTadk = !this.finishTadk;
@@ -76,16 +101,8 @@ export default {
     },
     restRecord() {
       $cookies.remove(this.id);
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: 'home' });
     }
-  },
-  mounted() {
-    this.member = $cookies.get(this.id);
-    let info = {
-      id: this.id,
-      name: this.member.name
-    };
-    this.$store.commit("memberInfo", info);
   }
 };
 </script>

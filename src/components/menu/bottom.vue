@@ -2,19 +2,19 @@
   <div class="nav">
     <ul>
       <li @click="openIndexStatus">
-        <img :src="require('@/assets/menu/burger.svg')">
+        <img :src="require('@/assets/menu/burger.svg')" />
       </li>
       <li @click="changeSettingStatus">
-        <img :src="require('@/assets/menu/aa.png')">
+        <img :src="require('@/assets/menu/aa.png')" />
       </li>
       <li>
-        <img :src="require('@/assets/menu/group.svg')">
+        <img :src="require('@/assets/menu/group.svg')" />
       </li>
       <li>
-        <img :src="require('@/assets/menu/share.svg')">
+        <img :src="require('@/assets/menu/share.svg')" />
       </li>
       <li>
-        <img :src="require('@/assets/menu/square.svg')">
+        <img :src="require('@/assets/menu/square.svg')" />
       </li>
     </ul>
   </div>
@@ -56,12 +56,12 @@ ul {
 <script>
 export default {
   methods: {
-    changeSettingStatus () {
-      this.$emit("showSettingBubble", true)
+    changeSettingStatus() {
+      this.$emit('showSettingBubble', true);
     },
-    openIndexStatus () {
-      this.$emit("openIndexStatus", true)
+    openIndexStatus() {
+      this.$emit('openIndexStatus', true);
     }
   }
-}
+};
 </script>

@@ -16,22 +16,22 @@
               v-for="n in 5"
         >{{n}}</router-link>-->
         <div
-          class="task"
           v-for="n in 15"
-          :class="{task__completed:isFinish('M'+n)}"
-          @click="nextPage('M'+n)"
+          class="task"
+          :class="{ task__completed: isFinish('M' + n) }"
+          @click="nextPage('M' + n)"
         >
-          <span>{{n}}</span>
+          <span>{{ n }}</span>
         </div>
       </div>
       <div class="taskList__tasks-type2">
         <div
-          class="task"
           v-for="n in 15"
-          :class="{task__completed:isFinish('F'+n)}"
-          @click="nextPage('F'+n)"
+          class="task"
+          :class="{ task__completed: isFinish('F' + n) }"
+          @click="nextPage('F' + n)"
         >
-          <span>{{n}}</span>
+          <span>{{ n }}</span>
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@
   </div>
 </template>
 
-<style lang="scss" >
+<style lang="scss">
 .wholeTask {
   padding: 55px 31px 55px 0;
   font-size: $contentSize;
@@ -184,9 +184,9 @@ export default {
     nextPage(id) {
       let result = this.isFinish(id);
       if (result) {
-        this.$router.push({ name: "finishTask", params: { id } });
+        this.$router.push({ name: 'finishTask', params: { id } });
       } else {
-        this.$router.push({ name: "login", params: { id } });
+        this.$router.push({ name: 'login', params: { id } });
       }
     }
   }

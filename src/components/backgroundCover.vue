@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="cover">
-      <img :src="require('@/assets/cover.png')" class="cover__img">
+      <img :src="require('@/assets/cover.png')" class="cover__img" />
     </div>
   </div>
 </template>

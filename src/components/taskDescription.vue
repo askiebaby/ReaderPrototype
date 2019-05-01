@@ -2,7 +2,7 @@
   <div>
     <!-- 任務題目 -->
     <div class="cover">
-      <img :src="require('@/assets/cover.png')" class="cover__img">
+      <img :src="require('@/assets/cover.png')" class="cover__img" />
     </div>
     <div class="lightBox taskName">
       <div class="lightBox__background"></div>
@@ -12,28 +12,30 @@
           <p class="lightBox__subtitle">任務一：</p>
           <p class="lightBox__taskDescription">
             （1-1）翻到第一章 “有目的的練習” 。
-            <br>（1-2）將字體設定成最大。
-            <br>（1-3）將閱讀模式調成黑底白字的夜間模式。
+            <br />（1-2）將字體設定成最大。
+            <br />（1-3）將閱讀模式調成黑底白字的夜間模式。
           </p>
         </div>
         <router-link
           tag="button"
-          :to="{ name: 'bookCover'}"
+          :to="{ name: 'bookCover' }"
           class="button button__primary taskPage__button"
           @click.native="taskStart"
-        >開始</router-link>
+          >開始</router-link
+        >
         <router-link
           tag="button"
-          :to="{ name: 'tasks'}"
+          :to="{ name: 'tasks' }"
           class="button button__default taskPage__button"
-        >取消</router-link>
+          >取消</router-link
+        >
       </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-@import "@/assets/scss/modules/_lightBox.scss";
-@import "@/assets/scss/modules/_button.scss";
+@import '@/assets/scss/modules/_lightBox.scss';
+@import '@/assets/scss/modules/_button.scss';
 .cover {
   height: 100vh;
   overflow: hidden;
@@ -58,7 +60,7 @@ export default {
     taskStart() {
       let index = 0;
       if (this.task.length > 0) {
-        this.$store.commit("setTask", index);
+        this.$store.commit('setTask', index);
         console.log(this.$store.getters.getTask);
       }
     }

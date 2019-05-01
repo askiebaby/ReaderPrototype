@@ -4,15 +4,15 @@
   </div>
 </template>
 <script>
-import backgroundCover from "@/components/backgroundCover.vue";
+import backgroundCover from '@/components/backgroundCover.vue';
 export default {
-  methods:{
-    toNext(){
-      this.$router.push({ name: "book" });
-    }
-  },
-  components:{
+  components: {
     backgroundCover
+  },
+  methods: {
+    toNext() {
+      this.$router.push({ name: 'book' });
+    }
   }
-}
+};
 </script>
