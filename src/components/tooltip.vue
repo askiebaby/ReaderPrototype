@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="{ top: topStyle, left: leftStyle }">
     <div class="tooltip" data-tooltip="">
       <div class="tooltip__wrapper">
         <div class="tooltip__top">
@@ -113,8 +113,28 @@ body {
 
 <script>
 export default {
+  props: {
+    tooltipPosition: {
+      type: Object,
+      default: function() {
+        return {
+          x: 0,
+          y: 0
+        };
+      }
+    }
+  },
   data() {
     return {};
+  },
+  computed: {
+    leftStyle() {
+      return this.tooltipPosition.x + 'px';
+    },
+    topStyle() {
+      let y = this.tooltipPosition.y;
+      return y + 'px';
+    }
   }
 };
 </script>

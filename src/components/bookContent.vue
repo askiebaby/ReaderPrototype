@@ -1,5 +1,10 @@
 <template>
   <div class="book" @load="positionContent">
+    <tooltip
+      v-if="showTooltip"
+      class="tooltip"
+      :tooltip-position="tooltipPosition"
+    ></tooltip>
     <h2 class="book__chapter">
       {{ checkFinishStep1 }} {{ bookContent.h1title }}
     </h2>
@@ -11,11 +16,11 @@
       }"
     >
       <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
-      <tooltip v-if="showTooltip"></tooltip>
+
       <p class="bookContainer" v-html="spanContent"></p>
     </div>
     <div class="page">- {{ wholePage }} -</div>
-    <div class="touch">
+    <div class="touch" style=" pointer-events: none">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -235,6 +240,10 @@
   font-size: 20px;
   line-height: 1.75;
 }
+.tooltip {
+  position: absolute;
+  z-index: 1;
+}
 </style>
 
 <script>
@@ -308,12 +317,26 @@ export default {
       index: 0,
       addLocation: '',
       wholePage: 1,
-      isSelect: true,
+      isSelect: false,
       selected: {
         start: 0,
         end: 0
       },
-      isShowTooltip: false
+      isShowTooltip: false,
+      selectPosition: {
+        start: {
+          x: 0,
+          y: 0
+        },
+        end: {
+          x: 0,
+          y: 0
+        }
+      },
+      tooltipPosition: {
+        x: 0,
+        y: 0
+      }
     };
   },
   computed: {
@@ -326,13 +349,13 @@ export default {
     showTooltip() {
       return this.isShowTooltip;
     },
-    pointerEvents() {
-      let result = 'auto';
-      if (this.isSelect == true) {
-        result = 'none';
-      }
-      return result;
-    },
+    // pointerEvents() {
+    //   let result = 'auto';
+    //   if (this.isSelect == true) {
+    //     result = 'none';
+    //   }
+    //   return result;
+    // },
     spanContent() {
       return this.bookContent.content
         .split('')
@@ -397,10 +420,10 @@ export default {
     el.addEventListener('touchcancel', this.clearSelected, false);
   },
   methods: {
-    switchSelect(arg) {
-      this.isSelect = arg;
-      console.log('123', this.isSelect);
-    },
+    // switchSelect(arg) {
+    //   this.isSelect = arg;
+    //   console.log('123', this.isSelect);
+    // },
     getSelection(allStr) {
       this.queries = allStr;
     },
@@ -613,21 +636,39 @@ export default {
       }
     },
     touchStart(e) {
+      this.isSelect = false;
       if (
         e.target.classList.contains('char') &&
         !this.isBetween(parseInt(e.target.getAttribute('index')))
       ) {
         this.selected.start = parseInt(e.target.getAttribute('index'));
+
+        this.selectPosition.start.x = e.target.getBoundingClientRect().left;
+        this.selectPosition.start.y = e.target.getBoundingClientRect().top;
       } else {
         this.clearSelected();
       }
     },
     touchEnd() {
-      this.$store.commit('addNotes', this.selected);
-      console.log(this.$store.getters.getNotes);
+      const averageX =
+        (this.selectPosition.start.x + this.selectPosition.end.x) / 2;
+      const minY = Math.min(
+        this.selectPosition.start.y,
+        this.selectPosition.end.y
+      );
+      const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
+      const numb = fontSize.match(/\d/g).join('');
+      //扣除字體以及tooltip高度
+      this.tooltipPosition.y = minY - numb - 42;
+      //扣除tooltip一半的寬度
+      this.tooltipPosition.x = averageX - 196;
+      if (this.isSelect) {
+        this.isShowTooltip = true;
+        this.$store.commit('addNotes', this.selected);
+        console.log(this.$store.getters.getNotes);
+      }
     },
     touchMove(e) {
-      // console.log(e.target.getBoundingClientRect());
       let changedTouch = e.changedTouches[0];
       let target = document.elementFromPoint(
         changedTouch.clientX,
@@ -636,27 +677,30 @@ export default {
       if (target.classList.contains('char') && this.selected.start) {
         this.selected.end = parseInt(target.getAttribute('index'));
         this.setSelected();
+        this.selectPosition.end.x = changedTouch.clientX;
+        this.selectPosition.end.y = changedTouch.clientY;
       }
-      this.isShowTooltip = true;
     },
     clearSelected() {
+      this.isShowTooltip = false;
       this.selected.start = 0;
       this.selected.end = 0;
       document.querySelectorAll('.selected').forEach(obj => {
         obj.classList.remove('selected');
       });
-      this.isShowTooltip = false;
     },
     setSelected() {
+      this.isShowTooltip = false;
       document.querySelectorAll('.selected').forEach(obj => {
         obj.classList.remove('selected');
       });
-      this.isShowTooltip = false;
       if (this.selected.start > this.selected.end) {
+        this.isSelect = true;
         for (let i = this.selected.start - 1; i > this.selected.end - 2; i--) {
           document.querySelectorAll('.char')[i].classList.add('selected');
         }
       } else {
+        this.isSelect = true;
         for (let i = this.selected.start - 1; i < this.selected.end; i++) {
           document.querySelectorAll('.char')[i].classList.add('selected');
         }
