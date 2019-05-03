@@ -637,6 +637,7 @@ export default {
     },
     touchStart(e) {
       this.isSelect = false;
+      this.isShowTooltip = false;
       if (
         e.target.classList.contains('char') &&
         !this.isBetween(parseInt(e.target.getAttribute('index')))
@@ -690,7 +691,6 @@ export default {
       });
     },
     setSelected() {
-      this.isShowTooltip = false;
       document.querySelectorAll('.selected').forEach(obj => {
         obj.classList.remove('selected');
       });
