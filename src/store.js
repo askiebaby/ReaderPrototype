@@ -21,9 +21,10 @@ export const store = new Vuex.Store({
       bookChapters: 0,
       sectionIndex: 0,
       sections: 0,
-      sectionPage: 1,
-      totalPages: 0,
-      nowPage: 0
+      sectionPage: 0,
+      totalPages: 1,
+      nowPage: 0,
+      newContentHeight: ''
     },
     notes: []
   },
@@ -65,7 +66,6 @@ export const store = new Vuex.Store({
       state.bookLocation.bookChapters = payload.bookChapters;
       state.bookLocation.sectionIndex = payload.sectionIndex;
       state.bookLocation.sections = payload.sections;
-      console.log(state.bookLocation.sectionPage)
       state.bookLocation.sectionPage = payload.sectionPage;
     },
     memberInfo(state, payload) {

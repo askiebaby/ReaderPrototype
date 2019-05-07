@@ -99,11 +99,13 @@ export default {
     },
     toBookCover() {
       let coverLocation = {
-        bookChapters: this.document.books.length,
+        bookChapters: this.document.books.length -1,
         bookIndex: 0,
         sections: null,
         sectionIndex: null,
-        page: 1
+        sectionPage: 0, // for: scrollTop = sectionPage * viewport
+        totalPages: 1,
+        nowPage: 1
       };
       this.$store.commit('setBookLocation', coverLocation);
       this.$router.push({ name: 'bookCover' });
@@ -117,14 +119,15 @@ export default {
       };
 
       let introLocation = {
-        bookChapters: this.document.books.length,
+        bookChapters: this.document.books.length -1,
         bookIndex: 1,
-        sections: this.document.books[1].sections.length,
+        sections: this.document.books[1].sections.length -1,
         sectionIndex: 0,
-        sectinPage: 1
+        sectionPage: 0, // for: scrollTop = sectionPage * viewport
+        totalPages: 1,
+        nowPage: 0
       };
 
-      // console.log(this.document.books[2].sections.length)
       this.$store.commit('setBookContent', intro);
       this.$store.commit('setBookLocation', introLocation);
     },
