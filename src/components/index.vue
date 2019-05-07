@@ -206,7 +206,7 @@ export default {
       let index = 0;
       this.$store.commit('setTask', index);
       console.log(this.$store.getters.getTask);
-    }
+    },
   }
 };
 </script>

@@ -65,6 +65,7 @@ export const store = new Vuex.Store({
       state.bookLocation.bookChapters = payload.bookChapters;
       state.bookLocation.sectionIndex = payload.sectionIndex;
       state.bookLocation.sections = payload.sections;
+      console.log(state.bookLocation.sectionPage)
       state.bookLocation.sectionPage = payload.sectionPage;
     },
     memberInfo(state, payload) {
