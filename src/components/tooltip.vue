@@ -6,7 +6,7 @@
           <div class="tooltip__penColor">
             <div class="tooltip__penColor__yellow"></div>
             <div class="tooltip__penColor__red"></div>
-            <div class="tooltip__penColor__blue"></div>
+            <div class="tooltip__penColor__purple"></div>
             <div class="tooltip__penColor__green"></div>
           </div>
           <div class="tooltip__function">
@@ -94,8 +94,8 @@ body {
     &__red {
       background-color: $red-pen;
     }
-    &__blue {
-      background-color: $blue-pen;
+    &__purple {
+      background-color: $purple-pen;
     }
     &__green {
       background-color: $green-pen;
