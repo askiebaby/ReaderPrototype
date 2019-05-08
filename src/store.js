@@ -17,13 +17,12 @@ export const store = new Vuex.Store({
       content: ''
     },
     bookLocation: {
-      bookIndex: 0,
-      bookChapters: 0,
+      chapterIndex: 0,
+      chapters: 0,
       sectionIndex: 0,
       sections: 0,
-      sectionPage: 0,
-      totalPages: 1,
-      nowPage: 0,
+      pageIndex: 0,
+      pages: 1,
       newContentHeight: ''
     },
     notes: []
@@ -62,11 +61,11 @@ export const store = new Vuex.Store({
       state.bookContent.content = payload.content;
     },
     setBookLocation(state, payload) {
-      state.bookLocation.bookIndex = payload.bookIndex;
-      state.bookLocation.bookChapters = payload.bookChapters;
+      state.bookLocation.chapterIndex = payload.chapterIndex;
+      state.bookLocation.chapters = payload.chapters;
       state.bookLocation.sectionIndex = payload.sectionIndex;
       state.bookLocation.sections = payload.sections;
-      state.bookLocation.sectionPage = payload.sectionPage;
+      state.bookLocation.pageIndex = payload.pageIndex;
     },
     memberInfo(state, payload) {
       state.id = payload.id;

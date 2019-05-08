@@ -132,7 +132,7 @@ export default {
     closeIndexStatus() {
       this.$emit('closeIndexStatus', false);
     },
-    loadBookContent(book, bookIndex, section, sectionIndex) {
+    loadBookContent(book, chapterIndex, section, sectionIndex) {
       let bookContent = {
         chapter: book.chapter,
         h1title: book.title,
@@ -141,29 +141,25 @@ export default {
       };
 
       let bookLocation = {
-        bookChapters: this.document.books.length,
-        bookIndex: bookIndex,
-        sections: this.document.books[bookIndex].sections.length,
+        chapters: this.document.books.length,
+        chapterIndex: chapterIndex,
+        sections: this.document.books[chapterIndex].sections.length,
         sectionIndex: sectionIndex,
-        sectionPage: 0,
-        totalPages: 1,
-        nowPage: 0
+        pageIndex: 0,
+        pages: 1
       };
 
       this.$store.commit('setBookContent', bookContent);
       this.$store.commit('setBookLocation', bookLocation);
-      // console.log(this.$store.getters.getBookContent)
 
       console.log(
         book,
-        bookIndex,
+        chapterIndex,
         book.length,
         section,
         section.length,
         sectionIndex
       );
-      console.log(this.document.books.length);
-      console.log(this.document.books[bookIndex].sections.length);
       this.$emit('emitContent');
     },
     emitContent(chapter, h1title, h3title, content) {
@@ -184,18 +180,18 @@ export default {
       }
       return show;
     },
-    ShowChapter(bookIndex) {
+    ShowChapter(chapterIndex) {
       let show = true;
-      if ((bookIndex == 2) | (bookIndex == 3)) {
+      if ((chapterIndex == 2) | (chapterIndex == 3)) {
         show = false;
       }
       return show;
     },
-    loadChapter(bookIndex, book) {
-      console.log(bookIndex, book);
-      if (bookIndex == 0) {
+    loadChapter(chapterIndex, book) {
+      console.log(chapterIndex, book);
+      if (chapterIndex == 0) {
         this.$router.push({ name: 'bookCover' });
-      } else if (bookIndex == 1) {
+      } else if (chapterIndex == 1) {
         this.emitContent(
           book.chapter,
           book.title,
