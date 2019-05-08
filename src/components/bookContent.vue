@@ -20,7 +20,7 @@
       <p class="bookContainer" v-html="spanContent"></p>
     </div>
     <div class="page">- {{ wholePage }} -</div>
-    <div class="touch" style=" pointer-events: none">
+    <div class="touch" style=" pointer-events: auto">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -336,7 +336,8 @@ export default {
       tooltipPosition: {
         x: 0,
         y: 0
-      }
+      },
+      notes: []
     };
   },
   computed: {
@@ -349,6 +350,7 @@ export default {
     showTooltip() {
       return this.isShowTooltip;
     },
+
     // pointerEvents() {
     //   let result = 'auto';
     //   if (this.isSelect == true) {
@@ -356,11 +358,18 @@ export default {
     //   }
     //   return result;
     // },
+
     spanContent() {
       return this.bookContent.content
         .split('')
         .map((dom, index) => {
-          return `<span class='char' index='${index + 1}'>${dom}</span>`;
+          if (this.defaultHighLight(index).color != '') {
+            return `<span class='char ${
+              this.defaultHighLight(index).color
+            } ' index='${index + 1}'>${dom}</span>`;
+          } else {
+            return `<span class='char > ' index='${index + 1}'>${dom}</span>`;
+          }
         })
         .join('');
     },
@@ -420,10 +429,38 @@ export default {
     el.addEventListener('touchcancel', this.clearSelected, false);
   },
   methods: {
+    test(index) {
+      console.log(index);
+    },
     // switchSelect(arg) {
     //   this.isSelect = arg;
     //   console.log('123', this.isSelect);
     // },
+    defaultHighLight(index) {
+      index += 1;
+      let result = { color: '', index: 0 };
+      const notes = this.$store.getters.getNotes;
+      const currentChapter = this.addLocation.bookIndex;
+      const currentSection = this.addLocation.sectionIndex;
+      const note = notes
+        .map((item, i) => {
+          return { ...item, i };
+        })
+        .filter(
+          item =>
+            item.chapterIndex == currentChapter &&
+            item.sectionIndex == currentSection
+        );
+      if (note.length > 0) {
+        note.forEach(item => {
+          if (index >= item.textStart && index <= item.textEnd) {
+            result.color = item.color;
+            result.index = item.i;
+          }
+        });
+      }
+      return result;
+    },
     getSelection(allStr) {
       this.queries = allStr;
     },
