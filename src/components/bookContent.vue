@@ -30,18 +30,14 @@
             v-touch:moving="e => touchMove(e)"
             v-touch:end="touchEnd"
             :index="i"
-            :class="{
-              selected:
-                (i >= selected.start && i <= selected.end) ||
-                (i >= selected.end && i <= selected.start)
-            }"
+            :class="hightLight(i)"
             >{{ char }}</span
           >
         </p>
       </div>
     </div>
     <div class="page">- {{ bookLocation.pageIndex + 1 }} -</div>
-    <div class="touch" style=" pointer-events: none">
+    <div class="touch" style=" pointer-events: auto">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -214,6 +210,18 @@
 .selected {
   background-color: $selected;
 }
+.yellow-pen {
+  background-color: $yellow-pen;
+}
+.red-pen {
+  background-color: $red-pen;
+}
+.purple-pen {
+  background-color: $purple-pen;
+}
+.green-pen {
+  background-color: $green-pen;
+}
 </style>
 
 <script>
@@ -229,7 +237,6 @@ export default {
   props: ['sizeLevel'],
   data() {
     return {
-      content: [],
       documentContent,
       nowWordsCount: 0,
       scrollHeight: 0,
@@ -309,6 +316,9 @@ export default {
     };
   },
   computed: {
+    content() {
+      return this.bookContent.content.split('');
+    },
     aLineHeight() {
       const lineHeight = this.setting.lineHeight;
       const fontSize = this.fontLevels[this.setting.fontInitIndex].fontSize;
@@ -376,9 +386,6 @@ export default {
       deep: true
     }
   },
-  created() {
-    this.content = this.bookContent.content.split('');
-  },
   mounted() {
     this.$nextTick(() => {
       WebFont.load({
@@ -394,8 +401,18 @@ export default {
   },
 
   methods: {
-    test: (e, i) => {
-      console.log(e.target, i);
+    hightLight(i) {
+      let css = '';
+      if (
+        (i >= this.selected.start && i <= this.selected.end) ||
+        (i >= this.selected.end && i <= this.selected.start)
+      ) {
+        css = 'selected';
+      }
+      if (this.defaultHighLight(i).color.length > 0) {
+        css = this.defaultHighLight(i).color;
+      }
+      return css;
     },
     // switchSelect(arg) {
     //   this.isSelect = arg;
@@ -405,7 +422,6 @@ export default {
       console.log('561');
     },
     defaultHighLight(index) {
-      index += 1;
       let result = { color: '', index: 0 };
       const notes = this.$store.getters.getNotes;
       const currentChapter = this.bookLocation.chapterIndex;
