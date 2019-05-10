@@ -4,12 +4,13 @@ import cookies from 'vue-cookies';
 import router from './router';
 import { store } from './store';
 import moment from 'vue-moment';
+import Vue2TouchEvents from 'vue2-touch-events';
 // import inobounce from "./inobounce";
 
 Vue.config.productionTip = false;
 cookies.config('90d');
 Vue.use(moment);
-// Vue.use(inobounce);
+Vue.use(Vue2TouchEvents);
 
 new Vue({
   cookies,

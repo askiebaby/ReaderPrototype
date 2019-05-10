@@ -22,12 +22,26 @@
         }"
       >
         <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
-        <tooltip v-if="showTooltip"></tooltip>
-        <p class="bookContainer" v-html="spanContent"></p>
+        <p>
+          <span
+            v-for="(char, i) in content"
+            :key="i"
+            v-touch:start="e => touchStart(e, i)"
+            v-touch:moving="e => touchMove(e)"
+            v-touch:end="touchEnd"
+            :index="i"
+            :class="{
+              selected:
+                (i >= selected.start && i <= selected.end) ||
+                (i >= selected.end && i <= selected.start)
+            }"
+            >{{ char }}</span
+          >
+        </p>
       </div>
     </div>
     <div class="page">- {{ bookLocation.pageIndex + 1 }} -</div>
-    <div class="touch" style=" pointer-events: auto">
+    <div class="touch" style=" pointer-events: none">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -197,6 +211,9 @@
   position: absolute;
   z-index: 1;
 }
+.selected {
+  background-color: $selected;
+}
 </style>
 
 <script>
@@ -212,7 +229,7 @@ export default {
   props: ['sizeLevel'],
   data() {
     return {
-      queries: [],
+      content: [],
       documentContent,
       nowWordsCount: 0,
       scrollHeight: 0,
@@ -270,8 +287,8 @@ export default {
       index: 0,
       isSelect: true,
       selected: {
-        start: 0,
-        end: 0
+        start: -1,
+        end: -1
       },
       isShowTooltip: false,
       selectPosition: {
@@ -322,9 +339,11 @@ export default {
           if (this.defaultHighLight(index).color != '') {
             return `<span class='char ${
               this.defaultHighLight(index).color
-            } ' index='${index + 1}'>${dom}</span>`;
+            }' data-notes='${
+              this.defaultHighLight(index).index
+            }' index='${index + 1}'>${dom}</span>`;
           } else {
-            return `<span class='char > ' index='${index + 1}'>${dom}</span>`;
+            return `<span class='char' index='${index + 1}'>${dom}</span>`;
           }
         })
         .join('');
@@ -357,6 +376,9 @@ export default {
       deep: true
     }
   },
+  created() {
+    this.content = this.bookContent.content.split('');
+  },
   mounted() {
     this.$nextTick(() => {
       WebFont.load({
@@ -368,22 +390,20 @@ export default {
           this.countPageHeight();
         }
       });
-      // listen touch event
-      const el = document.querySelector('.bookContainer');
-      el.addEventListener('touchstart', this.touchStart, false);
-      el.addEventListener('touchmove', this.touchMove, false);
-      el.addEventListener('touchend', this.touchEnd, false);
-      el.addEventListener('touchcancel', this.clearSelected, false);
     });
   },
+
   methods: {
-    test(index) {
-      console.log(index);
+    test: (e, i) => {
+      console.log(e.target, i);
     },
     // switchSelect(arg) {
     //   this.isSelect = arg;
     //   console.log('123', this.isSelect);
     // },
+    selectNotes() {
+      console.log('561');
+    },
     defaultHighLight(index) {
       index += 1;
       let result = { color: '', index: 0 };
@@ -408,9 +428,6 @@ export default {
         });
       }
       return result;
-    },
-    getSelection(allStr) {
-      this.queries = allStr;
     },
     toggleNavigation() {
       this.$emit('toggleNavigation');
@@ -633,20 +650,25 @@ export default {
       }
       this.$store.commit('setBookLocation', this.bookLocation);
     },
-    touchStart(e) {
-      this.isSelect = false;
-      this.isShowTooltip = false;
-      if (
-        e.target.classList.contains('char') &&
-        !this.isBetween(parseInt(e.target.getAttribute('index')))
-      ) {
-        this.selected.start = parseInt(e.target.getAttribute('index'));
-
+    touchStart(e, i) {
+      this.clearSelected();
+      if (!this.isBetween(i)) {
+        this.selected.start = i;
+        this.selected.end = i;
         this.selectPosition.start.x = e.target.getBoundingClientRect().left;
         this.selectPosition.start.y = e.target.getBoundingClientRect().top;
-      } else {
-        this.clearSelected();
       }
+      // if (
+      //   e.target.classList.contains('char') &&
+      //   !this.isBetween(parseInt(e.target.getAttribute('index')))
+      // ) {
+      //   this.selected.start = parseInt(e.target.getAttribute('index'));
+
+      //   this.selectPosition.start.x = e.target.getBoundingClientRect().left;
+      //   this.selectPosition.start.y = e.target.getBoundingClientRect().top;
+      // } else {
+      //   this.clearSelected();
+      // }
     },
     touchEnd() {
       const averageX =
@@ -655,17 +677,19 @@ export default {
         this.selectPosition.start.y,
         this.selectPosition.end.y
       );
-      const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
-      const numb = fontSize.match(/\d/g).join('');
+      // const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
+      // const numb = fontSize.match(/\d/g).join('');
+
       //扣除字體以及tooltip高度
-      this.tooltipPosition.y = minY - numb - 42;
+      this.tooltipPosition.y = minY - 16 - 42;
       //扣除tooltip一半的寬度
       this.tooltipPosition.x = averageX - 196;
-      if (this.isSelect) {
-        this.isShowTooltip = true;
-        this.$store.commit('addNotes', this.selected);
-        console.log(this.$store.getters.getNotes);
-      }
+      this.isShowTooltip = true;
+      // if (this.isSelect) {
+      //   this.isShowTooltip = true;
+      //   this.$store.commit('addNotes', this.selected);
+      //   console.log(this.$store.getters.getNotes);
+      // }
     },
     touchMove(e) {
       let changedTouch = e.changedTouches[0];
@@ -673,36 +697,23 @@ export default {
         changedTouch.clientX,
         changedTouch.clientY
       );
-      if (target.classList.contains('char') && this.selected.start) {
-        this.selected.end = parseInt(target.getAttribute('index'));
-        this.setSelected();
+      if (this.selected.start >= 0) {
+        const charEnd = parseInt(target.getAttribute('index'));
+        this.selected.end = charEnd;
         this.selectPosition.end.x = changedTouch.clientX;
         this.selectPosition.end.y = changedTouch.clientY;
       }
+      // if (target.classList.contains('char') && this.selected.start) {
+      //   this.selected.end = parseInt(target.getAttribute('index'));
+      //   this.setSelected();
+      //   this.selectPosition.end.x = changedTouch.clientX;
+      //   this.selectPosition.end.y = changedTouch.clientY;
+      // }
     },
     clearSelected() {
       this.isShowTooltip = false;
-      this.selected.start = 0;
-      this.selected.end = 0;
-      document.querySelectorAll('.selected').forEach(obj => {
-        obj.classList.remove('selected');
-      });
-    },
-    setSelected() {
-      document.querySelectorAll('.selected').forEach(obj => {
-        obj.classList.remove('selected');
-      });
-      if (this.selected.start > this.selected.end) {
-        this.isSelect = true;
-        for (let i = this.selected.start - 1; i > this.selected.end - 2; i--) {
-          document.querySelectorAll('.char')[i].classList.add('selected');
-        }
-      } else {
-        this.isSelect = true;
-        for (let i = this.selected.start - 1; i < this.selected.end; i++) {
-          document.querySelectorAll('.char')[i].classList.add('selected');
-        }
-      }
+      this.selected.start = -1;
+      this.selected.end = -1;
     },
     isBetween(index) {
       let min = Math.min(this.selected.start, this.selected.end);
