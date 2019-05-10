@@ -22,8 +22,18 @@
         }"
       >
         <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
-        <tooltip v-if="showTooltip"></tooltip>
-        <p class="bookContainer" v-html="spanContent"></p>
+        <p>
+          <span
+            v-for="(char, i) in content"
+            :key="i"
+            v-touch:start="e => touchStart(e, i)"
+            v-touch:moving="e => touchMove(e)"
+            v-touch:end="touchEnd"
+            :index="i"
+            :class="hightLight(i)"
+            >{{ char }}</span
+          >
+        </p>
       </div>
     </div>
     <div class="page">- {{ bookLocation.pageIndex + 1 }} -</div>
@@ -197,14 +207,28 @@
   position: absolute;
   z-index: 1;
 }
+.selected {
+  background-color: $blue-pen;
+}
+.yellow-pen {
+  background-color: $yellow-pen;
+}
+.red-pen {
+  background-color: $red-pen;
+}
+.purple-pen {
+  background-color: $purple-pen;
+}
+.green-pen {
+  background-color: $green-pen;
+}
 </style>
 
 <script>
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
-// import { nextTick } from 'q';
-// import { setTimeout } from 'timers';
+
 export default {
   components: {
     tooltip
@@ -212,7 +236,6 @@ export default {
   props: ['sizeLevel'],
   data() {
     return {
-      queries: [],
       documentContent,
       nowWordsCount: 0,
       scrollHeight: 0,
@@ -267,13 +290,13 @@ export default {
         }
       ],
       togglePageAction: '',
-      pages:'',
+      pages: '',
       task: this.$store.getters.getTask,
       index: 0,
       isSelect: true,
       selected: {
-        start: 0,
-        end: 0
+        start: -1,
+        end: -1
       },
       isShowTooltip: false,
       selectPosition: {
@@ -301,6 +324,9 @@ export default {
   // },
 
   computed: {
+    content() {
+      return this.bookContent.content.split('');
+    },
     aLineHeight() {
       const lineHeight = this.setting.lineHeight;
       const fontSize = this.fontLevels[this.sizeLevel].fontSize;
@@ -333,9 +359,11 @@ export default {
           if (this.defaultHighLight(index).color != '') {
             return `<span class='char ${
               this.defaultHighLight(index).color
-            } ' index='${index + 1}'>${dom}</span>`;
+            }' data-notes='${
+              this.defaultHighLight(index).index
+            }' index='${index + 1}'>${dom}</span>`;
           } else {
-            return `<span class='char > ' index='${index + 1}'>${dom}</span>`;
+            return `<span class='char' index='${index + 1}'>${dom}</span>`;
           }
         })
         .join('');
@@ -362,7 +390,7 @@ export default {
   watch: {
     bookContent: {
       handler: function() {
-        console.log('I watch!!!!!!!!!!!!!!!!!!')
+        console.log('I watch!!!!!!!!!!!!!!!!!!');
         if (this.togglePageAction === 'prev') {
           this.countPageHeight('prev');
         } else if (this.togglePageAction === 'next') {
@@ -372,42 +400,46 @@ export default {
       deep: true
     },
     sizeLevel() {
-      this.countPageHeight()
+      this.countPageHeight();
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.initContent()
-      // listen touch event
-      const el = document.querySelector('.bookContainer');
-      el.addEventListener('touchstart', this.touchStart, false);
-      el.addEventListener('touchmove', this.touchMove, false);
-      el.addEventListener('touchend', this.touchEnd, false);
-      el.addEventListener('touchcancel', this.clearSelected, false);
+      this.initContent();
     });
   },
+
   methods: {
-    test(index) {
-      console.log(index);
+    hightLight(i) {
+      let css = '';
+      if (
+        (i >= this.selected.start && i <= this.selected.end) ||
+        (i >= this.selected.end && i <= this.selected.start)
+      ) {
+        css = 'selected';
+      }
+      if (this.defaultHighLight(i).color.length > 0) {
+        css = this.defaultHighLight(i).color;
+      }
+      return css;
     },
     // switchSelect(arg) {
     //   this.isSelect = arg;
     //   console.log('123', this.isSelect);
     // },
-    initContent () {
+    initContent() {
       WebFont.load({
         custom: {
           families: ['cwTeXMing'],
           urls: ['https://fonts.googleapis.com/earlyaccess/cwtexming.css']
         },
         fontactive: () => {
-          console.log('WebFont called')
+          console.log('WebFont called');
           this.countPageHeight();
         }
       });
     },
     defaultHighLight(index) {
-      index += 1;
       let result = { color: '', index: 0 };
       const notes = this.$store.getters.getNotes;
       const currentChapter = this.bookLocation.chapterIndex;
@@ -431,34 +463,30 @@ export default {
       }
       return result;
     },
-    getSelection(allStr) {
-      this.queries = allStr;
-    },
     toggleNavigation() {
       this.$emit('toggleNavigation');
     },
     countPageHeight() {
       this.$nextTick(() => {
-
         // reset
         // this.bookLocation.newContentHeight = ''
         // this.$store.commit('setBookLocation', this.bookLocation);
 
         // 內容原長度
         this.scrollHeight = this.$refs.viewport.scrollHeight;
-        
+
         // 頁數
         const remain = this.scrollHeight % this.containerHeight;
         this.pages = Math.floor(this.scrollHeight / this.containerHeight);
         this.bookLocation.pages =
           remain >= this.aLineHeight ? (this.pages += 1) : this.pages;
-        
+
         // 算出應有的高度
         this.bookLocation.newContentHeight = `${this.bookLocation.pages *
           this.containerHeight}px`;
         this.$store.commit('setBookLocation', this.bookLocation);
 
-        this.checkPagePosition()
+        this.checkPagePosition();
 
         console.log(
           'countPageHeight called! \n',
@@ -481,26 +509,37 @@ export default {
         );
       });
     },
-    checkPagePosition () {
+    checkPagePosition() {
       if (this.togglePageAction === 'next') {
         this.$refs.viewport.scrollTop = 0;
         this.bookLocation.pageIndex = 0;
-        console.log('next', this.$refs.viewport.scrollTop, this.bookLocation.pages, this.containerHeight)
+        console.log(
+          'next',
+          this.$refs.viewport.scrollTop,
+          this.bookLocation.pages,
+          this.containerHeight
+        );
       } else if (this.togglePageAction === 'prev') {
-        this.$refs.viewport.scrollTop = (this.bookLocation.pages - 1) * this.containerHeight + 210;
+        this.$refs.viewport.scrollTop =
+          (this.bookLocation.pages - 1) * this.containerHeight + 210;
         this.bookLocation.pageIndex = this.bookLocation.pages - 1;
-        console.log('prev', this.$refs.viewport.scrollTop, this.bookLocation.pages, this.containerHeight)
+        console.log(
+          'prev',
+          this.$refs.viewport.scrollTop,
+          this.bookLocation.pages,
+          this.containerHeight
+        );
       } else {
         this.$refs.viewport.scrollTop = 0;
         this.bookLocation.pageIndex = 0;
       }
-      
+
       this.$store.commit('setBookLocation', this.bookLocation);
       this.togglePageAction = '';
     },
     loadBookContent(action) {
       this.$nextTick(() => {
-        console.log(this.$refs.viewport.scrollTop)
+        console.log(this.$refs.viewport.scrollTop);
         let viewport = this.$refs.viewport;
 
         if (action === 'next') {
@@ -605,7 +644,6 @@ export default {
       let addContent = this.$store.getters.getBookContent;
 
       if (action === 'prevSection') {
-
         this.togglePageAction = 'prev';
 
         addContent = {
@@ -620,45 +658,49 @@ export default {
         this.bookLocation.sectionIndex -= 1;
         this.$store.commit('setBookContent', addContent);
         this.$store.commit('setBookLocation', this.bookLocation);
-
       } else if (action === 'prevChapter') {
-
         this.togglePageAction = 'prev';
-        let prevChapterIndex = this.bookLocation.chapterIndex - 1
-        let lastSectionIndex = this.documentContent.books[prevChapterIndex].sections.length - 1
+        let prevChapterIndex = this.bookLocation.chapterIndex - 1;
+        let lastSectionIndex =
+          this.documentContent.books[prevChapterIndex].sections.length - 1;
 
         addContent = {
-  chapter: this.documentContent.books[prevChapterIndex].chapter,
-  h1title: this.documentContent.books[prevChapterIndex].title,
-  h3title: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex].title,
-content: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex].content
+          chapter: this.documentContent.books[prevChapterIndex].chapter,
+          h1title: this.documentContent.books[prevChapterIndex].title,
+          h3title: this.documentContent.books[prevChapterIndex].sections[
+            lastSectionIndex
+          ].title,
+          content: this.documentContent.books[prevChapterIndex].sections[
+            lastSectionIndex
+          ].content
         };
         // debugger
         this.$store.commit('setBookContent', addContent);
         this.bookLocation.chapterIndex -= 1;
-        this.bookLocation.sectionIndex = this.documentContent.books[prevChapterIndex].sections.length - 1;
+        this.bookLocation.sectionIndex =
+          this.documentContent.books[prevChapterIndex].sections.length - 1;
         this.$store.commit('setBookLocation', this.bookLocation);
-
       } else if (action === 'nextSection') {
-
         this.togglePageAction = 'next';
-        let nextChapterIndex = this.bookLocation.chapterIndex
-        let lastSectionIndex = this.documentContent.books[nextChapterIndex].sections.length - 1
+        let nextChapterIndex = this.bookLocation.chapterIndex;
+        let lastSectionIndex =
+          this.documentContent.books[nextChapterIndex].sections.length - 1;
 
         // 切換 section
         addContent = {
           chapter: addContent.chapter,
           h1title: addContent.h1title,
-          h3title: this.documentContent.books[nextChapterIndex]
-            .sections[this.bookLocation.sectionIndex + 1].title,
-          content: this.documentContent.books[nextChapterIndex]
-            .sections[this.bookLocation.sectionIndex + 1].content
+          h3title: this.documentContent.books[nextChapterIndex].sections[
+            this.bookLocation.sectionIndex + 1
+          ].title,
+          content: this.documentContent.books[nextChapterIndex].sections[
+            this.bookLocation.sectionIndex + 1
+          ].content
         };
 
         this.bookLocation.sectionIndex += 1;
         this.$store.commit('setBookContent', addContent);
         this.$store.commit('setBookLocation', this.bookLocation);
-
       } else if (action === 'nextChapter') {
         // 切換章節
         this.togglePageAction = 'next';
@@ -679,25 +721,30 @@ content: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex]
         this.bookLocation.sectionIndex = 0;
         this.bookLocation.sections = this.documentContent.books[
           this.bookLocation.chapterIndex
-        ].sections.length
+        ].sections.length;
       }
       this.$store.commit('setBookLocation', this.bookLocation);
       this.nowWordsCount = this.bookContent.content.length;
     },
-    touchStart(e) {
-      this.isSelect = false;
-      this.isShowTooltip = false;
-      if (
-        e.target.classList.contains('char') &&
-        !this.isBetween(parseInt(e.target.getAttribute('index')))
-      ) {
-        this.selected.start = parseInt(e.target.getAttribute('index'));
-
+    touchStart(e, i) {
+      this.clearSelected();
+      if (!this.isBetween(i)) {
+        this.selected.start = i;
+        this.selected.end = i;
         this.selectPosition.start.x = e.target.getBoundingClientRect().left;
         this.selectPosition.start.y = e.target.getBoundingClientRect().top;
-      } else {
-        this.clearSelected();
       }
+      // if (
+      //   e.target.classList.contains('char') &&
+      //   !this.isBetween(parseInt(e.target.getAttribute('index')))
+      // ) {
+      //   this.selected.start = parseInt(e.target.getAttribute('index'));
+
+      //   this.selectPosition.start.x = e.target.getBoundingClientRect().left;
+      //   this.selectPosition.start.y = e.target.getBoundingClientRect().top;
+      // } else {
+      //   this.clearSelected();
+      // }
     },
     touchEnd() {
       const averageX =
@@ -706,17 +753,19 @@ content: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex]
         this.selectPosition.start.y,
         this.selectPosition.end.y
       );
-      const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
-      const numb = fontSize.match(/\d/g).join('');
+      // const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
+      // const numb = fontSize.match(/\d/g).join('');
+
       //扣除字體以及tooltip高度
-      this.tooltipPosition.y = minY - numb - 42;
+      this.tooltipPosition.y = minY - 16 - 42;
       //扣除tooltip一半的寬度
       this.tooltipPosition.x = averageX - 196;
-      if (this.isSelect) {
-        this.isShowTooltip = true;
-        this.$store.commit('addNotes', this.selected);
-        console.log(this.$store.getters.getNotes);
-      }
+      this.isShowTooltip = true;
+      // if (this.isSelect) {
+      //   this.isShowTooltip = true;
+      //   this.$store.commit('addNotes', this.selected);
+      //   console.log(this.$store.getters.getNotes);
+      // }
     },
     touchMove(e) {
       let changedTouch = e.changedTouches[0];
@@ -724,36 +773,23 @@ content: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex]
         changedTouch.clientX,
         changedTouch.clientY
       );
-      if (target.classList.contains('char') && this.selected.start) {
-        this.selected.end = parseInt(target.getAttribute('index'));
-        this.setSelected();
+      if (this.selected.start >= 0) {
+        const charEnd = parseInt(target.getAttribute('index'));
+        this.selected.end = charEnd;
         this.selectPosition.end.x = changedTouch.clientX;
         this.selectPosition.end.y = changedTouch.clientY;
       }
+      // if (target.classList.contains('char') && this.selected.start) {
+      //   this.selected.end = parseInt(target.getAttribute('index'));
+      //   this.setSelected();
+      //   this.selectPosition.end.x = changedTouch.clientX;
+      //   this.selectPosition.end.y = changedTouch.clientY;
+      // }
     },
     clearSelected() {
       this.isShowTooltip = false;
-      this.selected.start = 0;
-      this.selected.end = 0;
-      document.querySelectorAll('.selected').forEach(obj => {
-        obj.classList.remove('selected');
-      });
-    },
-    setSelected() {
-      document.querySelectorAll('.selected').forEach(obj => {
-        obj.classList.remove('selected');
-      });
-      if (this.selected.start > this.selected.end) {
-        this.isSelect = true;
-        for (let i = this.selected.start - 1; i > this.selected.end - 2; i--) {
-          document.querySelectorAll('.char')[i].classList.add('selected');
-        }
-      } else {
-        this.isSelect = true;
-        for (let i = this.selected.start - 1; i < this.selected.end; i++) {
-          document.querySelectorAll('.char')[i].classList.add('selected');
-        }
-      }
+      this.selected.start = -1;
+      this.selected.end = -1;
     },
     isBetween(index) {
       let min = Math.min(this.selected.start, this.selected.end);
