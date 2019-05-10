@@ -38,7 +38,7 @@ body {
     position: relative;
     background-color: $white;
     border-radius: 10px;
-    box-shadow: 0 2px 15px -2px rgba(0, 0, 0, 0.75);
+    box-shadow: 0 2px 15px -2px rgba(0, 0, 0, .9);
   }
   &__top {
     display: flex;
@@ -68,7 +68,7 @@ body {
         width: 27px;
         height: 27px;
         transform: rotate(45deg);
-        box-shadow: 6px 5px 9px -9px $black, 5px 5px 7px -5px rgba(0, 0, 0, 0.6);
+        box-shadow: 6px 5px 9px -9px $black, 5px 5px 7px -5px rgba(0, 0, 0, .65);
       }
     }
   }
