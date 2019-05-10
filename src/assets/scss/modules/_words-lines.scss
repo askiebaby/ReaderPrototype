@@ -1,0 +1,8 @@
+@mixin lines ($lines: 2, $lineHeight: 1.5){
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  line-height: $lineHeight;
+  max-height: $lines * $lineHeight + em;
+}

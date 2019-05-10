@@ -11,6 +11,7 @@ import setting from './components/setting.vue';
 import taskRecord from './components/taskRecord.vue';
 import bookCover from './components/bookCover.vue';
 import tooltip from './components/tooltip.vue';
+import note from './components/note.vue';
 
 Vue.use(Router);
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/tooltip',
       name: 'tooltip',
       component: tooltip
+    },
+    {
+      path: '/note',
+      name: 'note',
+      component: note
     }
     // {
     // path: "/about",
