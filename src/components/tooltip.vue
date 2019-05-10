@@ -6,7 +6,7 @@
           <div class="tooltip__penColor">
             <div class="tooltip__penColor__yellow"></div>
             <div class="tooltip__penColor__red"></div>
-            <div class="tooltip__penColor__purple"></div>
+            <div class="tooltip__penColor__blue colorSelected"></div>
             <div class="tooltip__penColor__green"></div>
           </div>
           <div class="tooltip__function">
@@ -27,6 +27,24 @@
 <style lang="scss" scoped>
 body {
   position: relative;
+}
+.colorSelected {
+  position: relative;
+  &::before, &::after {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: #999;
+    position: absolute;
+    top: 15px;
+    left: 5px;
+  }
+  &::before{
+    transform: rotate(45deg);
+  }
+  &::after{
+    transform: rotate(135deg);
+  }
 }
 .tooltip {
   position: absolute;
@@ -99,6 +117,9 @@ body {
     }
     &__green {
       background-color: $green-pen;
+    }
+    &__blue {
+      background-color: $blue-pen;
     }
   }
   &__function {
