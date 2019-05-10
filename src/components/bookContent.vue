@@ -335,7 +335,7 @@ export default {
     },
     containerHeight() {
       const line = this.fontLevels[this.sizeLevel].line;
-      const viewport = this.aLineHeight * line;
+      const viewport = Math.floor(this.aLineHeight) * line;
       return viewport;
     },
     showTooltip() {
