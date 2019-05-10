@@ -145,8 +145,7 @@ export default {
         chapterIndex: chapterIndex,
         sections: this.document.books[chapterIndex].sections.length,
         sectionIndex: sectionIndex,
-        pageIndex: 0,
-        pages: 1
+        pageIndex: 0
       };
 
       this.$store.commit('setBookContent', bookContent);

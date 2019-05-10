@@ -64,7 +64,7 @@
     top: 0;
     right: 0;
     width: 658px;
-    height: calc(100vh - 23px);
+    height: 100vh;
     overflow: hidden;
       > div {
       &:nth-child(2) {
