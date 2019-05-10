@@ -303,12 +303,12 @@ export default {
   computed: {
     aLineHeight() {
       const lineHeight = this.setting.lineHeight;
-      const fontSize = this.fontLevels[this.setting.fontInitIndex].fontSize;
+      const fontSize = this.fontLevels[this.sizeLevel].fontSize;
       const result = lineHeight * fontSize;
       return result;
     },
     containerHeight() {
-      const line = this.fontLevels[this.setting.fontInitIndex].line;
+      const line = this.fontLevels[this.sizeLevel].line;
       const viewport = this.aLineHeight * line;
       return viewport;
     },
@@ -370,6 +370,9 @@ export default {
         }
       },
       deep: true
+    },
+    sizeLevel() {
+      this.countPageHeight()
     }
   },
   mounted() {
