@@ -24,23 +24,22 @@
         <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
         <p>
           <span v-for="(g, i) in groupsContent" :key="i" :class="g.hightLight">
-            <span v-for="(c, j) in g.textGroup" :key="j">{{ c }} </span>
+            <span
+              v-for="(c, j) in g.textGroup"
+              :key="j"
+              v-touch:start="e => touchStart(e, g.boundary + j)"
+              v-touch:moving="e => touchMove(e)"
+              v-touch:end="touchEnd"
+              :index="g.boundary + j"
+              :class="hightLight(g.boundary + j)"
+              >{{ c }}
+            </span>
           </span>
-          <!-- <span
-            v-for="(char, i) in content"
-            :key="i"
-            v-touch:start="e => touchStart(e, i)"
-            v-touch:moving="e => touchMove(e)"
-            v-touch:end="touchEnd"
-            :index="i"
-            :class="hightLight(i)"
-            >{{ char }}</span
-          > -->
         </p>
       </div>
     </div>
     <div class="page">- {{ bookLocation.pageIndex + 1 }} -</div>
-    <div class="touch" style=" pointer-events: auto">
+    <div class="touch" style=" pointer-events: none">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -347,9 +346,6 @@ export default {
         });
       }
       return group;
-    },
-    content() {
-      return this.bookContent.content.split('');
     },
     aLineHeight() {
       const lineHeight = this.setting.lineHeight;
