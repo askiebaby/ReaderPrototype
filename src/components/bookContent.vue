@@ -1,11 +1,11 @@
 <template>
-  <div class="book">
+  <div v-touch:longtap="e => switchTouch(e, 'none')" class="book">
     <tooltip
       v-if="showTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
     ></tooltip>
-    <h2 class="book__chapter">
+    <h2 v-touch:tap="e => switchTouch(e, 'auto')" class="book__chapter">
       {{ checkFinishStep1 }} {{ bookContent.h1title }}
     </h2>
     <div
@@ -28,7 +28,7 @@
               v-for="(c, j) in g.textGroup"
               :key="j"
               v-touch:start="e => touchStart(e, g.boundary + j)"
-              v-touch:moving="e => touchMove(e)"
+              v-touch:moving="touchMove"
               v-touch:end="touchEnd"
               :index="g.boundary + j"
               :class="hightLight(g.boundary + j)"
@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="page">- {{ bookLocation.pageIndex + 1 }} -</div>
-    <div class="touch" style=" pointer-events: none">
+    <div class="touch" :style="{ pointerEvents: pointerEvents }">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
       <div class="touch__next" @click="loadBookContent('next')"></div>
@@ -315,7 +315,8 @@ export default {
         x: 0,
         y: 0
       },
-      notes: []
+      notes: [],
+      pointerEvents: 'auto'
     };
   },
 
@@ -361,13 +362,6 @@ export default {
     showTooltip() {
       return this.isShowTooltip;
     },
-    // pointerEvents() {
-    //   let result = 'auto';
-    //   if (this.isSelect == true) {
-    //     result = 'none';
-    //   }
-    //   return result;
-    // },
     bookContent() {
       return this.$store.getters.getBookContent;
     },
@@ -420,10 +414,9 @@ export default {
       }
       return css;
     },
-    // switchSelect(arg) {
-    //   this.isSelect = arg;
-    //   console.log('123', this.isSelect);
-    // },
+    switchTouch(e, arg) {
+      this.pointerEvents = arg;
+    },
     initContent() {
       WebFont.load({
         custom: {
