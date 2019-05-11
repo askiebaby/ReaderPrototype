@@ -23,7 +23,10 @@
       >
         <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
         <p>
-          <span
+          <span v-for="(g, i) in groupsContent" :key="i" :class="g.hightLight">
+            <span v-for="(c, j) in g.textGroup" :key="j">{{ c }} </span>
+          </span>
+          <!-- <span
             v-for="(char, i) in content"
             :key="i"
             v-touch:start="e => touchStart(e, i)"
@@ -32,7 +35,7 @@
             :index="i"
             :class="hightLight(i)"
             >{{ char }}</span
-          >
+          > -->
         </p>
       </div>
     </div>
@@ -316,14 +319,35 @@ export default {
       notes: []
     };
   },
-  // updated () {
-  //   this.$nextTick( ()=> {
-  //   this.initContent()
-  //   })
-  //   console.log('update!!!!!!!!!!!!!!!!!!')
-  // },
 
   computed: {
+    groupsContent() {
+      const range = [{ i: 0, color: '' }];
+      const notes = this.$store.getters.getNotes;
+      const currentChapter = this.bookLocation.chapterIndex;
+      const currentSection = this.bookLocation.sectionIndex;
+      const note = notes.filter(
+        item =>
+          item.chapterIndex == currentChapter &&
+          item.sectionIndex == currentSection
+      );
+      if (note.length > 0) {
+        for (const item of notes) {
+          range.push({ i: item.textStart, color: item.color });
+          range.push({ i: item.textEnd, color: '' });
+        }
+      }
+      range.push({ i: this.bookContent.content.length, color: '' });
+      const group = [];
+      for (let j = 0; j < range.length - 1; j++) {
+        group.push({
+          textGroup: this.bookContent.content.slice(range[j].i, range[j + 1].i),
+          boundary: range[j].i,
+          hightLight: range[j].color
+        });
+      }
+      return group;
+    },
     content() {
       return this.bookContent.content.split('');
     },
@@ -341,9 +365,6 @@ export default {
     showTooltip() {
       return this.isShowTooltip;
     },
-    // scrollTop () {
-    //   return this.$refs.viewport.scrollTop;
-    // },
     // pointerEvents() {
     //   let result = 'auto';
     //   if (this.isSelect == true) {
@@ -351,23 +372,6 @@ export default {
     //   }
     //   return result;
     // },
-
-    spanContent() {
-      return this.bookContent.content
-        .split('')
-        .map((dom, index) => {
-          if (this.defaultHighLight(index).color != '') {
-            return `<span class='char ${
-              this.defaultHighLight(index).color
-            }' data-notes='${
-              this.defaultHighLight(index).index
-            }' index='${index + 1}'>${dom}</span>`;
-          } else {
-            return `<span class='char' index='${index + 1}'>${dom}</span>`;
-          }
-        })
-        .join('');
-    },
     bookContent() {
       return this.$store.getters.getBookContent;
     },
@@ -418,9 +422,6 @@ export default {
       ) {
         css = 'selected';
       }
-      if (this.defaultHighLight(i).color.length > 0) {
-        css = this.defaultHighLight(i).color;
-      }
       return css;
     },
     // switchSelect(arg) {
@@ -438,30 +439,6 @@ export default {
           this.countPageHeight();
         }
       });
-    },
-    defaultHighLight(index) {
-      let result = { color: '', index: 0 };
-      const notes = this.$store.getters.getNotes;
-      const currentChapter = this.bookLocation.chapterIndex;
-      const currentSection = this.bookLocation.sectionIndex;
-      const note = notes
-        .map((item, i) => {
-          return { ...item, i };
-        })
-        .filter(
-          item =>
-            item.chapterIndex == currentChapter &&
-            item.sectionIndex == currentSection
-        );
-      if (note.length > 0) {
-        note.forEach(item => {
-          if (index >= item.textStart && index <= item.textEnd) {
-            result.color = item.color;
-            result.index = item.i;
-          }
-        });
-      }
-      return result;
     },
     toggleNavigation() {
       this.$emit('toggleNavigation');
