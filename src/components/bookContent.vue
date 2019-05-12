@@ -415,6 +415,8 @@ export default {
       return css;
     },
     switchTouch(e, arg) {
+      this.isShowTooltip = false;
+      this.clearSelected();
       this.pointerEvents = arg;
     },
     initContent() {
