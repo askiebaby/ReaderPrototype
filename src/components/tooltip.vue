@@ -4,14 +4,28 @@
       <div class="tooltip__wrapper">
         <div class="tooltip__top">
           <div class="tooltip__penColor">
-            <div class="tooltip__penColor__yellow"></div>
-            <div class="tooltip__penColor__red"></div>
-            <div class="tooltip__penColor__blue colorSelected"></div>
-            <div class="tooltip__penColor__green"></div>
+            <div
+              class="tooltip__penColor__yellow"
+              @click="addNotes('yellow-pen')"
+            ></div>
+            <div
+              class="tooltip__penColor__red"
+              @click="addNotes('red-pen')"
+            ></div>
+            <div
+              class="tooltip__penColor__purple colorSelected"
+              @click="addNotes('purple-pen')"
+            ></div>
+            <div
+              class="tooltip__penColor__green"
+              @click="addNotes('green-pen')"
+            ></div>
           </div>
           <div class="tooltip__function">
             <div><img src="@/assets/images/icons/copy.svg" alt="" /></div>
-            <div><img src="@/assets/images/icons/note.svg" alt="" /></div>
+            <div @click="showNotes">
+              <img src="@/assets/images/icons/note.svg" alt="" />
+            </div>
             <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
             <div><img src="@/assets/images/icons/search.png" alt="" /></div>
           </div>
@@ -30,7 +44,8 @@ body {
 }
 .colorSelected {
   position: relative;
-  &::before, &::after {
+  &::before,
+  &::after {
     content: '';
     width: 20px;
     height: 1px;
@@ -39,10 +54,10 @@ body {
     top: 15px;
     left: 5px;
   }
-  &::before{
+  &::before {
     transform: rotate(45deg);
   }
-  &::after{
+  &::after {
     transform: rotate(135deg);
   }
 }
@@ -56,7 +71,7 @@ body {
     position: relative;
     background-color: $white;
     border-radius: 10px;
-    box-shadow: 0 2px 15px -2px rgba(0, 0, 0, .9);
+    box-shadow: 0 2px 15px -2px rgba(0, 0, 0, 0.9);
   }
   &__top {
     display: flex;
@@ -86,7 +101,8 @@ body {
         width: 27px;
         height: 27px;
         transform: rotate(45deg);
-        box-shadow: 6px 5px 9px -9px $black, 5px 5px 7px -5px rgba(0, 0, 0, .65);
+        box-shadow: 6px 5px 9px -9px $black,
+          5px 5px 7px -5px rgba(0, 0, 0, 0.65);
       }
     }
   }
@@ -137,12 +153,11 @@ export default {
   props: {
     tooltipPosition: {
       type: Object,
-      default: function() {
-        return {
-          x: 0,
-          y: 0
-        };
-      }
+      default: () => {}
+    },
+    selectedToNotes: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -155,6 +170,22 @@ export default {
     topStyle() {
       let y = this.tooltipPosition.y;
       return y + 'px';
+    }
+  },
+  methods: {
+    addNotes(color) {
+      this.$store.commit('addNotes', {
+        chapterIndex: this.selectedToNotes.chapterIndex,
+        sectionIndex: this.selectedToNotes.sectionIndex,
+        textStart: this.selectedToNotes.textStart,
+        textEnd: this.selectedToNotes.textEnd,
+        color: color,
+        comment: ''
+      });
+      console.log(this.$store.getters.getNotes);
+    },
+    showNotes() {
+      this.$store.commit('switchShowNotes');
     }
   }
 };

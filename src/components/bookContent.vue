@@ -4,7 +4,9 @@
       v-if="showTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
+      :selected-to-notes="selectedToNotes"
     ></tooltip>
+
     <h2 v-touch:tap="e => switchTouch(e, 'auto')" class="book__chapter">
       {{ checkFinishStep1 }} {{ bookContent.h1title }}
     </h2>
@@ -321,6 +323,14 @@ export default {
   },
 
   computed: {
+    selectedToNotes() {
+      return {
+        chapterIndex: this.bookLocation.chapterIndex,
+        sectionIndex: this.bookLocation.sectionIndex,
+        textStart: this.selected.start,
+        textEnd: this.selected.end
+      };
+    },
     groupsContent() {
       const range = [{ i: 0, color: '' }];
       const notes = this.$store.getters.getNotes;

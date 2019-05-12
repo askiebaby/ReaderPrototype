@@ -2,7 +2,7 @@
   <section class="notes">
     <div class="notes__container">
       <nav class="notes__nav">
-        <div class="notes__nav__close">
+        <div class="notes__nav__close" @click="closeNotes">
           <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
         </div>
         <div class="notes__nav__title">
@@ -13,7 +13,7 @@
         <div class="note__highlight" :class="item.color"></div>
         <div class="note__record">
           <div class="note__sentence">{{ item.text }}</div>
-          <div class="note__memo">
+          <div v-if="item.comment != ''" class="note__memo">
             {{ item.comment }}
           </div>
         </div>
@@ -147,7 +147,12 @@ export default {
           color: item.color,
           comment: item.comment
         };
-      });
+      }).reverse();
+    }
+  },
+  methods: {
+    closeNotes() {
+      this.$store.commit('switchShowNotes');
     }
   }
 };

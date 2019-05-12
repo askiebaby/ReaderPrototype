@@ -7,7 +7,7 @@
       <li @click="changeSettingStatus">
         <img :src="require('@/assets/menu/aa.png')" />
       </li>
-      <li>
+      <li @click="showNotes">
         <img :src="require('@/assets/menu/group.svg')" />
       </li>
       <li>
@@ -61,6 +61,9 @@ export default {
     },
     openIndexStatus() {
       this.$emit('openIndexStatus', true);
+    },
+    showNotes() {
+      this.$store.commit('switchShowNotes');
     }
   }
 };

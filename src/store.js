@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
     totalCounts: 0,
     id: '',
     name: '',
+    showNotes: false,
     task: [],
     bookContent: {
       chapter: '',
@@ -58,12 +59,19 @@ export const store = new Vuex.Store({
     },
     getNotes: state => {
       return state.notes;
+    },
+    getIsShowNotes: state => {
+      return state.showNotes;
     }
   },
   mutations: {
     addTotalCounts(state) {
       state.totalCounts++;
     },
+    switchShowNotes(state) {
+      state.showNotes = !state.showNotes;
+    },
+
     setBookContent(state, payload) {
       state.bookContent.chapter = payload.chapter;
       state.bookContent.h1title = payload.h1title;
@@ -101,11 +109,14 @@ export const store = new Vuex.Store({
       VueCookies.set(state.id, Obj);
     },
     addNotes(state, payload) {
-      let Obj = {
-        selectStart: payload.start,
-        selectEnd: payload.end
-      };
-      state.notes.push(Obj);
+      state.notes.push({
+        chapterIndex: payload.chapterIndex,
+        sectionIndex: payload.sectionIndex,
+        textStart: payload.textStart,
+        textEnd: payload.textEnd,
+        color: payload.color,
+        comment: payload.comment
+      });
     }
   }
 });

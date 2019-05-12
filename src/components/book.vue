@@ -4,7 +4,7 @@
       v-show="isShowNavigation"
       @showLeaveBubble="isLeaveMission = $event"
     ></menu-top>
-
+    <note v-if="isShowNotes"></note>
     <bookContent
       :class="[fontFamilyClass, fontSizeClass]"
       :size-level="sizeLevel"
@@ -51,11 +51,10 @@ import menuTop from '@/components/menu/top.vue';
 import menuBottom from '@/components/menu/bottom.vue';
 import leaveMission from '@/components/lightBox/leaveMission.vue';
 import index from '@/components/index.vue';
-import note from '@/components/note.vue';
 import setting from '@/components/setting.vue';
 import bookContent from '@/components/bookContent.vue';
 import completeMission from '@/components/lightBox/completeMission.vue';
-
+import note from './note.vue';
 // data
 import document from '@/assets/document.json';
 
@@ -88,6 +87,11 @@ export default {
       task: this.$store.getters.getTask,
       index: 0
     };
+  },
+  computed: {
+    isShowNotes() {
+      return this.$store.getters.getIsShowNotes;
+    }
   },
   created() {
     this.loadIntroContent();
