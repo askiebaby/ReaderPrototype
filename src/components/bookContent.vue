@@ -396,10 +396,11 @@ export default {
     bookContent: {
       handler: function() {
         console.log('I watch!!!!!!!!!!!!!!!!!!');
-        if (this.togglePageAction === 'prev') {
-          this.countPageHeight('prev');
-        } else if (this.togglePageAction === 'next') {
-          this.countPageHeight('next');
+        if (this.togglePageAction === 'prev' || this.togglePageAction === 'next') {
+          this.countPageHeight();
+        } else {
+          this.togglePageAction = 'default';
+          this.countPageHeight();
         }
       },
       deep: true
@@ -489,7 +490,7 @@ export default {
       });
     },
     checkPagePosition() {
-      if (this.togglePageAction === 'next') {
+      if (this.togglePageAction === 'next' || 'default') {
         this.$refs.viewport.scrollTop = 0;
         this.bookLocation.pageIndex = 0;
         console.log(
