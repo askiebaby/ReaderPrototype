@@ -13,6 +13,7 @@ import bookCover from './components/bookCover.vue';
 import tooltip from './components/tooltip.vue';
 import note from './components/note.vue';
 import share from './components/share.vue';
+import memo from './components/memo.vue';
 
 Vue.use(Router);
 
@@ -83,6 +84,11 @@ export default new Router({
       path: '/share',
       name: 'share',
       component: share
+    },
+    {
+      path: '/memo',
+      name: 'memo',
+      component: memo
     }
     // {
     // path: "/about",
