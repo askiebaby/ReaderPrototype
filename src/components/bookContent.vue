@@ -5,6 +5,7 @@
       class="tooltip"
       :tooltip-position="tooltipPosition"
       :selected-to-notes="selectedToNotes"
+      @highLightColor="addNotes($event)"
     ></tooltip>
 
     <h2 v-touch:tap="e => switchTouch(e, 'auto')" class="book__chapter">
@@ -341,8 +342,10 @@ export default {
           item.chapterIndex == currentChapter &&
           item.sectionIndex == currentSection
       );
+
       if (note.length > 0) {
-        for (const item of notes) {
+        const notesSort = notes.sort((a, b) => a.textStart - b.textStart);
+        for (const item of notesSort) {
           range.push({ i: item.textStart, color: item.color });
           range.push({ i: item.textEnd, color: '' });
         }
@@ -414,6 +417,18 @@ export default {
   },
 
   methods: {
+    addNotes(color) {
+      this.$store.commit('addNotes', {
+        chapterIndex: this.selectedToNotes.chapterIndex,
+        sectionIndex: this.selectedToNotes.sectionIndex,
+        textStart: this.selectedToNotes.textStart,
+        textEnd: this.selectedToNotes.textEnd,
+        color: color,
+        comment: ''
+      });
+      this.clearSelected();
+      console.log(this.$store.getters.getNotes);
+    },
     hightLight(i) {
       let css = '';
       if (

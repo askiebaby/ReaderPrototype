@@ -174,15 +174,7 @@ export default {
   },
   methods: {
     addNotes(color) {
-      this.$store.commit('addNotes', {
-        chapterIndex: this.selectedToNotes.chapterIndex,
-        sectionIndex: this.selectedToNotes.sectionIndex,
-        textStart: this.selectedToNotes.textStart,
-        textEnd: this.selectedToNotes.textEnd,
-        color: color,
-        comment: ''
-      });
-      console.log(this.$store.getters.getNotes);
+      this.$emit('highLightColor', color);
     },
     showNotes() {
       this.$store.commit('switchShowNotes');
