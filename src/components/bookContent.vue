@@ -85,17 +85,18 @@
     position: relative;
     width: 100%;
     transform: translate(0, 0px);
-    * {
-      font-weight: normal;
+    h3, p, span {
       line-height: 1.75em;
       text-align: justify;
+    }
+    span {
+      font-weight: normal;
+      padding: .25em 0;
     }
   }
 
   p {
-    line-height: 1.75em;
     text-indent: 1.5em;
-    text-align: justify;
   }
 }
 
@@ -283,7 +284,7 @@ export default {
           line: '9'
         },
         {
-          fontSize: '20',
+          fontSize: '48',
           line: '8'
         },
         {
@@ -360,11 +361,13 @@ export default {
       const lineHeight = this.setting.lineHeight;
       const fontSize = this.fontLevels[this.sizeLevel].fontSize;
       const result = lineHeight * fontSize;
+      console.log(`${result} = ${lineHeight} * ${fontSize}`)
       return result;
     },
     containerHeight() {
       const line = this.fontLevels[this.sizeLevel].line;
       const viewport = Math.floor(this.aLineHeight) * line;
+      console.log(`${viewport} = ${line} 行 x 』${Math.floor(this.aLineHeight)}`)
       return viewport;
     },
     showTooltip() {
@@ -402,6 +405,9 @@ export default {
       deep: true
     },
     sizeLevel() {
+      // reset word container's height
+      this.bookLocation.newContentHeight = ''
+      this.$store.commit('setBookLocation', this.bookLocation);
       this.countPageHeight();
     }
   },
@@ -444,9 +450,6 @@ export default {
     },
     countPageHeight() {
       this.$nextTick(() => {
-        // reset
-        // this.bookLocation.newContentHeight = ''
-        // this.$store.commit('setBookLocation', this.bookLocation);
 
         // 內容原長度
         this.scrollHeight = this.$refs.viewport.scrollHeight;

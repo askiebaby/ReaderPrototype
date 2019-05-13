@@ -88,7 +88,7 @@ body {
     .arrow {
       position: absolute;
       left: 50%;
-      bottom: -16px;
+      bottom: -15px;
       width: 70px;
       height: 16px;
       margin-left: -35px;
