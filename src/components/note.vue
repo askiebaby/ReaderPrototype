@@ -1,5 +1,6 @@
 <template>
   <section class="notes">
+    <div class="notes__background" @click="closeNotes"></div>
     <div class="notes__container">
       <nav class="notes__nav">
         <div class="notes__nav__close" @click="closeNotes">
@@ -35,10 +36,17 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background: rgba(155, 155, 155, 0.9);
   position: fixed;
   top: 0;
   z-index: 100;
+  &__background {
+    background: rgba(155, 155, 155, 0.9);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
   &__container {
     position: absolute;
     background: #f4f4f4;
