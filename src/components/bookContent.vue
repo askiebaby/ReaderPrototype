@@ -34,13 +34,11 @@
               v-touch:end="touchEnd"
               :index="g.boundary + j"
               :class="hightLight(g.boundary + j)"
-              >{{ c }}
-            </span>
-          </span>
+              >{{ c }}</span></span>
         </p>
       </div>
     </div>
-    <div class="page">- {{ bookLocation.pageIndex + 1 }} -</div>
+    <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages}}頁</div>
     <div class="touch" :style="{ pointerEvents: pointerEvents }">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>

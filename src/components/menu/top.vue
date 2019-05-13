@@ -18,8 +18,8 @@
   padding: 33px 0 0 24px;
   &__back {
     display: flex;
-    max-width: 768px;
-    margin: auto;
+    margin-right: auto;
+    width: 150px;
     cursor: pointer;
   }
 }

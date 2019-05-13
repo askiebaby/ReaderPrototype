@@ -27,7 +27,7 @@
               <img src="@/assets/images/icons/note.svg" alt="" />
             </div>
             <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
-            <div><img src="@/assets/images/icons/search.png" alt="" /></div>
+            <div class="tooltip__function__search"><img src="@/assets/images/icons/search@2x.png" alt="" /></div>
           </div>
         </div>
         <div class="tooltip__bottom">
@@ -113,6 +113,11 @@ body {
     flex-basis: 50%;
     > div {
       cursor: pointer;
+    }
+    &__search {
+      img {
+        max-width: 20px;
+      }
     }
   }
   &__penColor {
