@@ -325,11 +325,17 @@ export default {
 
   computed: {
     selectedToNotes() {
+      let textStart = this.selected.start;
+      let textEnd = this.selected.end;
+      if (this.selected.start > this.selected.end) {
+        textStart = this.selected.end;
+        textEnd = this.selected.start;
+      }
       return {
         chapterIndex: this.bookLocation.chapterIndex,
         sectionIndex: this.bookLocation.sectionIndex,
-        textStart: this.selected.start,
-        textEnd: this.selected.end
+        textStart: textStart,
+        textEnd: textEnd
       };
     },
     groupsContent() {
