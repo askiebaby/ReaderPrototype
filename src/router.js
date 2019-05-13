@@ -12,6 +12,7 @@ import taskRecord from './components/taskRecord.vue';
 import bookCover from './components/bookCover.vue';
 import tooltip from './components/tooltip.vue';
 import note from './components/note.vue';
+import share from './components/share.vue';
 
 Vue.use(Router);
 
@@ -77,6 +78,11 @@ export default new Router({
       path: '/note',
       name: 'note',
       component: note
+    },
+    {
+      path: '/share',
+      name: 'share',
+      component: share
     }
     // {
     // path: "/about",
