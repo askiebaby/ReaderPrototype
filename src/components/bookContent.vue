@@ -348,9 +348,8 @@ export default {
           item.chapterIndex == currentChapter &&
           item.sectionIndex == currentSection
       );
-
       if (note.length > 0) {
-        const notesSort = notes.sort((a, b) => a.textStart - b.textStart);
+        const notesSort = note.sort((a, b) => a.textStart - b.textStart);
         for (const item of notesSort) {
           range.push({ i: item.textStart, color: item.color });
           range.push({ i: item.textEnd, color: '' });
