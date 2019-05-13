@@ -47,13 +47,13 @@
 
 <script>
 // components
-import menuTop from '@/components/menu/top.vue';
-import menuBottom from '@/components/menu/bottom.vue';
-import leaveMission from '@/components/lightBox/leaveMission.vue';
-import index from '@/components/index.vue';
-import setting from '@/components/setting.vue';
-import bookContent from '@/components/bookContent.vue';
-import completeMission from '@/components/lightBox/completeMission.vue';
+import menuTop from './menu/top.vue';
+import menuBottom from './menu/bottom.vue';
+import leaveMission from './lightBox/leaveMission.vue';
+import index from './index.vue';
+import setting from './setting.vue';
+import bookContent from './bookContent.vue';
+import completeMission from './lightBox/completeMission.vue';
 import note from './note.vue';
 // data
 import document from '@/assets/document.json';
