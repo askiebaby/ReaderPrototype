@@ -181,7 +181,7 @@ export default {
     },
     ShowChapter(chapterIndex) {
       let show = true;
-      if ((chapterIndex == 2) | (chapterIndex == 3)) {
+      if (chapterIndex >= 2) {
         show = false;
       }
       return show;
