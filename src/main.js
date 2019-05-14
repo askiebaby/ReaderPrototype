@@ -10,7 +10,9 @@ import Vue2TouchEvents from 'vue2-touch-events';
 Vue.config.productionTip = false;
 cookies.config('90d');
 Vue.use(moment);
-Vue.use(Vue2TouchEvents);
+Vue.use(Vue2TouchEvents, {
+  longTapTimeInterval: 500
+});
 
 new Vue({
   cookies,

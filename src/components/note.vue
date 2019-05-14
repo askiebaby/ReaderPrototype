@@ -155,7 +155,7 @@ export default {
           color: item.color,
           comment: item.comment
         };
-      }).reverse();
+      });
     }
   },
   methods: {

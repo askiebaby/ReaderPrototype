@@ -8,7 +8,7 @@
       @highLightColor="addNotes($event)"
     ></tooltip>
 
-    <h2 v-touch:tap="e => switchTouch(e, 'auto')" class="book__chapter">
+    <h2 class="book__chapter">
       {{ checkFinishStep1 }} {{ bookContent.h1title }}
     </h2>
     <div
@@ -26,7 +26,12 @@
       >
         <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
         <p>
-          <span v-for="(g, i) in groupsContent" :key="i" :class="g.hightLight">
+          <span
+            v-for="(g, i) in groupsContent"
+            :key="i"
+            v-touch:tap="e => selectedPart(e, g.notesIndex)"
+            :class="g.hightLight"
+          >
             <span
               v-for="(c, j) in g.textGroup"
               :key="j"
@@ -35,11 +40,15 @@
               v-touch:end="touchEnd"
               :index="g.boundary + j"
               :class="hightLight(g.boundary + j)"
-              >{{ c }}</span></span>
+              >{{ c }}</span
+            ></span
+          >
         </p>
       </div>
     </div>
-    <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages}}頁</div>
+    <div class="page">
+      本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+    </div>
     <div class="touch" :style="{ pointerEvents: pointerEvents }">
       <div class="touch__previous" @click="loadBookContent('prev')"></div>
       <div class="touch__navigation" @click="toggleNavigation"></div>
@@ -86,13 +95,15 @@
     position: relative;
     width: 100%;
     transform: translate(0, 0px);
-    h3, p, span {
+    h3,
+    p,
+    span {
       line-height: 1.75em;
       text-align: justify;
     }
     span {
       font-weight: normal;
-      padding: .25em 0;
+      padding: 0.25em 0;
     }
   }
 
@@ -338,30 +349,42 @@ export default {
       };
     },
     groupsContent() {
-      const range = [{ i: 0, color: '' }];
+      const range = [{ i: 0 }];
       const notes = this.$store.getters.getNotes;
       const currentChapter = this.bookLocation.chapterIndex;
       const currentSection = this.bookLocation.sectionIndex;
-      const note = notes.filter(
-        item =>
-          item.chapterIndex == currentChapter &&
-          item.sectionIndex == currentSection
-      );
+      const note = notes
+        .map((item, i) => {
+          return { ...item, notesIndex: i };
+        })
+        .filter(
+          item =>
+            item.chapterIndex == currentChapter &&
+            item.sectionIndex == currentSection
+        );
       if (note.length > 0) {
         const notesSort = note.sort((a, b) => a.textStart - b.textStart);
         for (const item of notesSort) {
-          range.push({ i: item.textStart, color: item.color });
-          range.push({ i: item.textEnd, color: '' });
+          range.push({
+            i: item.textStart,
+            color: item.color,
+            notesIndex: item.notesIndex
+          });
+          range.push({ i: item.textEnd });
         }
       }
-      range.push({ i: this.bookContent.content.length, color: '' });
+      range.push({ i: this.bookContent.content.length });
       const group = [];
       for (let j = 0; j < range.length - 1; j++) {
-        group.push({
+        let Obj = {
           textGroup: this.bookContent.content.slice(range[j].i, range[j + 1].i),
-          boundary: range[j].i,
-          hightLight: range[j].color
-        });
+          boundary: range[j].i
+        };
+        if (range[j].notesIndex != undefined && range[j].color != undefined) {
+          Obj.hightLight = range[j].color;
+          Obj.notesIndex = range[j].notesIndex;
+        }
+        group.push(Obj);
       }
       return group;
     },
@@ -369,13 +392,15 @@ export default {
       const lineHeight = this.setting.lineHeight;
       const fontSize = this.fontLevels[this.sizeLevel].fontSize;
       const result = lineHeight * fontSize;
-      console.log(`${result} = ${lineHeight} * ${fontSize}`)
+      console.log(`${result} = ${lineHeight} * ${fontSize}`);
       return result;
     },
     containerHeight() {
       const line = this.fontLevels[this.sizeLevel].line;
       const viewport = Math.floor(this.aLineHeight) * line;
-      console.log(`${viewport} = ${line} 行 x 』${Math.floor(this.aLineHeight)}`)
+      console.log(
+        `${viewport} = ${line} 行 x 』${Math.floor(this.aLineHeight)}`
+      );
       return viewport;
     },
     showTooltip() {
@@ -404,7 +429,10 @@ export default {
     bookContent: {
       handler: function() {
         console.log('I watch!!!!!!!!!!!!!!!!!!');
-        if (this.togglePageAction === 'prev' || this.togglePageAction === 'next') {
+        if (
+          this.togglePageAction === 'prev' ||
+          this.togglePageAction === 'next'
+        ) {
           this.countPageHeight();
         } else {
           this.togglePageAction = 'default';
@@ -415,7 +443,7 @@ export default {
     },
     sizeLevel() {
       // reset word container's height
-      this.bookLocation.newContentHeight = ''
+      this.bookLocation.newContentHeight = '';
       this.$store.commit('setBookLocation', this.bookLocation);
       this.countPageHeight();
     }
@@ -427,6 +455,26 @@ export default {
   },
 
   methods: {
+    selectedPart(e, notesIndex) {
+      if (notesIndex != undefined) {
+        this.clearSelected();
+        const partPosition = e.target.parentElement.getBoundingClientRect();
+        console.log('002', partPosition);
+        if (partPosition.left < 196) {
+          this.tooltipPosition.x = partPosition.left;
+        } else if (partPosition.left + 392 > 768) {
+          this.tooltipPosition.x = 695 - 392;
+        } else {
+          this.tooltipPosition.x =
+            partPosition.left + partPosition.width / 2 - 196;
+        }
+        this.tooltipPosition.y =
+          partPosition.top - 42 - this.fontLevels[this.sizeLevel].fontSize;
+        this.isShowTooltip = true;
+      } else {
+        this.switchTouch(e, 'auto');
+      }
+    },
     addNotes(color) {
       this.$store.commit('addNotes', {
         chapterIndex: this.selectedToNotes.chapterIndex,
@@ -471,7 +519,6 @@ export default {
     },
     countPageHeight() {
       this.$nextTick(() => {
-
         // 內容原長度
         this.scrollHeight = this.$refs.viewport.scrollHeight;
 
@@ -734,17 +781,6 @@ export default {
         this.selectPosition.start.x = e.target.getBoundingClientRect().left;
         this.selectPosition.start.y = e.target.getBoundingClientRect().top;
       }
-      // if (
-      //   e.target.classList.contains('char') &&
-      //   !this.isBetween(parseInt(e.target.getAttribute('index')))
-      // ) {
-      //   this.selected.start = parseInt(e.target.getAttribute('index'));
-
-      //   this.selectPosition.start.x = e.target.getBoundingClientRect().left;
-      //   this.selectPosition.start.y = e.target.getBoundingClientRect().top;
-      // } else {
-      //   this.clearSelected();
-      // }
     },
     touchEnd() {
       const averageX =
@@ -761,11 +797,6 @@ export default {
       //扣除tooltip一半的寬度
       this.tooltipPosition.x = averageX - 196;
       this.isShowTooltip = true;
-      // if (this.isSelect) {
-      //   this.isShowTooltip = true;
-      //   this.$store.commit('addNotes', this.selected);
-      //   console.log(this.$store.getters.getNotes);
-      // }
     },
     touchMove(e) {
       let changedTouch = e.changedTouches[0];
@@ -779,12 +810,6 @@ export default {
         this.selectPosition.end.x = changedTouch.clientX;
         this.selectPosition.end.y = changedTouch.clientY;
       }
-      // if (target.classList.contains('char') && this.selected.start) {
-      //   this.selected.end = parseInt(target.getAttribute('index'));
-      //   this.setSelected();
-      //   this.selectPosition.end.x = changedTouch.clientX;
-      //   this.selectPosition.end.y = changedTouch.clientY;
-      // }
     },
     clearSelected() {
       this.isShowTooltip = false;
