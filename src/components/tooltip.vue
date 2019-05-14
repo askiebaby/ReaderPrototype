@@ -5,20 +5,10 @@
         <div class="tooltip__top">
           <div class="tooltip__penColor">
             <div
-              class="tooltip__penColor__yellow"
-              @click="addNotes('yellow-pen')"
-            ></div>
-            <div
-              class="tooltip__penColor__red"
-              @click="addNotes('red-pen')"
-            ></div>
-            <div
-              class="tooltip__penColor__purple colorSelected"
-              @click="addNotes('purple-pen')"
-            ></div>
-            <div
-              class="tooltip__penColor__green"
-              @click="addNotes('green-pen')"
+              v-for="(item, index) in color"
+              :key="item"
+              :class="showColor(item)"
+              @click="changeColor(item)"
             ></div>
           </div>
           <div class="tooltip__function">
@@ -27,7 +17,9 @@
               <img src="@/assets/images/icons/note.svg" alt="" />
             </div>
             <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
-            <div class="tooltip__function__search"><img src="@/assets/images/icons/search@2x.png" alt="" /></div>
+            <div class="tooltip__function__search">
+              <img src="@/assets/images/icons/search@2x.png" alt="" />
+            </div>
           </div>
         </div>
         <div class="tooltip__bottom">
@@ -163,10 +155,17 @@ export default {
     selectedToNotes: {
       type: Object,
       default: () => {}
+    },
+    selectedColor: {
+      type: String,
+      default: ''
     }
   },
   data() {
-    return {};
+    return {
+      selected: '',
+      color: ['yellow', 'red', 'purple', 'green']
+    };
   },
   computed: {
     leftStyle() {
@@ -177,9 +176,28 @@ export default {
       return y + 'px';
     }
   },
+  mounted() {
+    this.selected = this.selectedColor;
+  },
   methods: {
-    addNotes(color) {
-      this.$emit('highLightColor', color);
+    showColor(item) {
+      let arrary = [];
+      arrary.push('tooltip__penColor__' + item);
+      if (this.selected == item) {
+        arrary.push('colorSelected');
+      }
+      return arrary;
+    },
+    colorSelected(color) {
+      this.color = this.selectedColor;
+      if (this.color == color) {
+        return 'colorSelected';
+      }
+      return '';
+    },
+    changeColor(color) {
+      this.selected = color;
+      this.$emit('changeColor', color + '-pen');
     },
     showNotes() {
       this.$store.commit('switchShowNotes');

@@ -4,8 +4,9 @@
       v-if="showTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
+      :selected-color="selectedPartColor"
       :selected-to-notes="selectedToNotes"
-      @highLightColor="addNotes($event)"
+      @changeColor="changeColor($event)"
     ></tooltip>
 
     <h2 class="book__chapter">
@@ -329,7 +330,9 @@ export default {
         y: 0
       },
       notes: [],
-      pointerEvents: 'auto'
+      pointerEvents: 'auto',
+      isSelectedPart: -1,
+      selectedPartColor: ''
     };
   },
 
@@ -457,8 +460,11 @@ export default {
   methods: {
     selectedPart(e, notesIndex) {
       if (notesIndex != undefined) {
+        this.isSelectedPart = notesIndex;
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
+        this.selectedPartColor = e.target.parentElement.className.split('-')[0];
+        console.log(this.selectedPartColor);
         if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = 72;
         } else if (partPosition.left + 392 > 695) {
@@ -471,10 +477,18 @@ export default {
           partPosition.top - 42 - this.fontLevels[this.sizeLevel].fontSize;
         this.isShowTooltip = true;
       } else {
+        this.isSelectedPart = -1;
         this.switchTouch(e, 'auto');
       }
     },
-    addNotes(color) {
+    changeColor(color) {
+      if (this.isSelectedPart >= 0) {
+        this.$store.commit('changeNotesColor', {
+          index: this.isSelectedPart,
+          color: color
+        });
+        return;
+      }
       this.$store.commit('addNotes', {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
@@ -773,7 +787,10 @@ export default {
       this.nowWordsCount = this.bookContent.content.length;
     },
     touchStart(e, i) {
-      this.clearSelected();
+      if (e.target.parentElement.className.length > 0) {
+        this.clearSelected();
+        return;
+      }
       if (!this.isBetween(i)) {
         this.selected.start = i;
         this.selected.end = i;
@@ -788,14 +805,10 @@ export default {
         this.selectPosition.start.y,
         this.selectPosition.end.y
       );
-      // const fontSize = this.fontSetting[this.setting.fontSetting].fontSize;
-      // const numb = fontSize.match(/\d/g).join('');
-
       //扣除字體以及tooltip高度
       this.tooltipPosition.y =
         minY - this.fontLevels[this.sizeLevel].fontSize - 42;
       //扣除tooltip一半的寬度
-      console.log('15616', averageX);
       if (averageX - 196 <= 0) {
         this.tooltipPosition.x = 72;
       } else if (averageX + 196 >= 695) {
@@ -803,7 +816,11 @@ export default {
       } else {
         this.tooltipPosition.x = averageX - 196;
       }
-      this.isShowTooltip = true;
+      if (this.selected.start > 0 && this.selected.end > 0) {
+        this.isSelectedPart = -1;
+        this.selectedPartColor = '';
+        this.isShowTooltip = true;
+      }
     },
     touchMove(e) {
       let changedTouch = e.changedTouches[0];
@@ -811,6 +828,10 @@ export default {
         changedTouch.clientX,
         changedTouch.clientY
       );
+      if (target.parentElement.className.length > 0) {
+        this.clearSelected();
+        return;
+      }
       if (this.selected.start >= 0) {
         const charEnd = parseInt(target.getAttribute('index'));
         this.selected.end = charEnd;

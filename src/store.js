@@ -109,7 +109,7 @@ export const store = new Vuex.Store({
       VueCookies.set(state.id, Obj);
     },
     addNotes(state, payload) {
-      state.notes.push({
+      state.notes.unshift({
         chapterIndex: payload.chapterIndex,
         sectionIndex: payload.sectionIndex,
         textStart: payload.textStart,
@@ -117,6 +117,9 @@ export const store = new Vuex.Store({
         color: payload.color,
         comment: payload.comment
       });
+    },
+    changeNotesColor(state, payload) {
+      state.notes[payload.index].color = payload.color;
     }
   }
 });
