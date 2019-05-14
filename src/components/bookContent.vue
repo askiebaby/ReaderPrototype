@@ -459,8 +459,7 @@ export default {
       if (notesIndex != undefined) {
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
-        console.log('002', partPosition);
-        if (partPosition.left < 196) {
+        if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = partPosition.left;
         } else if (partPosition.left + 392 > 768) {
           this.tooltipPosition.x = 695 - 392;
