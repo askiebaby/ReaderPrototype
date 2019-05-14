@@ -36,7 +36,11 @@ export const store = new Vuex.Store({
         comment:
           '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。'
       }
-    ]
+    ],
+    directions: {
+      words: '',
+      functions: ''
+    }
   },
   getters: {
     getID: state => {
@@ -62,6 +66,9 @@ export const store = new Vuex.Store({
     },
     getIsShowNotes: state => {
       return state.showNotes;
+    },
+    getDirections: state => {
+      return state.directions;
     }
   },
   mutations: {
@@ -71,7 +78,6 @@ export const store = new Vuex.Store({
     switchShowNotes(state) {
       state.showNotes = !state.showNotes;
     },
-
     setBookContent(state, payload) {
       state.bookContent.chapter = payload.chapter;
       state.bookContent.h1title = payload.h1title;
@@ -117,6 +123,10 @@ export const store = new Vuex.Store({
         color: payload.color,
         comment: payload.comment
       });
+    },
+    setDirections(state, payload) {
+      state.directions.words = payload.words;
+      state.directions.directions = payload.directions;
     }
   }
 });

@@ -9,12 +9,6 @@
         <div class="taskList__description__word">橫</div>
       </div>
       <div class="taskList__tasks-type1">
-        <!-- <router-link
-              tag="div"
-              :to="{ name: 'login',params:{id:n}}"
-              class="task"
-              v-for="n in 5"
-        >{{n}}</router-link>-->
         <div
           v-for="n in 15"
           class="task"
