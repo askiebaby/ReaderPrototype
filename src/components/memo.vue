@@ -36,9 +36,13 @@
       border-radius: 18px;
     }
     &__textarea {
-      width: 100%;
+      max-width: 100%;
+      min-width: 100%;
+      min-height: 173px;
+      max-height: 173px;
       border: 1px solid $gray-3;
       border-radius: 18px;
+      font-size: 14px;
       padding: 10px;
       color: $black-1;
       font-weight: 300;
@@ -46,9 +50,15 @@
     }
     &__cancel {
       color: $white;
+      background-color: $black-1;
+      top: 0;
+      height: 100%;
+      border-radius: 18px;
     }
     &__submit {
       color: $black-1;
+      background-color: $white-3;
+      height: 40px;
     }
     &__cancel, &__submit {
       position: absolute;
@@ -56,6 +66,9 @@
       font-size: $indexSize;
       padding: 5px 20px;
       font-weight: 500;
+      border: none;
+      display: flex;
+      outline: none;
     }
     main {
       padding: 20px 18px 47px;
