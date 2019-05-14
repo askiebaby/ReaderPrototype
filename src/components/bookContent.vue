@@ -460,8 +460,8 @@ export default {
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
         if (partPosition.left < 196 && partPosition.width <= 392) {
-          this.tooltipPosition.x = partPosition.left;
-        } else if (partPosition.left + 392 > 768) {
+          this.tooltipPosition.x = 72;
+        } else if (partPosition.left + 392 > 695) {
           this.tooltipPosition.x = 695 - 392;
         } else {
           this.tooltipPosition.x =
@@ -792,9 +792,17 @@ export default {
       // const numb = fontSize.match(/\d/g).join('');
 
       //扣除字體以及tooltip高度
-      this.tooltipPosition.y = minY - 16 - 42;
+      this.tooltipPosition.y =
+        minY - this.fontLevels[this.sizeLevel].fontSize - 42;
       //扣除tooltip一半的寬度
-      this.tooltipPosition.x = averageX - 196;
+      console.log('15616', averageX);
+      if (averageX - 196 <= 0) {
+        this.tooltipPosition.x = 72;
+      } else if (averageX + 196 >= 695) {
+        this.tooltipPosition.x = 695 - 392;
+      } else {
+        this.tooltipPosition.x = averageX - 196;
+      }
       this.isShowTooltip = true;
     },
     touchMove(e) {
