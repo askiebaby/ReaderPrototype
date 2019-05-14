@@ -8,7 +8,7 @@
       @highLightColor="addNotes($event)"
     ></tooltip>
 
-    <h2 v-touch:tap="e => switchTouch(e, 'auto')" class="book__chapter">
+    <h2 class="book__chapter">
       {{ checkFinishStep1 }} {{ bookContent.h1title }}
     </h2>
     <div
@@ -29,7 +29,7 @@
           <span
             v-for="(g, i) in groupsContent"
             :key="i"
-            v-touch:tap="e => test(e, g.hightLight)"
+            v-touch:tap="e => selectedPart(e, g.notesIndex)"
             :class="g.hightLight"
           >
             <span
@@ -457,11 +457,24 @@ export default {
   },
 
   methods: {
-    test(e, color) {
-      if (color.length == 0) {
-        return '';
+    selectedPart(e, notesIndex) {
+      if (notesIndex != undefined) {
+        this.clearSelected();
+        const partPosition = e.target.parentElement.getBoundingClientRect();
+        console.log('002', partPosition);
+        if (partPosition.left < 196) {
+          this.tooltipPosition.x = partPosition.left;
+        } else if (partPosition.left + 392 > 768) {
+          this.tooltipPosition.x = partPosition.right - 392;
+        } else {
+          this.tooltipPosition.x =
+            partPosition.left + partPosition.width / 2 - 196;
+        }
+        this.tooltipPosition.y =
+          partPosition.top - 42 - this.fontLevels[this.sizeLevel].fontSize;
+        this.isShowTooltip = true;
       } else {
-        console.log(e, color);
+        this.switchTouch(e, 'auto');
       }
     },
     addNotes(color) {
