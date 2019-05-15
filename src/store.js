@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
     id: '',
     name: '',
     showNotes: false,
+    tooltipColor: '',
     task: [],
     bookContent: {
       chapter: '',
@@ -62,6 +63,9 @@ export const store = new Vuex.Store({
     },
     getIsShowNotes: state => {
       return state.showNotes;
+    },
+    getTooltipColor: state => {
+      return state.tooltipColor;
     }
   },
   mutations: {
@@ -120,6 +124,9 @@ export const store = new Vuex.Store({
     },
     changeNotesColor(state, payload) {
       state.notes[payload.index].color = payload.color;
+    },
+    changeTooltipColor(state, payload) {
+      state.tooltipColor = payload;
     }
   }
 });

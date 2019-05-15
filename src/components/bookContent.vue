@@ -464,7 +464,6 @@ export default {
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
         this.selectedPartColor = e.target.parentElement.className.split('-')[0];
-        console.log(this.selectedPartColor);
         if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = 72;
         } else if (partPosition.left + 392 > 695) {

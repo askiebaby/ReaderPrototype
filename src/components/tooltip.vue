@@ -5,7 +5,7 @@
         <div class="tooltip__top">
           <div class="tooltip__penColor">
             <div
-              v-for="(item, index) in color"
+              v-for="item in color"
               :key="item"
               :class="showColor(item)"
               @click="changeColor(item)"
@@ -150,7 +150,12 @@ export default {
   props: {
     tooltipPosition: {
       type: Object,
-      default: () => {}
+      default: () => {
+        return {
+          x: 0,
+          y: 0
+        };
+      }
     },
     selectedToNotes: {
       type: Object,
@@ -163,7 +168,7 @@ export default {
   },
   data() {
     return {
-      selected: '',
+      // selected: '',
       color: ['yellow', 'red', 'purple', 'green']
     };
   },
@@ -172,13 +177,15 @@ export default {
       return this.tooltipPosition.x + 'px';
     },
     topStyle() {
-      let y = this.tooltipPosition.y;
-      return y + 'px';
+      return this.tooltipPosition.y + 'px';
+    },
+    selected() {
+      return this.$store.getters.getTooltipColor;
     }
   },
-  mounted() {
-    this.selected = this.selectedColor;
-  },
+  // mounted() {
+  //   this.selected = this.selectedColor;
+  // },
   methods: {
     showColor(item) {
       let arrary = [];
@@ -188,15 +195,8 @@ export default {
       }
       return arrary;
     },
-    colorSelected(color) {
-      this.color = this.selectedColor;
-      if (this.color == color) {
-        return 'colorSelected';
-      }
-      return '';
-    },
     changeColor(color) {
-      this.selected = color;
+      this.$store.commit('changeTooltipColor', color);
       this.$emit('changeColor', color + '-pen');
     },
     showNotes() {

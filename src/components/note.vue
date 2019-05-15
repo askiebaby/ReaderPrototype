@@ -10,15 +10,25 @@
           <h2>筆記庫</h2>
         </div>
       </nav>
-      <article v-for="(item, index) in getNotes" :key="index" class="note">
+      <article
+        v-for="(item, index) in getNotes"
+        :key="index"
+        class="note"
+        style="position:relative"
+      >
+        <tooltip
+          v-if="isShowTooltip(index)"
+          style="position:absolute"
+          @changeColor="changeColor($event, index)"
+        ></tooltip>
         <div class="note__highlight" :class="item.color"></div>
         <div class="note__record">
           <div class="note__sentence">{{ item.text }}</div>
-          <div v-if="item.comment != ''" class="note__memo">
+          <div v-if="item.comment.length > 0" class="note__memo">
             {{ item.comment }}
           </div>
         </div>
-        <div class="note__actionButton">
+        <div class="note__actionButton" @click="selectedNote(index)">
           <img
             :src="require('@/assets/menu/dropdown-doubleline.svg')"
             alt="More Actions"
@@ -138,10 +148,15 @@
 
 <script>
 import documentContent from '@/assets/document.json';
+import tooltip from './tooltip.vue';
 export default {
+  components: {
+    tooltip
+  },
   data() {
     return {
-      documentContent
+      documentContent,
+      notesIndex: -1
     };
   },
   computed: {
@@ -161,6 +176,22 @@ export default {
   methods: {
     closeNotes() {
       this.$store.commit('switchShowNotes');
+    },
+    isShowTooltip(index) {
+      return this.notesIndex == index;
+    },
+    selectedNote(index) {
+      if (this.notesIndex == index) {
+        this.notesIndex = -1;
+        return;
+      }
+      this.notesIndex = index;
+    },
+    changeColor(color, index) {
+      this.$store.commit('changeNotesColor', {
+        index: index,
+        color: color
+      });
     }
   }
 };
