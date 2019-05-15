@@ -432,6 +432,8 @@ export default {
     bookContent: {
       handler: function() {
         console.log('I watch!!!!!!!!!!!!!!!!!!');
+        this.bookLocation.newContentHeight = '';
+        this.$store.commit('setBookLocation', this.bookLocation);
         if (
           this.togglePageAction === 'prev' ||
           this.togglePageAction === 'next'
