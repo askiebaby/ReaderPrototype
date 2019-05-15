@@ -1,54 +1,54 @@
 <template>
-  <div class="book" @click="changePage">
+  <div>
     <tooltip
       v-if="showTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
-      :selected-color="selectedPartColor"
       :selected-to-notes="selectedToNotes"
       @changeColor="changeColor($event)"
     ></tooltip>
-
-    <h2 class="book__chapter">
-      {{ checkFinishStep1 }} {{ bookContent.h1title }}
-    </h2>
-    <div
-      ref="viewport"
-      class="book__content"
-      :style="{
-        height: `${containerHeight}px`
-      }"
-    >
+    <div class="book" @click="changePage">
+      <h2 class="book__chapter">
+        {{ checkFinishStep1 }} {{ bookContent.h1title }}
+      </h2>
       <div
-        ref="bookContainer"
+        ref="viewport"
+        class="book__content"
         :style="{
-          height: `${bookLocation.newContentHeight}`
+          height: `${containerHeight}px`
         }"
       >
-        <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
-        <p>
-          <span
-            v-for="(g, i) in groupsContent"
-            :key="i"
-            v-touch:tap="e => selectedPart(e, g.notesIndex)"
-            :class="g.hightLight"
-          >
+        <div
+          ref="bookContainer"
+          :style="{
+            height: `${bookLocation.newContentHeight}`
+          }"
+        >
+          <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
+          <p>
             <span
-              v-for="(c, j) in g.textGroup"
-              :key="j"
-              v-touch:start="e => touchStart(e, g.boundary + j)"
-              v-touch:moving="touchMove"
-              v-touch:end="touchEnd"
-              :index="g.boundary + j"
-              :class="hightLight(g.boundary + j)"
-              >{{ c }}</span
-            ></span
-          >
-        </p>
+              v-for="(g, i) in groupsContent"
+              :key="i"
+              :class="g.hightLight"
+              @click="e => selectedPart(e, g.notesIndex)"
+            >
+              <span
+                v-for="(c, j) in g.textGroup"
+                :key="j"
+                v-touch:start="e => touchStart(e, g.boundary + j)"
+                v-touch:moving="touchMove"
+                v-touch:end="touchEnd"
+                :index="g.boundary + j"
+                :class="hightLight(g.boundary + j)"
+                >{{ c }}</span
+              ></span
+            >
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="page">
-      本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+      <div class="page">
+        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+      </div>
     </div>
   </div>
 </template>
@@ -325,8 +325,7 @@ export default {
         y: 0
       },
       notes: [],
-      isSelectedPart: -1,
-      selectedPartColor: ''
+      isSelectedPart: -1
     };
   },
 
@@ -453,8 +452,8 @@ export default {
 
   methods: {
     changePage(e) {
+      // this.clearSelected();
       const x = e.target.getBoundingClientRect().left;
-      console.log(x);
       let action = '';
       if (72 < x && x < 272) {
         action = 'prev';
@@ -468,11 +467,14 @@ export default {
       this.toggleNavigation();
     },
     selectedPart(e, notesIndex) {
+      this.clearSelected();
       if (notesIndex != undefined) {
         this.isSelectedPart = notesIndex;
-        this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
-        this.selectedPartColor = e.target.parentElement.className.split('-')[0];
+        this.$store.commit(
+          'changeTooltipColor',
+          e.target.parentElement.className.split('-')[0]
+        );
         if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = 72;
         } else if (partPosition.left + 392 > 695) {
@@ -820,7 +822,7 @@ export default {
       }
       if (this.selected.start > 0 && this.selected.end > 0) {
         this.isSelectedPart = -1;
-        this.selectedPartColor = '';
+        this.$store.commit('changeTooltipColor');
         this.isShowTooltip = true;
       }
     },
