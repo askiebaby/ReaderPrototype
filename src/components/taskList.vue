@@ -6,7 +6,7 @@
         v-for="loopIndex in taskAmountInList"
         class="task"
         :class="{ task__completed: isFinish('M' + countTaskAmount(loopIndex)) }"
-        @click="commitDirectionsToVueX(directions);nextPage('M' + countTaskAmount(loopIndex))"
+        @click="commitDirectionsToVueX(directions, nextPage('M' + countTaskAmount(loopIndex)))"
         :key="`M${countTaskAmount(loopIndex)}`"
       >
         <span>{{ countTaskAmount(loopIndex) }}</span>
@@ -17,7 +17,7 @@
         v-for="loopIndex in taskAmountInList"
         class="task"
         :class="{ task__completed: isFinish('F' + countTaskAmount(loopIndex)) }"
-        @click="nextPage('F' + countTaskAmount(loopIndex))"
+        @click="commitDirectionsToVueX(directions, nextPage('F' + countTaskAmount(loopIndex)))"
         :key="`F${countTaskAmount(loopIndex)}`"
       >
         <span>{{ countTaskAmount(loopIndex) }}</span>
@@ -163,14 +163,15 @@ export default {
     },
     commitDirectionsToVueX (directions, callback) {
       console.log('commitDirectionsToVueX', directions)
-      // nextPage('M' + countTaskAmount(loopIndex))
       callback()
       this.$store.commit('setDirections', directions);
     },
     nextPage(id) {
-      const result = this.isFinish(id);
-      let idToRouter = (result) ? { name: 'finishTask', params: { id } } : { name: 'login', params: { id } }
-      this.$router.push(idToRouter);
+      return () => {
+        const result = this.isFinish(id);
+        let idToRouter = (result) ? { name: 'finishTask', params: { id } } : { name: 'login', params: { id } }
+        this.$router.push(idToRouter);
+      }
     }
   }
 }
