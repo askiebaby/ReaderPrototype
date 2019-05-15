@@ -125,8 +125,7 @@ export const store = new Vuex.Store({
       });
     },
     setDirections(state, payload) {
-      state.directions.words = payload.words;
-      state.directions.directions = payload.directions;
+      state.directions = payload;
     }
   }
 });

@@ -5,20 +5,22 @@
       <div
         v-for="loopIndex in taskAmountInList"
         class="task"
-        :class="{ task__completed: isFinish('M' + taskAmount(loopIndex)) }"
-        @click="nextPage('M' + taskAmount(loopIndex))"
+        :class="{ task__completed: isFinish('M' + countTaskAmount(loopIndex)) }"
+        @click="commitDirectionsToVueX(directions);nextPage('M' + countTaskAmount(loopIndex))"
+        :key="`M${countTaskAmount(loopIndex)}`"
       >
-        <span>{{ taskAmount(loopIndex) }}</span>
+        <span>{{ countTaskAmount(loopIndex) }}</span>
       </div>
     </div>
     <div class="taskList__tasks-type2">
       <div
         v-for="loopIndex in taskAmountInList"
         class="task"
-        :class="{ task__completed: isFinish('F' + taskAmount(loopIndex)) }"
-        @click="nextPage('F' + taskAmount(loopIndex))"
+        :class="{ task__completed: isFinish('F' + countTaskAmount(loopIndex)) }"
+        @click="nextPage('F' + countTaskAmount(loopIndex))"
+        :key="`F${countTaskAmount(loopIndex)}`"
       >
-        <span>{{ taskAmount(loopIndex) }}</span>
+        <span>{{ countTaskAmount(loopIndex) }}</span>
       </div>
     </div>
   </div>
@@ -148,7 +150,7 @@ export default {
         return (dir === 'row') ? '直' : '橫'
       }
     },
-    taskAmount (loopIndex) {
+    countTaskAmount (loopIndex) {
       return loopIndex + this.listIndex * this.taskAmountInList;
     },
     isFinish(id) {
@@ -159,13 +161,16 @@ export default {
       }
       return result;
     },
+    commitDirectionsToVueX (directions, callback) {
+      console.log('commitDirectionsToVueX', directions)
+      // nextPage('M' + countTaskAmount(loopIndex))
+      callback()
+      this.$store.commit('setDirections', directions);
+    },
     nextPage(id) {
-      let result = this.isFinish(id);
-      if (result) {
-        this.$router.push({ name: 'finishTask', params: { id } });
-      } else {
-        this.$router.push({ name: 'login', params: { id } });
-      }
+      const result = this.isFinish(id);
+      let idToRouter = (result) ? { name: 'finishTask', params: { id } } : { name: 'login', params: { id } }
+      this.$router.push(idToRouter);
     }
   }
 }
