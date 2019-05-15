@@ -1,5 +1,5 @@
 <template>
-  <div v-touch:longtap="e => switchTouch(e, 'none')" class="book">
+  <div class="book" @click="changePage">
     <tooltip
       v-if="showTooltip"
       class="tooltip"
@@ -49,11 +49,6 @@
     </div>
     <div class="page">
       本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
-    </div>
-    <div class="touch" :style="{ pointerEvents: pointerEvents }">
-      <div class="touch__previous" @click="loadBookContent('prev')"></div>
-      <div class="touch__navigation" @click="toggleNavigation"></div>
-      <div class="touch__next" @click="loadBookContent('next')"></div>
     </div>
   </div>
 </template>
@@ -330,7 +325,6 @@ export default {
         y: 0
       },
       notes: [],
-      pointerEvents: 'auto',
       isSelectedPart: -1,
       selectedPartColor: ''
     };
@@ -348,7 +342,7 @@ export default {
         chapterIndex: this.bookLocation.chapterIndex,
         sectionIndex: this.bookLocation.sectionIndex,
         textStart: textStart,
-        textEnd: textEnd
+        textEnd: textEnd + 1
       };
     },
     groupsContent() {
@@ -458,6 +452,21 @@ export default {
   },
 
   methods: {
+    changePage(e) {
+      const x = e.target.getBoundingClientRect().left;
+      console.log(x);
+      let action = '';
+      if (72 < x && x < 272) {
+        action = 'prev';
+      } else if (472 < x && x < 674) {
+        action = 'next';
+      }
+      if (action.length > 0) {
+        this.loadBookContent(action);
+        return;
+      }
+      this.toggleNavigation();
+    },
     selectedPart(e, notesIndex) {
       if (notesIndex != undefined) {
         this.isSelectedPart = notesIndex;
@@ -477,7 +486,6 @@ export default {
         this.isShowTooltip = true;
       } else {
         this.isSelectedPart = -1;
-        this.switchTouch(e, 'auto');
       }
     },
     changeColor(color) {
@@ -508,11 +516,6 @@ export default {
         css = 'selected';
       }
       return css;
-    },
-    switchTouch(e, arg) {
-      this.isShowTooltip = false;
-      this.clearSelected();
-      this.pointerEvents = arg;
     },
     initContent() {
       WebFont.load({
