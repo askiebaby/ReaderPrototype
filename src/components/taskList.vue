@@ -1,26 +1,24 @@
 <template>
   <div class="taskList">
-    <div class="taskList__description" v-html="titleTemplate">
-      <!-- {{titleTemplate}} -->
-    </div>
+    <div class="taskList__description" v-html="titleTemplate"></div>
     <div class="taskList__tasks-type1">
       <div
-        v-for="n in 15"
+        v-for="loopIndex in taskAmountInList"
         class="task"
-        :class="{ task__completed: isFinish('M' + n) }"
-        @click="nextPage('M' + n)"
+        :class="{ task__completed: isFinish('M' + taskAmount(loopIndex)) }"
+        @click="nextPage('M' + taskAmount(loopIndex))"
       >
-        <span>{{ n }}</span>
+        <span>{{ taskAmount(loopIndex) }}</span>
       </div>
     </div>
     <div class="taskList__tasks-type2">
       <div
-        v-for="n in 15"
+        v-for="loopIndex in taskAmountInList"
         class="task"
-        :class="{ task__completed: isFinish('F' + n) }"
-        @click="nextPage('F' + n)"
+        :class="{ task__completed: isFinish('F' + taskAmount(loopIndex)) }"
+        @click="nextPage('F' + taskAmount(loopIndex))"
       >
-        <span>{{ n }}</span>
+        <span>{{ taskAmount(loopIndex) }}</span>
       </div>
     </div>
   </div>
@@ -110,16 +108,29 @@
 
 <script>
 export default {
-  props: ['directions'],
+  props: {
+    directions: {
+      type: Object,
+      default () {
+        return { words: 'column', functions: 'column' }
+      }
+    },
+    listIndex: {
+      type: Number,
+      default () {
+        return 1
+      }
+    }
+  },
   data() {
     return {
       finishId: [],
-      titleTemplate: ''
+      titleTemplate: '',
+      taskAmountInList: 15
     };
   },
   mounted () {
     this.$nextTick( () => {
-      console.log(this.directions.words, this.directions.functions, this.directions.listIndex);
       this.makeTitleTemplate(this.directions.words, this.directions.functions)
     })
   },
@@ -133,10 +144,12 @@ export default {
         .map(title => (`<div class="taskList__description__word">${title}</div>`))
         .join('');
 
-
       function directionToString(dir) {
         return (dir === 'row') ? '直' : '橫'
       }
+    },
+    taskAmount (loopIndex) {
+      return loopIndex + this.listIndex * this.taskAmountInList;
     },
     isFinish(id) {
       let result = false;

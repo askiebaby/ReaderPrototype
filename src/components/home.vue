@@ -3,7 +3,8 @@
     <template v-for="(words, wordsIndex) in directions">
       <taskList
         v-for="(functions, funIndex) in directions"
-        :directions="{ 'words': words, 'functions': functions, 'listIndex': (wordsIndex * directions.length) + 1 + funIndex }"
+        :directions="{ 'words': words, 'functions': functions}"
+        :listIndex="(wordsIndex * directions.length) + funIndex"
         :key="`${wordsIndex}${funIndex}`"
       ></taskList>
     </template>
