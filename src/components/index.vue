@@ -11,6 +11,7 @@
         <ul class="index__outline">
           <li
             v-for="(book, bookIndex) in document.books"
+            :key="bookIndex"
             class="index__chapter"
           >
             <span
@@ -27,6 +28,7 @@
               <li
                 v-for="(section, sectionIndex) in book.sections"
                 v-if="ShowSubTitle(book.chapter)"
+                :key="sectionIndex"
                 @click="loadBookContent(book, bookIndex, section, sectionIndex)"
               >
                 <span v-if="sectionIndex === 0" class="index__chapterName">{{
@@ -203,7 +205,7 @@ export default {
       let index = 0;
       this.$store.commit('setTask', index);
       console.log(this.$store.getters.getTask);
-    },
+    }
   }
 };
 </script>

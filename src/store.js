@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
     id: '',
     name: '',
     showNotes: false,
+    tooltipColor: '',
     task: [],
     bookContent: {
       chapter: '',
@@ -69,6 +70,9 @@ export const store = new Vuex.Store({
     },
     getDirections: state => {
       return state.directions;
+    },
+    getTooltipColor: state => {
+      return state.tooltipColor;
     }
   },
   mutations: {
@@ -115,7 +119,7 @@ export const store = new Vuex.Store({
       VueCookies.set(state.id, Obj);
     },
     addNotes(state, payload) {
-      state.notes.push({
+      state.notes.unshift({
         chapterIndex: payload.chapterIndex,
         sectionIndex: payload.sectionIndex,
         textStart: payload.textStart,
@@ -126,6 +130,12 @@ export const store = new Vuex.Store({
     },
     setDirections(state, payload) {
       state.directions = payload;
+    },
+    changeNotesColor(state, payload) {
+      state.notes[payload.index].color = payload.color;
+    },
+    changeTooltipColor(state, payload) {
+      state.tooltipColor = payload;
     }
   }
 });
