@@ -29,8 +29,8 @@
             <span
               v-for="(g, i) in groupsContent"
               :key="i"
+              v-touch:longtap="e => selectedPart(e, g.notesIndex)"
               :class="g.hightLight"
-              @click="e => selectedPart(e, g.notesIndex)"
             >
               <span
                 v-for="(c, j) in g.textGroup"
@@ -452,7 +452,7 @@ export default {
 
   methods: {
     changePage(e) {
-      // this.clearSelected();
+      this.clearSelected();
       const x = e.target.getBoundingClientRect().left;
       let action = '';
       if (72 < x && x < 272) {
