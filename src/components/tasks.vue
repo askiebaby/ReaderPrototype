@@ -71,7 +71,7 @@ export default {
       if (this.finish) {
         this.$router.push({ name: 'taskRecord' });
       } else {
-        this.$store.commit('taskDefault', 0);
+        this.$store.commit('taskDefault', order - 1);
         this.$router.push({ name: 'taskDescription', params: { order } });
         console.log(this.$store.getters.getTask);
       }

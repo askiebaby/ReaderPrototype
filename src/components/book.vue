@@ -22,7 +22,7 @@
       <setting
         v-show="isShowSetting"
         @hideSetting="isShowSetting = $event"
-        @changeBackground="changebackgroundColor_chickFinish($event)"
+        @changeBackground="changebackgroundColor($event)"
         @changeFontFamily="fontFamilyClass = $event"
         @changeFontSize="changefontSizeClass($event)"
       ></setting>
@@ -143,18 +143,21 @@ export default {
       this.sizeLevel = font.sizeLevel;
       console.log('sizeLevel: ', this.sizeLevel);
     },
-    changebackgroundColor_chickFinish(color) {
+    changebackgroundColor(color) {
       this.backgroundColor = color;
-      if (color === 'background__change__black') {
-        if (this.task.length > 0) {
-          if (this.task[this.index].time.length === 3) {
-            this.$store.commit('setTask', this.index);
-            console.log(this.task);
-            setTimeout(() => {
-              this.isShowComplete = true;
-            }, 3000);
-          }
-        }
+      if (this.task.length <= 0) {
+        return;
+      }
+      if (this.task[0].time.length != 3) {
+        return;
+      }
+      const step = this.$store.getters.getTarget[0].step[2];
+      if (color == step.color) {
+        this.$store.commit('setTask', 0);
+        console.log(this.task);
+        setTimeout(() => {
+          this.isShowComplete = true;
+        }, 3000);
       }
     },
     findContent() {

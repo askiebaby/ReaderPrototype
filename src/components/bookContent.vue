@@ -1,7 +1,7 @@
 <template>
   <div>
     <tooltip
-      v-if="showTooltip"
+      v-if="isShowTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
       :selected-to-notes="selectedToNotes"
@@ -304,7 +304,6 @@ export default {
       togglePageAction: '',
       pages: '',
       task: this.$store.getters.getTask,
-      index: 0,
       isSelect: true,
       selected: {
         start: -1,
@@ -400,9 +399,6 @@ export default {
       );
       return viewport;
     },
-    showTooltip() {
-      return this.isShowTooltip;
-    },
     bookContent() {
       return this.$store.getters.getBookContent;
     },
@@ -411,15 +407,22 @@ export default {
       return this.$store.getters.getBookLocation;
     },
     checkFinishStep1() {
-      if (this.bookContent.chapter == '第1章') {
-        if (this.task.length > 0) {
-          if (this.task[this.index].time.length === 1) {
-            this.$store.commit('setTask', this.index);
-            console.log(this.task);
-          }
-        }
+      const result = this.bookContent.chapter;
+      if (this.task.length <= 0) {
+        return result;
       }
-      return this.bookContent.chapter;
+      if (this.task[0].time.length != 1) {
+        return result;
+      }
+      const step = this.$store.getters.getTarget[0].step[0];
+      if (
+        this.bookLocation.chapterIndex != step.chapterIndex ||
+        this.bookLocation.sectionIndex != step.sectionIndex
+      ) {
+        return result;
+      }
+      this.$store.commit('setTask', 0);
+      return result;
     }
   },
   watch: {
@@ -507,8 +510,21 @@ export default {
         color: color,
         comment: ''
       });
+      if (
+        this.selectedToNotes.chapterIndex == 3 &&
+        this.selectedToNotes.sectionIndex == 0 &&
+        this.selectedToNotes.textStart == 110 &&
+        this.selectedToNotes.textEnd == 145
+      ) {
+        if (this.task.length > 0) {
+          if (this.task[1].time.length === 1) {
+            this.$store.commit('setTask', 1);
+            console.log(this.task);
+          }
+        }
+      }
       this.clearSelected();
-      console.log(this.$store.getters.getNotes);
+      // console.log(this.$store.getters.getNotes);
     },
     hightLight(i) {
       let css = '';

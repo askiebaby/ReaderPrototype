@@ -187,8 +187,7 @@ export default {
     return {
       sizeLevel: 5,
       fontSizeLevel: [12, 14, 16, 18, 20, 24, 30, 36, 42, 48, 52],
-      task: this.$store.getters.getTask,
-      index: 0
+      task: this.$store.getters.getTask
     };
   },
   methods: {
@@ -210,13 +209,16 @@ export default {
       } else if (action === 'enlarge') {
         if (this.sizeLevel < this.fontSizeLevel.length - 1) {
           this.sizeLevel += 1;
-          if (this.fontSizeLevel[this.sizeLevel] === 52) {
-            if (this.task.length > 0) {
-              if (this.task[this.index].time.length === 2) {
-                this.$store.commit('setTask', this.index);
-                console.log(this.task);
-              }
-            }
+          if (this.task.length <= 0) {
+            return;
+          }
+          if (this.task[0].time.length != 2) {
+            return;
+          }
+          const step = this.$store.getters.getTarget[0].step[1];
+          if (this.fontSizeLevel[this.sizeLevel] == step.fontSizeLevel) {
+            this.$store.commit('setTask', 0);
+            // console.log(this.task);
           }
         }
       }

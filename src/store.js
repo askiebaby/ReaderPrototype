@@ -37,6 +37,39 @@ export const store = new Vuex.Store({
         comment:
           '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。'
       }
+    ],
+    target: [
+      {
+        chineseOrder: '一',
+        description: [
+          '（1-1）翻到第一章 “有目的的練習” 。',
+          '（1-2）將字體設定成最大。',
+          '（1-3）將閱讀模式調成黑底白字的夜間模式。'
+        ],
+        step: [
+          { chapterIndex: 2, sectionIndex: 0 },
+          { fontSizeLevel: 52 },
+          { color: 'background__change__black' }
+        ]
+      },
+      {
+        chineseOrder: '二',
+        description: [
+          '（2-1）請翻到第2章節 “大腦的適應能力” 。找到文中："你可以採用錄影...感受一下你的進步"把這段劃為重點。',
+          '（2-2）在內文，將螢光筆改為綠色。',
+          '（2-3）請到筆記庫，將螢光筆改為粉紅色。',
+          '（2-4）將此段話於筆記庫內刪除。'
+        ]
+      },
+      {
+        chineseOrder: '三',
+        description: [
+          '（3-1）請找到第2章節"走出舒適區的重要性"中的一段話："對於這種現象，技術上...行動的趨勢"。',
+          '（3-2）將此段話附上註解，註解內容為：體內平衡。',
+          '（3-3）用evernote分享此段落。',
+          '（3-4）請刪除“體內平衡”的註解。'
+        ]
+      }
     ]
   },
   getters: {
@@ -66,6 +99,9 @@ export const store = new Vuex.Store({
     },
     getTooltipColor: state => {
       return state.tooltipColor;
+    },
+    getTarget: state => {
+      return state.target;
     }
   },
   mutations: {
