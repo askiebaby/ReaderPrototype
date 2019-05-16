@@ -1,11 +1,11 @@
 <template>
   <div class="input-center background__male">
     <div class="member_id">編號:{{ id }}</div>
-    <input 
+    <input
       v-model="name"
-      v-on:keyup.enter="missionStart"
       type="text"
       placeholder="姓名:王小明"
+      @keyup.enter="missionStart"
     />
     <div class="buttons">
       <router-link

@@ -36,7 +36,7 @@ export default new Router({
       component: tasks
     },
     {
-      path: '/taskDescription',
+      path: '/taskDescription/:order',
       name: 'taskDescription',
       component: taskDescription
     },
