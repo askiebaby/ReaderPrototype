@@ -1,54 +1,59 @@
 <template>
-  <div>
+  <div v-touch:longtap="e => switchTouch(e, 'none')" class="book">
     <tooltip
       v-if="showTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
+      :selected-color="selectedPartColor"
       :selected-to-notes="selectedToNotes"
       @changeColor="changeColor($event)"
     ></tooltip>
-    <div class="book" @click="changePage">
-      <h2 class="book__chapter">
-        {{ checkFinishStep1 }} {{ bookContent.h1title }}
-      </h2>
+
+    <h2 class="book__chapter">
+      {{ checkFinishStep1 }} {{ bookContent.h1title }}
+    </h2>
+    <div
+      ref="viewport"
+      class="book__content"
+      :style="{
+        height: `${containerHeight}px`
+      }"
+    >
       <div
-        ref="viewport"
-        class="book__content"
+        ref="bookContainer"
         :style="{
-          height: `${containerHeight}px`
+          height: `${bookLocation.newContentHeight}`
         }"
       >
-        <div
-          ref="bookContainer"
-          :style="{
-            height: `${bookLocation.newContentHeight}`
-          }"
-        >
-          <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
-          <p>
+        <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
+        <p>
+          <span
+            v-for="(g, i) in groupsContent"
+            :key="i"
+            v-touch:tap="e => selectedPart(e, g.notesIndex)"
+            :class="g.hightLight"
+          >
             <span
-              v-for="(g, i) in groupsContent"
-              :key="i"
-              :class="g.hightLight"
-              @click="e => selectedPart(e, g.notesIndex)"
-            >
-              <span
-                v-for="(c, j) in g.textGroup"
-                :key="j"
-                v-touch:start="e => touchStart(e, g.boundary + j)"
-                v-touch:moving="touchMove"
-                v-touch:end="touchEnd"
-                :index="g.boundary + j"
-                :class="hightLight(g.boundary + j)"
-                >{{ c }}</span
-              ></span
-            >
-          </p>
-        </div>
+              v-for="(c, j) in g.textGroup"
+              :key="j"
+              v-touch:start="e => touchStart(e, g.boundary + j)"
+              v-touch:moving="touchMove"
+              v-touch:end="touchEnd"
+              :index="g.boundary + j"
+              :class="hightLight(g.boundary + j)"
+              >{{ c }}</span
+            ></span
+          >
+        </p>
       </div>
-      <div class="page">
-        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
-      </div>
+    </div>
+    <div class="page">
+      本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+    </div>
+    <div class="touch" :style="{ pointerEvents: pointerEvents }">
+      <div class="touch__previous" @click="loadBookContent('prev')"></div>
+      <div class="touch__navigation" @click="toggleNavigation"></div>
+      <div class="touch__next" @click="loadBookContent('next')"></div>
     </div>
   </div>
 </template>
@@ -325,7 +330,9 @@ export default {
         y: 0
       },
       notes: [],
-      isSelectedPart: -1
+      pointerEvents: 'auto',
+      isSelectedPart: -1,
+      selectedPartColor: ''
     };
   },
 
@@ -341,7 +348,7 @@ export default {
         chapterIndex: this.bookLocation.chapterIndex,
         sectionIndex: this.bookLocation.sectionIndex,
         textStart: textStart,
-        textEnd: textEnd + 1
+        textEnd: textEnd
       };
     },
     groupsContent() {
@@ -453,30 +460,12 @@ export default {
   },
 
   methods: {
-    changePage(e) {
-      // this.clearSelected();
-      const x = e.target.getBoundingClientRect().left;
-      let action = '';
-      if (72 < x && x < 272) {
-        action = 'prev';
-      } else if (472 < x && x < 674) {
-        action = 'next';
-      }
-      if (action.length > 0) {
-        this.loadBookContent(action);
-        return;
-      }
-      this.toggleNavigation();
-    },
     selectedPart(e, notesIndex) {
-      this.clearSelected();
       if (notesIndex != undefined) {
         this.isSelectedPart = notesIndex;
+        this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
-        this.$store.commit(
-          'changeTooltipColor',
-          e.target.parentElement.className.split('-')[0]
-        );
+        this.selectedPartColor = e.target.parentElement.className.split('-')[0];
         if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = 72;
         } else if (partPosition.left + 392 > 695) {
@@ -490,6 +479,7 @@ export default {
         this.isShowTooltip = true;
       } else {
         this.isSelectedPart = -1;
+        this.switchTouch(e, 'auto');
       }
     },
     changeColor(color) {
@@ -520,6 +510,11 @@ export default {
         css = 'selected';
       }
       return css;
+    },
+    switchTouch(e, arg) {
+      this.isShowTooltip = false;
+      this.clearSelected();
+      this.pointerEvents = arg;
     },
     initContent() {
       WebFont.load({
@@ -824,7 +819,7 @@ export default {
       }
       if (this.selected.start > 0 && this.selected.end > 0) {
         this.isSelectedPart = -1;
-        this.$store.commit('changeTooltipColor');
+        this.selectedPartColor = '';
         this.isShowTooltip = true;
       }
     },

@@ -1,6 +1,9 @@
 <template>
   <div class="index">
-    <div class="index__backround" @click="closeIndexStatus">
+    <div
+      class="index__backround"
+      @click="closeIndexStatus"
+    >
       <div class="index__container">
         <nav>
           <div @click="closeIndexStatus">
@@ -10,12 +13,14 @@
         </nav>
         <ul class="index__outline">
           <li
+            class="index__chapter"
             v-for="(book, bookIndex) in document.books"
             :key="bookIndex"
-            class="index__chapter"
+            
           >
             <span
-              v-if="ShowChapter(bookIndex)"
+              class="index__chapterName"
+              v-if="showChapter(bookIndex)"
               @click="loadChapter(bookIndex, book)"
             >
               {{ book.chapter }}
@@ -24,17 +29,22 @@
                 >{{ book.title }}</span
               >
             </span>
-            <ul>
+            <ul
+              class="index__section"
+              v-if="showSubTitle(book.chapter)"
+            >
               <li
+                class="index__section__list"
                 v-for="(section, sectionIndex) in book.sections"
-                v-if="ShowSubTitle(book.chapter)"
+                
                 :key="sectionIndex"
                 @click="loadBookContent(book, bookIndex, section, sectionIndex)"
               >
-                <span v-if="sectionIndex === 0" class="index__chapterName">{{
-                  book.chapter
-                }}</span>
-                <span>{{ section.title }}</span>
+                <span v-if="sectionIndex === 0" class="index__chapterName"
+                  v-html="getTitleIndex(book.chapter)">
+  
+                </span>
+                <span class="index__sectionName">{{ section.title }}</span>
               </li>
             </ul>
           </li>
@@ -77,44 +87,115 @@
     }
   }
 
+  &__chapter {
+    padding-left: 34px;
+    > .index__chapterName {
+      // 封面、引言避免絕對定位
+      position: relative;
+      height: 3rem;
+    }
+  }
+
+  &__section {
+    padding-left: 0;
+    font-size: 16px;
+    color: #595959;
+    line-height: 2.8rem;
+    height: min-content;
+    cursor: pointer;
+    .index__section__list {
+      position: relative;
+      padding-left: 65px;
+    }
+  }
+  
   &__chapterName {
     position: absolute;
     left: 0;
+    min-height: 2.8em;
+  }
+  &__chapterName, &__sectionName {
+    color: $black-2;
+      line-height: 2.8rem;
   }
 
   &__outline {
+    display: flex;
+    flex-flow: wrap;
     padding-left: 0;
     padding-bottom: 6em;
     overflow: auto;
     height: 100%;
 
     li {
-      padding-left: 0;
       list-style: none;
-      font-size: $indexSize;
-      color: $black-2;
-      line-height: 2.8rem;
       height: min-content;
       cursor: pointer;
-
-      > span {
-        line-height: 2.8em;
-        > span {
-          margin-left: 10px;
-        }
-      }
-
-      > ul {
-        // 章節名稱
-        padding-left: 0;
-        > li {
-          position: relative;
-          padding-left: 65px;
-        }
+      flex-basis: 100%;
+    }
+  }
+}
+.functions-row {
+  .index {
+    &__container {
+      margin-left: auto;
+    }
+    &__outline {
+      margin-top: 32px;
+      padding-right: 10px;
+      unicode-bidi: normal;
+      direction: rtl;
+      writing-mode: horizontal-tb;
+      flex-flow: row nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;  
+      -webkit-overflow-scrolling: touch;
+    
+      &::-webkit-scrollbar {
+          display: none;
       }
     }
-    > li {
-      padding-left: 34px;
+
+    &__chapter {
+      position: relative;
+      padding-left: 0;
+      min-width: 2.8em;
+      flex: 0 0 auto;
+    }
+
+    &__chapterName {
+      min-height: auto;
+      position: absolute;
+      top: 0;
+      right: 0;
+      
+      /deep/ .index__chapterName__index {
+        writing-mode: initial;
+        letter-spacing: 0;
+        height: 2rem;
+        line-height: 1.8;
+      }
+    }
+
+    &__section {
+      display: flex;
+      padding-right: 0;
+      .index__section__list {
+        padding-left: 0;
+        
+        .index__sectionName {
+          padding-top: 120px;
+        }
+      }
+      &:empty {
+        line-height: 0;
+      }
+    }
+
+
+    &__chapterName, &__sectionName {
+      writing-mode: vertical-rl;
+      letter-spacing: .5em;
     }
   }
 }
@@ -126,11 +207,20 @@ import document from '@/assets/document.json';
 export default {
   data() {
     return {
-      // content,
       document
     };
   },
+  computed: {
+    
+  },
   methods: {
+    getTitleIndex (chapterTitle) {
+      const arr = chapterTitle.split('')
+      const chapterIndex = chapterTitle.slice(1,-1)
+      const finalChapterTitle =
+        `${arr[0]}<span class="index__chapterName__index">${chapterIndex}</span>${arr[arr.length-1]}`
+      return finalChapterTitle
+    },
     closeIndexStatus() {
       this.$emit('closeIndexStatus', false);
     },
@@ -174,14 +264,14 @@ export default {
       //  console.log(this.$store.getters.getBookContent);
       this.$emit('emitContent');
     },
-    ShowSubTitle(chapter) {
+    showSubTitle(chapter) {
       let show = true;
       if (chapter == '引言') {
         show = false;
       }
       return show;
     },
-    ShowChapter(chapterIndex) {
+    showChapter(chapterIndex) {
       let show = true;
       if (chapterIndex >= 2) {
         show = false;

@@ -1,5 +1,5 @@
 <template>
-  <div :class="backgroundColor">
+  <div :class="[backgroundColor, wordsDirectionClass, functionsDirectionClass]">
     <menu-top
       v-show="isShowNavigation"
       @showLeaveBubble="isLeaveMission = $event"
@@ -91,6 +91,17 @@ export default {
   computed: {
     isShowNotes() {
       return this.$store.getters.getIsShowNotes;
+    },
+    directions () {
+      return this.$store.getters.getDirections
+    },
+    wordsDirectionClass () {
+      const wordsClassName = `words-${this.directions.words}`
+      return wordsClassName
+    },
+    functionsDirectionClass () {
+      const functionsClassName = `functions-${this.directions.functions}`
+      return functionsClassName
     }
   },
   created() {

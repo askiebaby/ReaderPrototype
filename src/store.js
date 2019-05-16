@@ -39,8 +39,8 @@ export const store = new Vuex.Store({
       }
     ],
     directions: {
-      words: '',
-      functions: ''
+      words: 'column',
+      functions: 'row'
     }
   },
   getters: {
