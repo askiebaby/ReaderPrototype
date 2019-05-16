@@ -22,7 +22,7 @@
             <div v-if="isShowIcon" class="tooltip__function__search">
               <img src="@/assets/images/icons/search@2x.png" alt="" />
             </div>
-            <div v-else>
+            <div v-else @click="deleteNotes">
               <img src="@/assets/images/icons/invalid-name.svg" alt="" />
             </div>
           </div>
@@ -173,6 +173,10 @@ export default {
     fromContent: {
       type: Boolean,
       default: true
+    },
+    notesIndex: {
+      type: Number,
+      default: -1
     }
   },
   data() {
@@ -195,6 +199,11 @@ export default {
     }
   },
   methods: {
+    deleteNotes() {
+      if (this.notesIndex != -1) {
+        this.$store.commit('deleteNote', this.notesIndex);
+      }
+    },
     showColor(item) {
       let arrary = [];
       arrary.push('tooltip__penColor__' + item);

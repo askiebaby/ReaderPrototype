@@ -127,6 +127,9 @@ export const store = new Vuex.Store({
     },
     changeTooltipColor(state, payload) {
       state.tooltipColor = payload;
+    },
+    deleteNote(state, payload) {
+      state.notes.splice(payload, 1);
     }
   }
 });
