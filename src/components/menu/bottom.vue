@@ -32,7 +32,6 @@
 }
 
 ul {
-  margin: 0;
   padding: 0;
   display: flex;
   justify-content: space-evenly;
@@ -49,6 +48,23 @@ ul {
   img {
     padding: 20px 15px;
     cursor: pointer;
+  }
+}
+
+.functions-row {
+  .nav {
+    left: unset;
+    right: 0;
+    width: 65px;
+    height: 100vh;
+  }
+  ul {
+    flex-direction: column;
+    padding-top: 16px;
+  }
+
+  li + li {
+    margin-top: 10px;
   }
 }
 </style>
