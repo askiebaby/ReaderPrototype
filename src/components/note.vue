@@ -19,6 +19,7 @@
         <tooltip
           v-if="isShowTooltip(index)"
           style="position:absolute"
+          :from-content="false"
           @changeColor="changeColor($event, index)"
         ></tooltip>
         <div class="note__highlight" :class="item.color"></div>

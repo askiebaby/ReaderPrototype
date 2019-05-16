@@ -12,13 +12,18 @@
             ></div>
           </div>
           <div class="tooltip__function">
-            <div><img src="@/assets/images/icons/copy.svg" alt="" /></div>
+            <div v-if="isShowIcon">
+              <img src="@/assets/images/icons/copy.svg" alt="" />
+            </div>
             <div @click="showNotes">
               <img src="@/assets/images/icons/note.svg" alt="" />
             </div>
             <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
-            <div class="tooltip__function__search">
+            <div v-if="isShowIcon" class="tooltip__function__search">
               <img src="@/assets/images/icons/search@2x.png" alt="" />
+            </div>
+            <div v-else>
+              <img src="@/assets/images/icons/invalid-name.svg" alt="" />
             </div>
           </div>
         </div>
@@ -164,15 +169,21 @@ export default {
     selectedColor: {
       type: String,
       default: ''
+    },
+    fromContent: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
-      // selected: '',
       color: ['yellow', 'red', 'purple', 'green']
     };
   },
   computed: {
+    isShowIcon() {
+      return this.fromContent;
+    },
     leftStyle() {
       return this.tooltipPosition.x + 'px';
     },
@@ -183,9 +194,6 @@ export default {
       return this.$store.getters.getTooltipColor;
     }
   },
-  // mounted() {
-  //   this.selected = this.selectedColor;
-  // },
   methods: {
     showColor(item) {
       let arrary = [];

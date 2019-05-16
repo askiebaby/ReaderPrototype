@@ -5,6 +5,7 @@
       class="tooltip"
       :tooltip-position="tooltipPosition"
       :selected-to-notes="selectedToNotes"
+      :from-content="true"
       @changeColor="changeColor($event)"
     ></tooltip>
     <div class="book" @click="changePage">
