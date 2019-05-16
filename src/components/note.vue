@@ -28,7 +28,10 @@
             {{ item.comment }}
           </div>
         </div>
-        <div class="note__actionButton" @click="selectedNote(index)">
+        <div
+          class="note__actionButton"
+          @click="selectedNote(index, item.color)"
+        >
           <img
             :src="require('@/assets/menu/dropdown-doubleline.svg')"
             alt="More Actions"
@@ -180,7 +183,8 @@ export default {
     isShowTooltip(index) {
       return this.notesIndex == index;
     },
-    selectedNote(index) {
+    selectedNote(index, color) {
+      this.$store.commit('changeTooltipColor', color.split('-')[0]);
       if (this.notesIndex == index) {
         this.notesIndex = -1;
         return;
