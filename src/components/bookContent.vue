@@ -240,7 +240,7 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
-import { debug } from 'util';
+import { debug, debuglog } from 'util';
 
 export default {
   components: {
@@ -543,6 +543,7 @@ export default {
         console.log('855651', this.$store.getters.getTask);
         return;
       }
+
       const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
@@ -552,21 +553,25 @@ export default {
         comment: '',
         task: 0
       };
+
       if (this.task.length <= 0) {
         this.$store.commit('addNotes', obj);
         this.clearSelected();
         return;
       }
+
       if (this.task[1] == undefined) {
         this.$store.commit('addNotes', obj);
         this.clearSelected();
         return;
       }
+
       if (this.task[1].time.length != 1) {
         this.$store.commit('addNotes', obj);
         this.clearSelected();
         return;
       }
+
       if (
         this.selectedToNotes.chapterIndex == step1.chapterIndex &&
         this.selectedToNotes.sectionIndex == step1.sectionIndex &&
@@ -580,7 +585,10 @@ export default {
           this.$store.commit('setTask', 1);
         }
         // console.log('581651', this.$store.getters.getTask);
+        return;
       }
+      this.$store.commit('addNotes', obj);
+      this.clearSelected();
     },
     hightLight(i) {
       let css = '';
