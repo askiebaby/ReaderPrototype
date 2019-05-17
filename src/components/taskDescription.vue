@@ -11,7 +11,8 @@
         <div class="lightBox__content">
           <p class="lightBox__subtitle">任務{{ showTask.chineseOrder }}：</p>
           <div class="lightBox__taskDescription">
-            <p v-for="item in showTask.description" :key="item">
+            <p v-for="(item, index) in showTask.description" :key="item">
+              ({{ target.indexOf(showTask) + 1 }}-{{ index + 1 }})
               {{ item }}
             </p>
           </div>
