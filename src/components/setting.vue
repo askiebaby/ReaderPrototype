@@ -7,11 +7,11 @@
         <div class="function function__lightness"></div>
         <div class="function function__fontSize">
           <span class="changeSize" @click="changeFontSize('small')">
-            Aa
+            <span class="changeSize__content">Aa</span>
             <span class="small"></span>
           </span>
           <span class="changeSize" @click="changeFontSize('enlarge')">
-            Aa
+            <span class="changeSize__content">Aa</span>
             <span class="enlarge"></span>
           </span>
         </div>
@@ -159,7 +159,7 @@
       }
 
       span:nth-child(1) {
-        border-radius: 6px 0 0 6px;
+        border-radius: 5px 0 0 5px;
         border-right-width: 0;
       }
       span:nth-child(2) {
@@ -169,12 +169,69 @@
       }
       span:nth-child(3) {
         border-left-width: 0;
-        border-radius: 0 6px 6px 0;
+        border-radius: 0 5px 5px 0;
       }
 
       .active {
         background: $lightGray;
         color: $white;
+      }
+    }
+  }
+}
+.functions-row {
+    .function {
+    &__fontSize {
+      .changeSize {
+        direction: rtl;
+        &__content {
+          position: relative;
+          writing-mode: vertical-lr;
+          transform: rotate(180deg);
+        }
+      }
+      .small, .enlarge {
+        transform: rotate(90deg);
+      }
+      .small {
+        transform-origin: right;
+        left: 20px;
+      }
+      .enlarge {
+        transform-origin: center;
+        top: auto;
+        right: 27px;
+      }
+    }
+    &__pageMode {
+      writing-mode: vertical-lr;
+      transform: rotate(-90deg);
+      transform-origin: bottom;
+      position: absolute;
+      bottom: 70px;
+      right: -5px;
+      height: 300px;
+
+      &__content {
+        height: 217px;
+        flex-grow: 0;
+        span {
+          padding: 3px;
+          &:nth-child(1) {
+            border-radius: 5px 5px 0 0;
+            border-right-width: 1px;
+            border-bottom-width: 0;
+          }
+          &:nth-child(3) {
+            border-radius: 0 0 5px 5px;
+            border-left-width: 1px;
+            border-top-width: 0;
+          }
+        }
+      }
+      &__title {
+        margin-right: 0;
+        margin-bottom: 2px;
       }
     }
   }

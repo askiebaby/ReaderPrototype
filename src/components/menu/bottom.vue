@@ -57,6 +57,8 @@ ul {
     right: 0;
     width: 65px;
     height: 100vh;
+    border-top: none;
+    border-left: 1px solid #eee;
   }
   ul {
     flex-direction: column;

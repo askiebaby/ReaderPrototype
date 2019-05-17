@@ -160,3 +160,13 @@
     }
   }
 }
+
+// 直向排版
+.functions-row {
+  .lightBox {
+    &__bubbleLittle {
+      transform: rotate(90deg);
+      padding-bottom: 80px;
+    }
+  }
+}
