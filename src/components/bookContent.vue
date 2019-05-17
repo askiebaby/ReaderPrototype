@@ -10,7 +10,7 @@
     ></tooltip>
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
-        {{ checkFinishStep1 }} {{ bookContent.h1title }}
+        {{ bookContent.chapter }} {{ bookContent.h1title }}
       </h2>
       <div
         ref="viewport"
@@ -382,6 +382,7 @@ export default {
         }
         group.push(Obj);
       }
+      this.checkFinishStep1();
       return group;
     },
     aLineHeight() {
@@ -403,26 +404,7 @@ export default {
       return this.$store.getters.getBookContent;
     },
     bookLocation() {
-      console.log(this.$store.getters.getBookLocation);
       return this.$store.getters.getBookLocation;
-    },
-    checkFinishStep1() {
-      const result = this.bookContent.chapter;
-      if (this.task.length <= 0) {
-        return result;
-      }
-      if (this.task[0].time.length != 1) {
-        return result;
-      }
-      const step = this.$store.getters.getTarget[0].step[0];
-      if (
-        this.bookLocation.chapterIndex != step.chapterIndex ||
-        this.bookLocation.sectionIndex != step.sectionIndex
-      ) {
-        return result;
-      }
-      this.$store.commit('setTask', 0);
-      return result;
     }
   },
   watch: {
@@ -455,6 +437,25 @@ export default {
   },
 
   methods: {
+    checkFinishStep1() {
+      if (this.task.length <= 0) {
+        return;
+      }
+      if (this.task[0] == undefined) {
+        return;
+      }
+      if (this.task[0].time.length != 1) {
+        return;
+      }
+      const step = this.$store.getters.getTarget[0].step[0];
+      if (
+        this.bookLocation.chapterIndex != step.chapterIndex ||
+        this.bookLocation.sectionIndex != step.sectionIndex
+      ) {
+        return;
+      }
+      this.$store.commit('setTask', 0);
+    },
     changePage(e) {
       this.clearSelected();
       const x = e.target.getBoundingClientRect().left;
@@ -510,20 +511,24 @@ export default {
         color: color,
         comment: ''
       });
-      if (
-        this.selectedToNotes.chapterIndex == 3 &&
-        this.selectedToNotes.sectionIndex == 0 &&
-        this.selectedToNotes.textStart == 110 &&
-        this.selectedToNotes.textEnd == 145
-      ) {
-        if (this.task.length > 0) {
-          if (this.task[1].time.length === 1) {
-            this.$store.commit('setTask', 1);
-            console.log(this.task);
-          }
-        }
-      }
       this.clearSelected();
+      if (this.task.length <= 0) {
+        return;
+      }
+      if (this.task[1].time.length != 1) {
+        return;
+      }
+      const step = this.$store.getters.getTarget[1].step[0];
+      if (
+        this.selectedToNotes.chapterIndex == step.chapterIndex &&
+        this.selectedToNotes.sectionIndex == step.sectionIndex &&
+        this.selectedToNotes.textStart == step.textStart &&
+        this.selectedToNotes.textEnd == step.textEnd
+      ) {
+        this.$store.commit('setTask', 1);
+        console.log(this.task);
+      }
+
       // console.log(this.$store.getters.getNotes);
     },
     hightLight(i) {

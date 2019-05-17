@@ -59,6 +59,11 @@ export const store = new Vuex.Store({
           '在內文，將螢光筆改為綠色。',
           '請到筆記庫，將螢光筆改為粉紅色。',
           '將此段話於筆記庫內刪除。'
+        ],
+        step: [
+          { chapterIndex: 3, sectionIndex: 0, textStart: 110, textEnd: 145 },
+          { fontSizeLevel: 52 },
+          { color: 'background__change__black' }
         ]
       },
       {
