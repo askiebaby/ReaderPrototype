@@ -198,6 +198,25 @@ export default {
         index: index,
         color: color
       });
+      const task = this.$store.getters.getTask;
+      const checkTask = this.$store.getters.getNotes[index].task;
+      const step = this.$store.getters.getTarget[1].step[2];
+      if (checkTask != 2) {
+        return;
+      }
+      if (task.length <= 0) {
+        return;
+      }
+      if (task[1] == undefined) {
+        return;
+      }
+      if (task[1].time.length != 3) {
+        return;
+      }
+      if (color != step.css) {
+        return;
+      }
+      this.$store.commit('setTask', 1);
     }
   }
 };

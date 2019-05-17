@@ -35,7 +35,8 @@ export const store = new Vuex.Store({
         textEnd: 1779,
         color: 'purple-pen',
         comment:
-          '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。'
+          '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。',
+        task: 0
       }
     ],
     target: [
@@ -61,9 +62,16 @@ export const store = new Vuex.Store({
           '將此段話於筆記庫內刪除。'
         ],
         step: [
-          { chapterIndex: 3, sectionIndex: 0, textStart: 110, textEnd: 145 },
-          { fontSizeLevel: 52 },
-          { color: 'background__change__black' }
+          {
+            chapterIndex: 3,
+            sectionIndex: 0,
+            textStart: 110,
+            textEnd: 145,
+            css: 'yellow-pen'
+          },
+          { task: 2, css: 'green-pen' },
+          { task: 2, css: 'red-pen' },
+          { task: 2 }
         ]
       },
       {
@@ -160,7 +168,8 @@ export const store = new Vuex.Store({
         textStart: payload.textStart,
         textEnd: payload.textEnd,
         color: payload.color,
-        comment: payload.comment
+        comment: payload.comment,
+        task: payload.task
       });
     },
     changeNotesColor(state, payload) {

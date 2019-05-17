@@ -200,6 +200,22 @@ export default {
   },
   methods: {
     deleteNotes() {
+      const task = this.$store.getters.getTask;
+      const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
+      if (checkTask != 2) {
+        return;
+      }
+      if (task.length <= 0) {
+        return;
+      }
+      if (task[1] == undefined) {
+        return;
+      }
+      if (task[1].time.length != 4) {
+        return;
+      }
+      this.$store.commit('setTask', 1);
+      // console.log('151681656', this.$store.getters.getTask);
       if (this.notesIndex != -1) {
         this.$store.commit('deleteNote', this.notesIndex);
       }

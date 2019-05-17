@@ -240,6 +240,7 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
+import { debug } from 'util';
 
 export default {
   components: {
@@ -496,40 +497,90 @@ export default {
       }
     },
     changeColor(color) {
+      const step1 = this.$store.getters.getTarget[1].step[0];
       if (this.isSelectedPart >= 0) {
         this.$store.commit('changeNotesColor', {
           index: this.isSelectedPart,
           color: color
         });
+        const checkTask = this.$store.getters.getNotes[this.isSelectedPart]
+          .task;
+
+        if (checkTask != 2) {
+          return;
+        }
+
+        if (this.task.length <= 0) {
+          return;
+        }
+
+        if (this.task[1] == undefined) {
+          return;
+        }
+
+        let isFinishStep1 = false;
+        if (this.task[1].time.length == 2) {
+          isFinishStep1 = true;
+        }
+
+        if (isFinishStep1 == false) {
+          if (color != step1.css) {
+            return;
+          }
+
+          this.$store.commit('setTask', 1);
+          // console.log('8522256', this.$store.getters.getTask);
+          return;
+        }
+        const step2 = this.$store.getters.getTarget[1].step[1];
+        if (color != step2.css) {
+          return;
+        }
+        if (this.task[1].time.length != 2) {
+          return;
+        }
+        this.$store.commit('setTask', 1);
+        console.log('855651', this.$store.getters.getTask);
         return;
       }
-      this.$store.commit('addNotes', {
+      const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
         textStart: this.selectedToNotes.textStart,
         textEnd: this.selectedToNotes.textEnd,
         color: color,
-        comment: ''
-      });
-      this.clearSelected();
+        comment: '',
+        task: 0
+      };
       if (this.task.length <= 0) {
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
+        return;
+      }
+      if (this.task[1] == undefined) {
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
         return;
       }
       if (this.task[1].time.length != 1) {
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
         return;
       }
-      const step = this.$store.getters.getTarget[1].step[0];
       if (
-        this.selectedToNotes.chapterIndex == step.chapterIndex &&
-        this.selectedToNotes.sectionIndex == step.sectionIndex &&
-        this.selectedToNotes.textStart == step.textStart &&
-        this.selectedToNotes.textEnd == step.textEnd
+        this.selectedToNotes.chapterIndex == step1.chapterIndex &&
+        this.selectedToNotes.sectionIndex == step1.sectionIndex &&
+        this.selectedToNotes.textStart == step1.textStart &&
+        this.selectedToNotes.textEnd == step1.textEnd
       ) {
-        this.$store.commit('setTask', 1);
-        console.log(this.task);
+        obj.task = 2;
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
+        if (color == step1.css) {
+          this.$store.commit('setTask', 1);
+        }
+        // console.log('581651', this.$store.getters.getTask);
       }
-
-      // console.log(this.$store.getters.getNotes);
     },
     hightLight(i) {
       let css = '';
@@ -740,8 +791,7 @@ export default {
           content: this.documentContent.books[this.bookLocation.chapterIndex]
             .sections[this.bookLocation.sectionIndex - 1].content
         };
-        // debugger
-        this.bookLocation.sectionIndex -= 1;
+        //         this.bookLocation.sectionIndex -= 1;
         this.$store.commit('setBookContent', addContent);
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'prevChapter') {
@@ -760,8 +810,7 @@ export default {
             lastSectionIndex
           ].content
         };
-        // debugger
-        this.$store.commit('setBookContent', addContent);
+        //         this.$store.commit('setBookContent', addContent);
         this.bookLocation.chapterIndex -= 1;
         this.bookLocation.sectionIndex =
           this.documentContent.books[prevChapterIndex].sections.length - 1;
