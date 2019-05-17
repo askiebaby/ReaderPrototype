@@ -35,7 +35,53 @@ export const store = new Vuex.Store({
         textEnd: 1779,
         color: 'purple-pen',
         comment:
-          '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。'
+          '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。',
+        task: 0
+      }
+    ],
+    target: [
+      {
+        chineseOrder: '一',
+        description: [
+          '翻到第一章 “有目的的練習” 。',
+          '將字體設定成最大。',
+          '將閱讀模式調成黑底白字的夜間模式。'
+        ],
+        step: [
+          { chapterIndex: 2, sectionIndex: 0 },
+          { fontSizeLevel: 52 },
+          { color: 'background__change__black' }
+        ]
+      },
+      {
+        chineseOrder: '二',
+        description: [
+          '請翻到第2章節 “大腦的適應能力” 。找到文中："你可以採用錄影...感受一下你的進步"把這段劃為重點。',
+          '在內文，將螢光筆改為綠色。',
+          '請到筆記庫，將螢光筆改為粉紅色。',
+          '將此段話於筆記庫內刪除。'
+        ],
+        step: [
+          {
+            chapterIndex: 3,
+            sectionIndex: 0,
+            textStart: 110,
+            textEnd: 145,
+            css: 'yellow-pen'
+          },
+          { task: 2, css: 'green-pen' },
+          { task: 2, css: 'red-pen' },
+          { task: 2 }
+        ]
+      },
+      {
+        chineseOrder: '三',
+        description: [
+          '請找到第2章節"走出舒適區的重要性"中的一段話："對於這種現象，技術上...行動的趨勢"。',
+          '將此段話附上註解，註解內容為：體內平衡。',
+          '用evernote分享此段落。',
+          '請刪除“體內平衡”的註解。'
+        ]
       }
     ],
     directions: {
@@ -73,6 +119,9 @@ export const store = new Vuex.Store({
     },
     getTooltipColor: state => {
       return state.tooltipColor;
+    },
+    getTarget: state => {
+      return state.target;
     }
   },
   mutations: {
@@ -125,7 +174,8 @@ export const store = new Vuex.Store({
         textStart: payload.textStart,
         textEnd: payload.textEnd,
         color: payload.color,
-        comment: payload.comment
+        comment: payload.comment,
+        task: payload.task
       });
     },
     setDirections(state, payload) {
@@ -136,6 +186,9 @@ export const store = new Vuex.Store({
     },
     changeTooltipColor(state, payload) {
       state.tooltipColor = payload;
+    },
+    deleteNote(state, payload) {
+      state.notes.splice(payload, 1);
     }
   }
 });

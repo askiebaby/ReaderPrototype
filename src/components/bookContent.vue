@@ -1,63 +1,58 @@
 <template>
-  <div v-touch:longtap="e => switchTouch(e, 'none')" class="book">
+  <div>
     <tooltip
-      v-if="showTooltip"
+      v-if="isShowTooltip"
       class="tooltip"
       :tooltip-position="tooltipPosition"
-      :selected-color="selectedPartColor"
       :selected-to-notes="selectedToNotes"
+      :from-content="true"
       @changeColor="changeColor($event)"
     ></tooltip>
-
-    <h2 class="book__chapter">
-      {{ checkFinishStep1 }} {{ bookContent.h1title }}
-    </h2>
-    <div
-      ref="viewport"
-      class="book__content"
-      :style="{
-        height: `${containerHeight}px`
-      }"
-    >
+    <div class="book" @click="changePage">
+      <h2 class="book__chapter">
+        {{ bookContent.chapter }} {{ bookContent.h1title }}
+      </h2>
       <div
-        ref="bookContainer"
+        ref="viewport"
+        class="book__content"
         :style="{
-          height: `${bookLocation.newContentHeight}`
+          height: `${containerHeight}px`
         }"
       >
-        <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
-        <p>
-          <span
-            v-for="(g, i) in groupsContent"
-            :key="i"
-            v-touch:tap="e => selectedPart(e, g.notesIndex)"
-            :class="g.hightLight"
-          >
+        <div
+          ref="bookContainer"
+          :style="{
+            height: `${bookLocation.newContentHeight}`
+          }"
+        >
+          <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
+          <p>
             <span
-              v-for="(c, j) in g.textGroup"
-              :key="j"
-              v-touch:start="e => touchStart(e, g.boundary + j)"
-              v-touch:moving="touchMove"
-              v-touch:end="touchEnd"
-              :index="g.boundary + j"
-              :class="hightLight(g.boundary + j)"
-              >{{ c }}</span
-            ></span
-          >
-        </p>
+              v-for="(g, i) in groupsContent"
+              :key="i"
+              v-touch:longtap="e => selectedPart(e, g.notesIndex)"
+              :class="g.hightLight"
+            >
+              <span
+                v-for="(c, j) in g.textGroup"
+                :key="j"
+                v-touch:start="e => touchStart(e, g.boundary + j)"
+                v-touch:moving="touchMove"
+                v-touch:end="touchEnd"
+                :index="g.boundary + j"
+                :class="hightLight(g.boundary + j)"
+                >{{ c }}</span
+              ></span
+            >
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="page">
-      本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
-    </div>
-    <div class="touch" :style="{ pointerEvents: pointerEvents }">
-      <div class="touch__previous" @click="loadBookContent('prev')"></div>
-      <div class="touch__navigation" @click="toggleNavigation"></div>
-      <div class="touch__next" @click="loadBookContent('next')"></div>
+      <div class="page">
+        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+      </div>
     </div>
   </div>
 </template>
-
 <style lang="scss" scoped>
 @import '@/assets/scss/modules/_background.scss';
 // @import url(https://fonts.googleapis.com/earlyaccess/cwtexming.css); // 明體
@@ -244,6 +239,7 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
+import { debug } from 'util';
 
 export default {
   components: {
@@ -308,7 +304,6 @@ export default {
       togglePageAction: '',
       pages: '',
       task: this.$store.getters.getTask,
-      index: 0,
       isSelect: true,
       selected: {
         start: -1,
@@ -389,6 +384,7 @@ export default {
         }
         group.push(Obj);
       }
+      this.checkFinishStep1();
       return group;
     },
     aLineHeight() {
@@ -406,26 +402,11 @@ export default {
       );
       return viewport;
     },
-    showTooltip() {
-      return this.isShowTooltip;
-    },
     bookContent() {
       return this.$store.getters.getBookContent;
     },
     bookLocation() {
-      console.log(this.$store.getters.getBookLocation);
       return this.$store.getters.getBookLocation;
-    },
-    checkFinishStep1() {
-      if (this.bookContent.chapter == '第1章') {
-        if (this.task.length > 0) {
-          if (this.task[this.index].time.length === 1) {
-            this.$store.commit('setTask', this.index);
-            console.log(this.task);
-          }
-        }
-      }
-      return this.bookContent.chapter;
     }
   },
   watch: {
@@ -460,6 +441,40 @@ export default {
   },
 
   methods: {
+    checkFinishStep1() {
+      if (this.task.length <= 0) {
+        return;
+      }
+      if (this.task[0] == undefined) {
+        return;
+      }
+      if (this.task[0].time.length != 1) {
+        return;
+      }
+      const step = this.$store.getters.getTarget[0].step[0];
+      if (
+        this.bookLocation.chapterIndex != step.chapterIndex ||
+        this.bookLocation.sectionIndex != step.sectionIndex
+      ) {
+        return;
+      }
+      this.$store.commit('setTask', 0);
+    },
+    changePage(e) {
+      this.clearSelected();
+      const x = e.target.getBoundingClientRect().left;
+      let action = '';
+      if (72 < x && x < 272) {
+        action = 'prev';
+      } else if (472 < x && x < 674) {
+        action = 'next';
+      }
+      if (action.length > 0) {
+        this.loadBookContent(action);
+        return;
+      }
+      this.toggleNavigation();
+    },
     selectedPart(e, notesIndex) {
       if (notesIndex != undefined) {
         this.isSelectedPart = notesIndex;
@@ -483,23 +498,90 @@ export default {
       }
     },
     changeColor(color) {
+      const step1 = this.$store.getters.getTarget[1].step[0];
       if (this.isSelectedPart >= 0) {
         this.$store.commit('changeNotesColor', {
           index: this.isSelectedPart,
           color: color
         });
+        const checkTask = this.$store.getters.getNotes[this.isSelectedPart]
+          .task;
+
+        if (checkTask != 2) {
+          return;
+        }
+
+        if (this.task.length <= 0) {
+          return;
+        }
+
+        if (this.task[1] == undefined) {
+          return;
+        }
+
+        let isFinishStep1 = false;
+        if (this.task[1].time.length == 2) {
+          isFinishStep1 = true;
+        }
+
+        if (isFinishStep1 == false) {
+          if (color != step1.css) {
+            return;
+          }
+
+          this.$store.commit('setTask', 1);
+          // console.log('8522256', this.$store.getters.getTask);
+          return;
+        }
+        const step2 = this.$store.getters.getTarget[1].step[1];
+        if (color != step2.css) {
+          return;
+        }
+        if (this.task[1].time.length != 2) {
+          return;
+        }
+        this.$store.commit('setTask', 1);
+        console.log('855651', this.$store.getters.getTask);
         return;
       }
-      this.$store.commit('addNotes', {
+      const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
         textStart: this.selectedToNotes.textStart,
         textEnd: this.selectedToNotes.textEnd,
         color: color,
-        comment: ''
-      });
-      this.clearSelected();
-      console.log(this.$store.getters.getNotes);
+        comment: '',
+        task: 0
+      };
+      if (this.task.length <= 0) {
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
+        return;
+      }
+      if (this.task[1] == undefined) {
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
+        return;
+      }
+      if (this.task[1].time.length != 1) {
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
+        return;
+      }
+      if (
+        this.selectedToNotes.chapterIndex == step1.chapterIndex &&
+        this.selectedToNotes.sectionIndex == step1.sectionIndex &&
+        this.selectedToNotes.textStart == step1.textStart &&
+        this.selectedToNotes.textEnd == step1.textEnd
+      ) {
+        obj.task = 2;
+        this.$store.commit('addNotes', obj);
+        this.clearSelected();
+        if (color == step1.css) {
+          this.$store.commit('setTask', 1);
+        }
+        // console.log('581651', this.$store.getters.getTask);
+      }
     },
     hightLight(i) {
       let css = '';
@@ -715,8 +797,7 @@ export default {
           content: this.documentContent.books[this.bookLocation.chapterIndex]
             .sections[this.bookLocation.sectionIndex - 1].content
         };
-        // debugger
-        this.bookLocation.sectionIndex -= 1;
+        //         this.bookLocation.sectionIndex -= 1;
         this.$store.commit('setBookContent', addContent);
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'prevChapter') {
@@ -735,8 +816,7 @@ export default {
             lastSectionIndex
           ].content
         };
-        // debugger
-        this.$store.commit('setBookContent', addContent);
+        //         this.$store.commit('setBookContent', addContent);
         this.bookLocation.chapterIndex -= 1;
         this.bookLocation.sectionIndex =
           this.documentContent.books[prevChapterIndex].sections.length - 1;

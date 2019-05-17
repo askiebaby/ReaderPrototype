@@ -12,13 +12,18 @@
             ></div>
           </div>
           <div class="tooltip__function">
-            <div><img src="@/assets/images/icons/copy.svg" alt="" /></div>
+            <div v-if="isShowIcon">
+              <img src="@/assets/images/icons/copy.svg" alt="" />
+            </div>
             <div @click="showNotes">
               <img src="@/assets/images/icons/note.svg" alt="" />
             </div>
             <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
-            <div class="tooltip__function__search">
-              <img src="@/assets/images/icons/search@2x.png" alt="" />
+            <div v-if="isShowIcon" class="tooltip__function__search">
+              <img src="@/assets/images/icons/search.svg" alt="" />
+            </div>
+            <div v-else @click="deleteNotes">
+              <img src="@/assets/images/icons/invalid-name.svg" alt="" />
             </div>
           </div>
         </div>
@@ -164,15 +169,25 @@ export default {
     selectedColor: {
       type: String,
       default: ''
+    },
+    fromContent: {
+      type: Boolean,
+      default: true
+    },
+    notesIndex: {
+      type: Number,
+      default: -1
     }
   },
   data() {
     return {
-      // selected: '',
       color: ['yellow', 'red', 'purple', 'green']
     };
   },
   computed: {
+    isShowIcon() {
+      return this.fromContent;
+    },
     leftStyle() {
       return this.tooltipPosition.x + 'px';
     },
@@ -183,10 +198,28 @@ export default {
       return this.$store.getters.getTooltipColor;
     }
   },
-  // mounted() {
-  //   this.selected = this.selectedColor;
-  // },
   methods: {
+    deleteNotes() {
+      const task = this.$store.getters.getTask;
+      const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
+      if (checkTask != 2) {
+        return;
+      }
+      if (task.length <= 0) {
+        return;
+      }
+      if (task[1] == undefined) {
+        return;
+      }
+      if (task[1].time.length != 4) {
+        return;
+      }
+      this.$store.commit('setTask', 1);
+      // console.log('151681656', this.$store.getters.getTask);
+      if (this.notesIndex != -1) {
+        this.$store.commit('deleteNote', this.notesIndex);
+      }
+    },
     showColor(item) {
       let arrary = [];
       arrary.push('tooltip__penColor__' + item);

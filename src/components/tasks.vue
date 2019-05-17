@@ -8,17 +8,13 @@
 
     <div class="taskPage">
       <button
+        v-for="n in 3"
+        :key="n"
         class="button buttonBig taskPage__button"
         :class="{ button__primary: !finish, button__completed: finish }"
-        @click="nextPage"
+        @click="nextPage(n)"
       >
-        Task 1
-      </button>
-      <button class="button buttonBig button__primary taskPage__button">
-        Task 2
-      </button>
-      <button class="button buttonBig button__primary taskPage__button">
-        Task 3
+        Task {{ n }}
       </button>
     </div>
   </div>
@@ -71,12 +67,12 @@ export default {
     backHome() {
       this.$router.push({ name: 'home' });
     },
-    nextPage() {
+    nextPage(order) {
       if (this.finish) {
         this.$router.push({ name: 'taskRecord' });
       } else {
-        this.$store.commit('taskDefault', 0);
-        this.$router.push({ name: 'taskDescription' });
+        this.$store.commit('taskDefault', order - 1);
+        this.$router.push({ name: 'taskDescription', params: { order } });
         console.log(this.$store.getters.getTask);
       }
     }

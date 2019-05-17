@@ -9,12 +9,13 @@
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleMiddle">請依序完成指定任務</h3>
         <div class="lightBox__content">
-          <p class="lightBox__subtitle">任務一：</p>
-          <p class="lightBox__taskDescription">
-            （1-1）翻到第一章 “有目的的練習” 。
-            <br />（1-2）將字體設定成最大。
-            <br />（1-3）將閱讀模式調成黑底白字的夜間模式。
-          </p>
+          <p class="lightBox__subtitle">任務{{ showTask.chineseOrder }}：</p>
+          <div class="lightBox__taskDescription">
+            <p v-for="(item, index) in showTask.description" :key="item">
+              ({{ target.indexOf(showTask) + 1 }}-{{ index + 1 }})
+              {{ item }}
+            </p>
+          </div>
         </div>
         <router-link
           tag="button"
@@ -53,14 +54,20 @@
 export default {
   data() {
     return {
+      order: this.$route.params.order - 1,
+      target: this.$store.getters.getTarget,
       task: this.$store.getters.getTask
     };
   },
+  computed: {
+    showTask() {
+      return this.target[this.order];
+    }
+  },
   methods: {
     taskStart() {
-      let index = 0;
       if (this.task.length > 0) {
-        this.$store.commit('setTask', index);
+        this.$store.commit('setTask', this.order);
         console.log(this.$store.getters.getTask);
       }
     }
