@@ -251,7 +251,7 @@
     }
   }
   p {
-    letter-spacing: .2em;
+    letter-spacing: 0.2em;
   }
   span {
     // 直排文字劃線的螢光筆粗細
@@ -367,7 +367,7 @@ export default {
         chapterIndex: this.bookLocation.chapterIndex,
         sectionIndex: this.bookLocation.sectionIndex,
         textStart: textStart,
-        textEnd: textEnd
+        textEnd: textEnd + 1
       };
     },
     groupsContent() {
