@@ -1,8 +1,6 @@
 // @import './font';
 
 .lightBox {
-  // position: relative;
-  // TODO 以下樣式在串狀態時使用（移除註解）
   position: fixed;
   top: 0;
   left: 0;
@@ -27,6 +25,7 @@
     position: relative;
     background: $white;
     min-width: 496px;
+    max-width: 496px;
     padding: 55px 48px 20px;
     border-radius: 18px;
     text-align: center;

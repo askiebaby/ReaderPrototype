@@ -4,7 +4,9 @@
     <div class="lightBox__background" @click="hideSetting"></div>
     <div class="lightBox__bubbleLittle">
       <div class="lightBox__content">
-        <div class="function function__lightness"></div>
+        <div class="function function__lightness">
+          <img src="@/assets/images/lightness.svg" alt="調整亮度">
+        </div>
         <div class="function function__fontSize">
           <span class="changeSize" @click="changeFontSize('small')">
             <span class="changeSize__content">Aa</span>
@@ -86,31 +88,6 @@
     margin-left: 10px;
   }
 
-  &__fontSize {
-    margin-bottom: 28px;
-    .changeSize {
-      background: $lightGray-2;
-      position: relative;
-    }
-    .small,
-    .enlarge {
-      border: transparent 10px solid;
-      display: inline-block;
-      position: absolute;
-      margin-left: 7px;
-      border-left-width: 5px;
-      border-right-width: 5px;
-    }
-    .small {
-      border-top-color: #4394ff;
-      top: 15px;
-    }
-    .enlarge {
-      border-bottom-color: #4394ff;
-      top: 5px;
-    }
-  }
-
   &__background {
     margin-bottom: 24px;
 
@@ -126,10 +103,6 @@
     &__green {
       background: $green-2;
     }
-  }
-
-  &__fontFamily {
-    margin-bottom: 25px;
   }
 
   &__pageMode {
@@ -178,29 +151,76 @@
       }
     }
   }
+
+  &__fontSize {
+    margin-bottom: 28px;
+    .changeSize {
+      background: $lightGray-2;
+      position: relative;
+    }
+    .small,
+    .enlarge {
+      border: transparent 10px solid;
+      display: inline-block;
+      position: absolute;
+      margin-left: 7px;
+      border-left-width: 5px;
+      border-right-width: 5px;
+    }
+    .small {
+      border-top-color: #4394ff;
+      top: 15px;
+    }
+    .enlarge {
+      border-bottom-color: #4394ff;
+      top: 5px;
+    }
+  }
+
+  &__fontFamily {
+    margin-bottom: 25px;
+  }
+
+  &__lightness {
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+
 }
 .functions-row {
-    .function {
+  .function {
     &__fontSize {
+      flex-direction: row-reverse;
+      .changeSize + .changeSize {
+        margin-left: auto;
+        margin-right: 10px;
+      }
       .changeSize {
         direction: rtl;
+        &:nth-child(1) {
+          padding-right: 30px;
+        }
+        &:nth-child(2) {
+          padding-left: 30px;
+        }
         &__content {
           position: relative;
           writing-mode: vertical-lr;
           transform: rotate(180deg);
         }
       }
-      .small, .enlarge {
-        transform: rotate(90deg);
+      .small,
+      .enlarge {
+        transform: rotate(-90deg);
+        transform-origin: center;
+        top: 9px;
       }
       .small {
-        transform-origin: right;
-        left: 20px;
+        right: 40px;
       }
       .enlarge {
-        transform-origin: center;
-        top: auto;
-        right: 27px;
+        left: 37px;
       }
     }
     &__pageMode {
@@ -266,20 +286,7 @@ export default {
       } else if (action === 'enlarge') {
         if (this.sizeLevel < this.fontSizeLevel.length - 1) {
           this.sizeLevel += 1;
-          if (this.task.length <= 0) {
-            return;
-          }
-          if (this.task[0] == undefined) {
-            return;
-          }
-          if (this.task[0].time.length != 2) {
-            return;
-          }
-          const step = this.$store.getters.getTarget[0].step[1];
-          if (this.fontSizeLevel[this.sizeLevel] == step.fontSizeLevel) {
-            this.$store.commit('setTask', 0);
-            // console.log(this.task);
-          }
+          this.checkEnlargeFontSize();
         }
       }
       let fontSizeClass = `fontSize__${this.fontSizeLevel[this.sizeLevel]}px`;
@@ -287,6 +294,22 @@ export default {
         fontSizeClass: fontSizeClass,
         sizeLevel: this.sizeLevel
       });
+    },
+    checkEnlargeFontSize() {
+      if (this.task.length <= 0) {
+        return;
+      }
+      if (this.task[0] == undefined) {
+        return;
+      }
+      if (this.task[0].time.length != 2) {
+        return;
+      }
+      const step = this.$store.getters.getTarget[0].step[1];
+      if (this.fontSizeLevel[this.sizeLevel] == step.fontSizeLevel) {
+        this.$store.commit('setTask', 0);
+        // console.log(this.task);
+      }
     }
   }
 };

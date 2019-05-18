@@ -13,17 +13,19 @@
           </div>
           <div class="tooltip__function">
             <div v-if="isShowIcon">
-              <img src="@/assets/images/icons/copy.svg" alt="" />
+              <img src="@/assets/images/icons/copy.svg" alt="複製" />
             </div>
-            <div @click="showNotes">
-              <img src="@/assets/images/icons/note.svg" alt="" />
+            <div class="tooltip__function__note" @click="showNotes">
+              <img src="@/assets/images/icons/note.svg" alt="筆記庫" />
             </div>
-            <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
+            <div class="tooltip__function__share">
+              <img src="@/assets/images/icons/share.svg" alt="分享" />
+            </div>
             <div v-if="isShowIcon" class="tooltip__function__search">
-              <img src="@/assets/images/icons/search@2x.png" alt="" />
+              <img src="@/assets/images/icons/search.svg" alt="搜尋" />
             </div>
             <div v-else @click="deleteNotes">
-              <img src="@/assets/images/icons/delete.svg" alt="" />
+              <img src="@/assets/images/icons/delete.svg" alt="刪除" />
             </div>
           </div>
         </div>
@@ -63,7 +65,7 @@ body {
   min-width: 393px;
   max-width: 393px;
   user-select: none;
-  // margin: 10px;
+
   &__wrapper {
     position: relative;
     background-color: $white;
@@ -109,12 +111,22 @@ body {
     justify-content: space-around;
     flex-basis: 50%;
     > div {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      height: 30px;
+      width: 30px;
+      padding-left: 5px;
+      padding-bottom: 5px;
       cursor: pointer;
     }
     &__search {
       img {
         max-width: 20px;
       }
+    }
+    &__share {
+      margin-left: 5px;
     }
   }
   &__penColor {
@@ -140,11 +152,23 @@ body {
       background-color: $blue-pen;
     }
   }
-  &__function {
-    > div {
-      padding: 5px 10px;
-      display: flex;
-      align-items: center;
+}
+
+.functions-row {
+  .tooltip {
+    transform: rotate(45deg);
+    &__function {
+      > div {
+        transform: rotate(-90deg);
+        justify-content: center;
+        padding-left: 0;
+      }
+      &__share {
+        margin-left: 0;
+      }
+      .tooltip__function__note {
+        padding-left: 5px;
+      }
     }
   }
 }

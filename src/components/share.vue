@@ -11,33 +11,47 @@
       </div>
       <div class="share__flexRow">
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/inbox@2x.png" />
+          <img
+            class="share__app__icon"
+            src="@/assets/images/icons/inbox@2x.png" />
           <p>訊息</p>
         </div>
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/evernote@2x.png" />
+          <img 
+            class="share__app__icon"
+            src="@/assets/images/icons/evernote@2x.png" />
           <p>Evernote</p>
         </div>
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/mail@2x.png" />
+          <img 
+            class="share__app__icon" 
+            src="@/assets/images/icons/mail@2x.png" />
           <p>郵件</p>
         </div>
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/memo@2x.png" />
+          <img 
+            class="share__app__icon"
+            src="@/assets/images/icons/memo@2x.png" />
           <p>加入到「備忘錄」</p>
         </div>
       </div>
       <div class="share__flexRow">
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/copy-ios@2x.png" />
+          <img 
+            class="share__app__icon"
+            src="@/assets/images/icons/copy-ios@2x.png" />
           <p>拷貝</p>
         </div>
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/directory@2x.png" />
+          <img 
+            class="share__app__icon"
+            src="@/assets/images/icons/directory@2x.png" />
           <p>儲存到檔案</p>
         </div>
         <div class="share__app">
-          <img class="share__app__icon" src="@/assets/images/icons/more@2x.png" />
+          <img 
+            class="share__app__icon"
+            src="@/assets/images/icons/more@2x.png" />
           <p>更多</p>
         </div>
       </div>
@@ -47,72 +61,71 @@
 </template>
 
 <style lang="scss" scoped>
-  .share {
-    display: flex;
-    align-content: center;
+.share {
+  display: flex;
+  align-content: center;
+  height: 100vh;
+  &__background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 100vh;
-    &__background {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100vh;
-    }
-    &__container {
-      position: relative;
-      width: 402px;
-      margin: auto;
-      background: $white-3;
-      border-radius: 14px;
-      padding: 7px 0 4px;
-    }
-    &__flexRow {
-      display: flex;
-      justify-content: flex-start;
-      align-content: center;
-      padding: 20px 14px 15px;
-    }
+  }
+  &__container {
+    position: relative;
+    width: 402px;
+    margin: auto;
+    background: $white-3;
+    border-radius: 14px;
+    padding: 7px 0 4px;
+  }
+  &__flexRow {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    padding: 20px 14px 15px;
+  }
 
-    &__flexRow + &__flexRow {
-      border-top: 1px solid $gray-4;
-    }
-    &__macbook {
-      flex-basis: 25%;
-      text-align: center;
-      .share__app {
-        background: $gray-3;
-        width: 76px;
-        height: 76px;
-        border-radius: 50%;
-        margin: 0 auto;
-      }
-    }
-    &__app {
-      flex-basis: 25%;
-      text-align: center;
-      cursor: pointer;
-      &__icon {
-        max-width: 78px;
-        margin-bottom: 5px;
-      }
-    }
-    h3, p {
-      font-size: 12px;
-      color: $black-1;
-      font-weight: light;
-      text-align: center;
-      font-family: 'Noto Sans TC', sans-serif;
-    }
-    p {
-      display: inline-block;
-      vertical-align: middle;
-      line-height: 1;
+  &__flexRow + &__flexRow {
+    border-top: 1px solid $gray-4;
+  }
+  &__macbook {
+    flex-basis: 25%;
+    text-align: center;
+    .share__app {
+      background: $gray-3;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      margin: 0 auto;
     }
   }
+  &__app {
+    flex-basis: 25%;
+    text-align: center;
+    cursor: pointer;
+    &__icon {
+      max-width: 78px;
+      margin-bottom: 5px;
+    }
+  }
+  h3, p {
+    font-size: 12px;
+    color: $black-1;
+    font-weight: light;
+    text-align: center;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  p {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+}
 </style>
 
 <script>
 export default {
-  
-}
+};
 </script>

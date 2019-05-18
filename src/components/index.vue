@@ -1,67 +1,66 @@
 <template>
   <div class="index">
-    <div
-      class="index__backround"
-      @click="closeIndexStatus"
-    >
-      <div class="index__container">
-        <nav>
-          <div @click="closeIndexStatus">
-            <img :src="require('@/assets/menu/back.svg')" />
-            <span>返回</span>
-          </div>
-        </nav>
-        <ul class="index__outline">
-          <li
-            class="index__chapter"
-            v-for="(book, bookIndex) in document.books"
-            :key="bookIndex"
-            
+    <div class="index__background" @click="closeIndexStatus"></div>
+    <div class="index__container">
+      <nav>
+        <div @click="closeIndexStatus">
+          <img :src="require('@/assets/menu/back.svg')" />
+          <span>返回</span>
+        </div>
+      </nav>
+      <ul class="index__outline">
+        <li
+          v-for="(book, bookIndex) in document.books"
+          :key="bookIndex"
+          class="index__chapter"
+        >
+          <span
+            v-if="showChapter(bookIndex)"
+            class="index__chapterName"
+            @click="loadChapter(bookIndex, book)"
           >
+            {{ book.chapter }}
             <span
-              class="index__chapterName"
-              v-if="showChapter(bookIndex)"
-              @click="loadChapter(bookIndex, book)"
+              @click="emitContent(book.chapter, book.title, '', book.content)"
+              >{{ book.title }}</span
             >
-              {{ book.chapter }}
+          </span>
+          <ul v-if="showSubTitle(book.chapter)" class="index__section">
+            <li
+              v-for="(section, sectionIndex) in book.sections"
+              :key="sectionIndex"
+              class="index__section__list"
+              @click="loadBookContent(book, bookIndex, section, sectionIndex)"
+            >
               <span
-                @click="emitContent(book.chapter, book.title, '', book.content)"
-                >{{ book.title }}</span
+                v-if="sectionIndex === 0" class="index__chapterName"
+                v-html="getTitleIndex(book.chapter)"
               >
-            </span>
-            <ul
-              class="index__section"
-              v-if="showSubTitle(book.chapter)"
-            >
-              <li
-                class="index__section__list"
-                v-for="(section, sectionIndex) in book.sections"
-                
-                :key="sectionIndex"
-                @click="loadBookContent(book, bookIndex, section, sectionIndex)"
-              >
-                <span v-if="sectionIndex === 0" class="index__chapterName"
-                  v-html="getTitleIndex(book.chapter)">
-  
-                </span>
-                <span class="index__sectionName">{{ section.title }}</span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+              </span>
+              <span class="index__sectionName">{{ section.title }}</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .index {
-  width: 100%;
-  height: 100vh;
-  background: rgba(155, 155, 155, 0.9);
-  position: fixed;
-  top: 0;
-  z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+  &__background {
+    height: 100vh;
+    width: 100%;
+    background: rgba(155, 155, 155, 0.9);
+    position: fixed;
+    top: 0;
+  }
 
   &__container {
     position: relative;
@@ -114,9 +113,10 @@
     left: 0;
     min-height: 2.8em;
   }
-  &__chapterName, &__sectionName {
+  &__chapterName,
+  &__sectionName {
     color: $black-2;
-      line-height: 2.8rem;
+    line-height: 2.8rem;
   }
 
   &__outline {
@@ -150,9 +150,8 @@
       overflow-x: auto;
       overflow-y: hidden;  
       -webkit-overflow-scrolling: touch;
-    
       &::-webkit-scrollbar {
-          display: none;
+        display: none;
       }
     }
 
@@ -168,7 +167,6 @@
       position: absolute;
       top: 0;
       right: 0;
-      
       /deep/ .index__chapterName__index {
         writing-mode: initial;
         letter-spacing: 0;
@@ -192,10 +190,10 @@
       }
     }
 
-
-    &__chapterName, &__sectionName {
+    &__chapterName,
+    &__sectionName {
       writing-mode: vertical-rl;
-      letter-spacing: .5em;
+      letter-spacing: 0.5em;
     }
   }
 }
@@ -210,16 +208,13 @@ export default {
       document
     };
   },
-  computed: {
-    
-  },
   methods: {
     getTitleIndex (chapterTitle) {
-      const arr = chapterTitle.split('')
-      const chapterIndex = chapterTitle.slice(1,-1)
-      const finalChapterTitle =
-        `${arr[0]}<span class="index__chapterName__index">${chapterIndex}</span>${arr[arr.length-1]}`
-      return finalChapterTitle
+      const arr = chapterTitle.split('');
+      const chapterIndex = chapterTitle.slice(1, -1);
+      const finalChapterTitle = 
+        `${arr[0]}<span class="index__chapterName__index">${chapterIndex}</span>${arr[arr.length-1]}`;
+      return finalChapterTitle;
     },
     closeIndexStatus() {
       this.$emit('closeIndexStatus', false);

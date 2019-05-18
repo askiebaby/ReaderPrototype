@@ -14,7 +14,6 @@
   top: 0;
   left: 0;
   z-index: 100;
-  width: 100%;
   padding: 33px 0 0 24px;
   &__back {
     display: flex;

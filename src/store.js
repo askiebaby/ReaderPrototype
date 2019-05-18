@@ -130,8 +130,11 @@ export const store = new Vuex.Store({
       }
     ],
     directions: {
+      /*
+        row 直，column 橫
+      */
       words: 'column',
-      functions: 'column'
+      functions: 'row'
     }
   },
   getters: {

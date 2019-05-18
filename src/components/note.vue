@@ -11,36 +11,36 @@
         </div>
       </nav>
       <div class="notes__all">
-      <article
-        v-for="(item, index) in getNotes"
-        :key="index"
-        class="note"
-        style="position:relative"
-      >
-        <tooltip
-          v-if="isShowTooltip(index)"
-          style="position:absolute"
-          :from-content="false"
-          :notes-index="notesIndex"
-          @changeColor="changeColor($event, index)"
-        ></tooltip>
-        <div class="note__highlight" :class="item.color"></div>
-        <div class="note__record">
-          <div class="note__sentence">{{ item.text }}</div>
-          <div v-if="item.comment.length > 0" class="note__memo">
-            {{ item.comment }}
+        <article
+          v-for="(item, index) in getNotes"
+          :key="index"
+          class="note"
+          style="position:relative"
+        >
+          <tooltip
+            v-if="isShowTooltip(index)"
+            style="position:absolute"
+            :from-content="false"
+            :notes-index="notesIndex"
+            @changeColor="changeColor($event, index)"
+          ></tooltip>
+          <div class="note__highlight" :class="item.color"></div>
+          <div class="note__record">
+            <div class="note__sentence">{{ item.text }}</div>
+            <div v-if="item.comment.length > 0" class="note__memo">
+              {{ item.comment }}
+            </div>
           </div>
-        </div>
-        <div
+          <div
           class="note__actionButton"
           @click="selectedNote(index, item.color)"
-        >
-          <img
-            :src="require('@/assets/menu/dropdown-doubleline.svg')"
-            alt="More Actions"
-          />
-        </div>
-      </article>
+          >
+            <img
+              :src="require('@/assets/menu/dropdown-doubleline.svg')"
+              alt="More Actions"
+            />
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -184,7 +184,8 @@
       text-align: left;
       width: 100%;
     }
-    &__sentence, &__memo {
+    &__sentence,
+    &__memo {
       display: flex;
       justify-content: flex-end;
       direction: rtl;
@@ -202,7 +203,7 @@
       font-weight: 600;
     }
     &__memo {
-      margin-right: 10px;
+      margin-right: 13px;
       border-left: none;
       border-top: 2px solid #8c8b8c;
       padding-top: 13px;

@@ -5,9 +5,9 @@
       <div
         v-for="loopIndex in taskAmountInList"
         class="task"
+        :key="`M${countTaskAmount(loopIndex)}`"
         :class="{ task__completed: isFinish('M' + countTaskAmount(loopIndex)) }"
         @click="commitDirectionsToVueX(directions, nextPage('M' + countTaskAmount(loopIndex)))"
-        :key="`M${countTaskAmount(loopIndex)}`"
       >
         <span>{{ countTaskAmount(loopIndex) }}</span>
       </div>
@@ -16,9 +16,9 @@
       <div
         v-for="loopIndex in taskAmountInList"
         class="task"
+        :key="`F${countTaskAmount(loopIndex)}`"
         :class="{ task__completed: isFinish('F' + countTaskAmount(loopIndex)) }"
         @click="commitDirectionsToVueX(directions, nextPage('F' + countTaskAmount(loopIndex)))"
-        :key="`F${countTaskAmount(loopIndex)}`"
       >
         <span>{{ countTaskAmount(loopIndex) }}</span>
       </div>
@@ -26,9 +26,7 @@
   </div>
 </template>
 
-
 <style lang="scss" scoped>
-
 %task {
   width: 55px;
   height: 55px;
@@ -107,20 +105,19 @@
 }
 </style>
 
-
 <script>
 export default {
   props: {
     directions: {
       type: Object,
-      default () {
-        return { words: 'column', functions: 'column' }
+      default() {
+        return { words: 'column', functions: 'column' };
       }
     },
     listIndex: {
       type: Number,
-      default () {
-        return 1
+      default() {
+        return 1;
       }
     }
   },
@@ -131,26 +128,25 @@ export default {
       taskAmountInList: 15
     };
   },
-  mounted () {
-    this.$nextTick( () => {
-      this.makeTitleTemplate(this.directions.words, this.directions.functions)
-    })
+  mounted() {
+    this.$nextTick(() => {
+      this.makeTitleTemplate(this.directions.words, this.directions.functions);
+    });
   },
   methods: {
-    makeTitleTemplate (directionWords, directionFunctions) {
-      const titleString = 
-        `文${directionToString(directionWords)}功能${directionToString(directionFunctions)}`;
+    makeTitleTemplate(directionWords, directionFunctions) {
+      const titleString = `文${directionToString(directionWords)}功能${directionToString(directionFunctions)}`;
 
       this.titleTemplate = titleString
         .split('')
-        .map(title => (`<div class="taskList__description__word">${title}</div>`))
+        .map(title => `<div class="taskList__description__word">${title}</div>`)
         .join('');
 
       function directionToString(dir) {
-        return (dir === 'row') ? '直' : '橫'
+        return dir === 'row' ? '直' : '橫';
       }
     },
-    countTaskAmount (loopIndex) {
+    countTaskAmount(loopIndex) {
       return loopIndex + this.listIndex * this.taskAmountInList;
     },
     isFinish(id) {
@@ -161,19 +157,18 @@ export default {
       }
       return result;
     },
-    commitDirectionsToVueX (directions, callback) {
-      console.log('commitDirectionsToVueX', directions)
-      callback()
+    commitDirectionsToVueX(directions, callback) {
+      console.log('commitDirectionsToVueX', directions);
+      callback();
       this.$store.commit('setDirections', directions);
     },
     nextPage(id) {
       return () => {
         const result = this.isFinish(id);
-        let idToRouter = (result) ? { name: 'finishTask', params: { id } } : { name: 'login', params: { id } }
+        let idToRouter = result ?{ name: 'finishTask', params: { id } } : { name: 'login', params: { id } };
         this.$router.push(idToRouter);
-      }
+      };
     }
   }
-}
+};
 </script>
-
