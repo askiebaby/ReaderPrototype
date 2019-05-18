@@ -11,20 +11,17 @@
           <span>{{ formatFinishTime }}</span>
         </p>
         <div class="lightBox__content">
-          <p class="lightBox__subtitle">任務一完成時間/點擊次數</p>
-          <p class="lightBox__taskDescription">
-            （1-1）{{ CookiesData.task[0].time[0] }}秒/{{
-              CookiesData.task[0].counts[0]
-            }}次
-            <br />
-            （1-2）{{ CookiesData.task[0].time[1] }}秒/{{
-              CookiesData.task[0].counts[1]
-            }}次
-            <br />
-            （1-3）{{ CookiesData.task[0].time[2] }}秒/{{
-              CookiesData.task[0].counts[2]
-            }}次
+          <p class="lightBox__subtitle">
+            任務{{ chineseOrder }}完成時間/點擊次數
           </p>
+          <div class="lightBox__taskDescription">
+            <p v-for="(item, index) in CookiesData.task.counts" :key="index">
+              ({{ taskIndex + 1 }}-{{ index + 1 }})
+              {{ CookiesData.task.time[index] }}秒/{{
+                CookiesData.task.counts[index]
+              }}
+            </p>
+          </div>
         </div>
         <button
           class="button button__primary taskPage__button"
@@ -49,67 +46,58 @@
 
 <script>
 export default {
+  props: {
+    taskIndex: {
+      type: Number,
+      default: -1
+    }
+  },
   data() {
     return {
-      task: this.$store.getters.getTask,
-      index: 0,
+      task: this.$store.getters.getTask[this.taskIndex],
       id: this.$store.getters.getID,
       CookiesData: {
         name: this.$store.getters.getName,
-        task: [
-          {
-            time: [],
-            counts: [],
-            finishTime: ''
-          }
-        ]
+        task: {
+          time: [],
+          counts: [],
+          finishTime: ''
+        }
       }
     };
   },
   computed: {
+    chineseOrder() {
+      return this.$store.getters.getChineseOrder[this.taskIndex];
+    },
     formatFinishdate() {
-      return this.$moment(this.task[this.index].time[3]).format('YYYY/MM/DD');
+      return this.$moment(this.task.time[this.task.time.length - 1]).format(
+        'YYYY/MM/DD'
+      );
     },
     formatFinishTime() {
-      return this.$moment(this.task[this.index].time[3]).format('HH:mm');
+      return this.$moment(this.task.time[this.task.time.length - 1]).format(
+        'HH:mm'
+      );
     }
   },
   mounted() {
-    this.CookiesData.task[this.index].time.push(
-      this.computedTime(0, 1),
-      this.computedTime(1, 2),
-      this.computedTime(2, 3)
-    );
-    this.CookiesData.task[this.index].counts.push(
-      this.computedCounts(0, 1),
-      this.computedCounts(1, 2),
-      this.computedCounts(2, 3)
-    );
-    this.CookiesData.task[this.index].finishTime = this.$moment(
-      this.task[this.index].time[3]
+    this.CookiesData.task.time = this.task.time.map((item, index) => {
+      return this.$moment
+        .duration(this.$moment(this.task.time[index + 1]).diff(item))
+        .asSeconds();
+    });
+    this.CookiesData.task.counts = this.task.counts
+      .map((item, index) => {
+        return this.task.counts[index + 1] - item;
+      })
+      .filter(item => item);
+    this.CookiesData.task.finishTime = this.$moment(
+      this.task.time[this.task.time.length - 1]
     ).format('YYYY/MM/DD HH:mm');
-    console.log(this.CookiesData.task[this.index].finishTime);
+    console.log(this.CookiesData.task.finishTime);
   },
   methods: {
-    computedTime(startIndex, endIndex) {
-      let startTime = this.$moment(this.task[this.index].time[startIndex]);
-      // console.log(startTime);
-      let endTime = this.$moment(this.task[this.index].time[endIndex]);
-      // console.log(endTime);
-      let spendTime = this.$moment
-        .duration(endTime.diff(startTime))
-        .asSeconds();
-
-      return spendTime;
-    },
-    computedCounts(startIndex, endIndex) {
-      let startCount = this.task[this.index].counts[startIndex];
-      // console.log(startCount);
-      let endCount = this.task[this.index].counts[endIndex];
-      let spendCount = endCount - startCount;
-
-      return spendCount;
-    },
     backToTasks(isFinish) {
       if (isFinish === true) {
         $cookies.set(this.id, this.CookiesData);

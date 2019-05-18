@@ -9,7 +9,7 @@
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleMiddle">請依序完成指定任務</h3>
         <div class="lightBox__content">
-          <p class="lightBox__subtitle">任務{{ showTask.chineseOrder }}：</p>
+          <p class="lightBox__subtitle">任務{{ chineseOrder }}：</p>
           <div class="lightBox__taskDescription">
             <p v-for="(item, index) in showTask.description" :key="item">
               ({{ target.indexOf(showTask) + 1 }}-{{ index + 1 }})
@@ -60,6 +60,11 @@ export default {
     };
   },
   computed: {
+    chineseOrder() {
+      return this.$store.getters.getChineseOrder[
+        this.target.indexOf(this.showTask)
+      ];
+    },
     showTask() {
       return this.target[this.order];
     }

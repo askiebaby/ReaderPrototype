@@ -240,7 +240,6 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
-import { debug, debuglog } from 'util';
 
 export default {
   components: {
@@ -505,31 +504,26 @@ export default {
         });
         const checkTask = this.$store.getters.getNotes[this.isSelectedPart]
           .task;
-
         if (checkTask != 2) {
           return;
         }
-
         if (this.task.length <= 0) {
           return;
         }
-
         if (this.task[1] == undefined) {
           return;
         }
-
         let isFinishStep1 = false;
         if (this.task[1].time.length == 2) {
           isFinishStep1 = true;
         }
-
         if (isFinishStep1 == false) {
           if (color != step1.css) {
             return;
           }
 
           this.$store.commit('setTask', 1);
-          // console.log('8522256', this.$store.getters.getTask);
+          console.log('8522256', this.$store.getters.getTask);
           return;
         }
         const step2 = this.$store.getters.getTarget[1].step[1];
@@ -553,25 +547,21 @@ export default {
         comment: '',
         task: 0
       };
-
       if (this.task.length <= 0) {
         this.$store.commit('addNotes', obj);
         this.clearSelected();
         return;
       }
-
       if (this.task[1] == undefined) {
         this.$store.commit('addNotes', obj);
         this.clearSelected();
         return;
       }
-
       if (this.task[1].time.length != 1) {
         this.$store.commit('addNotes', obj);
         this.clearSelected();
         return;
       }
-
       if (
         this.selectedToNotes.chapterIndex == step1.chapterIndex &&
         this.selectedToNotes.sectionIndex == step1.sectionIndex &&
