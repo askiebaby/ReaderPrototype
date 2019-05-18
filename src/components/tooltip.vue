@@ -23,7 +23,7 @@
               <img src="@/assets/images/icons/search@2x.png" alt="" />
             </div>
             <div v-else @click="deleteNotes">
-              <img src="@/assets/images/icons/invalid-name.svg" alt="" />
+              <img src="@/assets/images/icons/delete.svg" alt="" />
             </div>
           </div>
         </div>
