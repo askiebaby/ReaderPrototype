@@ -238,23 +238,40 @@ export default {
     deleteNotes() {
       const task = this.$store.getters.getTask;
       const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
+      // console.log('232', this.notesIndex);
+      // debugger;
+      if (this.notesIndex == -1) {
+        return;
+      }
       if (checkTask != 2) {
+        this.finishTask2(false);
         return;
       }
       if (task.length <= 0) {
+        this.finishTask2(false);
         return;
       }
       if (task[1] == undefined) {
+        this.finishTask2(false);
         return;
       }
       if (task[1].time.length != 4) {
+        this.finishTask2(false);
         return;
       }
       this.$store.commit('setTask', 1);
-      // console.log('151681656', this.$store.getters.getTask);
-      if (this.notesIndex != -1) {
-        this.$store.commit('deleteNote', this.notesIndex);
+      this.finishTask2(true);
+      console.log('151681656', this.$store.getters.getTask);
+    },
+    finishTask2(e) {
+      const obj = {
+        index: -1
+      };
+      if (e) {
+        obj.showComplete = true;
       }
+      this.$store.commit('deleteNote', this.notesIndex);
+      this.$emit('finishTask2', obj);
     },
     showColor(item) {
       let arrary = [];

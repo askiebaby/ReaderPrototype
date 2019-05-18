@@ -32,7 +32,7 @@
       v-show="isLeaveMission"
       @cancelLeaveBubble="isLeaveMission = $event"
     ></leave-mission>
-    <complete-mission v-if="isShowComplete"></complete-mission>
+    <complete-mission v-if="isShowComplete" :task-index="0"></complete-mission>
     <menu-bottom
       v-show="isShowNavigation"
       @showSettingBubble="isShowSetting = $event"
