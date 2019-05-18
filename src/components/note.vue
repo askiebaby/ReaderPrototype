@@ -1,5 +1,6 @@
 <template>
   <section class="notes">
+    <complete-mission v-if="isShowComplete" :task-index="1"></complete-mission>
     <div class="notes__background" @click="closeNotes"></div>
     <div class="notes__container">
       <nav class="notes__nav">
@@ -22,6 +23,7 @@
             style="position:absolute"
             :from-content="false"
             :notes-index="notesIndex"
+            @finishTask2="finishTask2($event)"
             @changeColor="changeColor($event, index)"
           ></tooltip>
           <div class="note__highlight" :class="item.color"></div>
@@ -32,8 +34,8 @@
             </div>
           </div>
           <div
-          class="note__actionButton"
-          @click="selectedNote(index, item.color)"
+            class="note__actionButton"
+            @click="selectedNote(index, item.color)"
           >
             <img
               :src="require('@/assets/menu/dropdown-doubleline.svg')"
@@ -154,12 +156,12 @@
 .functions-row {
   .notes {
     &__all {
-    flex-flow: row nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
-    direction: rtl;
+      flex-flow: row nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      height: 100%;
+      direction: rtl;
     }
   }
   .note {
@@ -225,14 +227,17 @@
 <script>
 import documentContent from '@/assets/document.json';
 import tooltip from './tooltip.vue';
+import completeMission from './lightBox/completeMission.vue';
 export default {
   components: {
-    tooltip
+    tooltip,
+    completeMission
   },
   data() {
     return {
       documentContent,
-      notesIndex: -1
+      notesIndex: -1,
+      isShowComplete: false
     };
   },
   computed: {
@@ -250,6 +255,13 @@ export default {
     }
   },
   methods: {
+    finishTask2(e) {
+      console.log('qwew', e);
+      this.notesIndex = e.index;
+      if (e.showComplete) {
+        this.isShowComplete = true;
+      }
+    },
     closeNotes() {
       this.$store.commit('switchShowNotes');
     },
@@ -288,6 +300,7 @@ export default {
         return;
       }
       this.$store.commit('setTask', 1);
+      console.log('24564534', this.$store.getters.getTask);
     }
   }
 };
