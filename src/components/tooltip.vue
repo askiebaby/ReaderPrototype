@@ -20,10 +20,10 @@
             </div>
             <div><img src="@/assets/images/icons/share.svg" alt="" /></div>
             <div v-if="isShowIcon" class="tooltip__function__search">
-              <img src="@/assets/images/icons/search.svg" alt="" />
+              <img src="@/assets/images/icons/search@2x.png" alt="" />
             </div>
             <div v-else @click="deleteNotes">
-              <img src="@/assets/images/icons/invalid-name.svg" alt="" />
+              <img src="@/assets/images/icons/delete.svg" alt="" />
             </div>
           </div>
         </div>

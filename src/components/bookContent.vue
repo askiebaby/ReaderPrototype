@@ -239,7 +239,7 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
-import { debug } from 'util';
+import { debug, debuglog } from 'util';
 
 export default {
   components: {
@@ -581,7 +581,10 @@ export default {
           this.$store.commit('setTask', 1);
         }
         // console.log('581651', this.$store.getters.getTask);
+        return;
       }
+      this.$store.commit('addNotes', obj);
+      this.clearSelected();
     },
     hightLight(i) {
       let css = '';

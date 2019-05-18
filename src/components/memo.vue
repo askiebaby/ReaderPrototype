@@ -1,4 +1,5 @@
-<template >
+<template>
+  <!-- <div class="functions-row"> -->
   <section class="memo">
     <div class="memo__background"></div>
     <div class="memo__container">
@@ -12,6 +13,7 @@
       </form>
     </div>
   </section>
+  <!-- </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -43,7 +45,7 @@
       border: 1px solid $gray-3;
       border-radius: 18px;
       font-size: 14px;
-      padding: 10px;
+      padding: 13px;
       color: $black-1;
       font-weight: 300;
       outline: none;
@@ -52,14 +54,13 @@
       position: absolute;
       right: 10px;
       font-size: $indexSize;
-      padding: 16px 20px;
+      padding: 14px 20px;
       font-weight: 500;
       cursor: pointer;
     }
     &__cancel {
       color: $white;
-      background-color: $black-1;
-      top: 0;
+      top: 3px;
       border-radius: 18px;
     }
     &__submit {
@@ -75,7 +76,7 @@
     main {
       display: flex;
       flex-flow: row wrap;
-      padding: 20px 18px 50px;
+      padding: 18px 18px 50px;
     }
     h3 {
       position: relative;
@@ -116,7 +117,7 @@
         flex-wrap: nowrap;
         flex-grow: 1;
         writing-mode: tb-rl;
-        padding-bottom: 0;
+        padding-bottom: 18px;
       }
       h3 {
         display: flex;
@@ -129,16 +130,15 @@
         letter-spacing: .25em;
       }
       p {
-        padding: 10px 0 0 3em;
+        padding: 15px 0 14px 3em;
         min-width: 120px;
         line-height: 1.75;
       }
       &__textarea {
         max-width: 173px;
         min-width: 173px;
-        min-height: calc(100% - 20px);
-        // letter-spacing: .25em;
-        font-size: $indexSize;
+        min-height: 100%;
+        padding: 14px 15px;
       }
       &__cancel, &__submit {
         bottom: 5px;

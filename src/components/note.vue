@@ -10,6 +10,7 @@
           <h2>筆記庫</h2>
         </div>
       </nav>
+      <div class="notes__all">
       <article
         v-for="(item, index) in getNotes"
         :key="index"
@@ -40,6 +41,7 @@
           />
         </div>
       </article>
+      </div>
     </div>
   </section>
 </template>
@@ -148,6 +150,75 @@
 }
 .green-pen {
   background-color: $green-pen;
+}
+.functions-row {
+  .notes {
+    &__all {
+      direction: rtl;
+      flex-direction:nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      height: 100%;
+      overflow-x: auto;
+    }
+  }
+  .note {
+    position: relative;
+    flex: 0 0 auto;
+    flex-basis: 130px;
+    flex-direction: column;
+    padding: 10px;
+    height: 90%;
+    &__highlight {
+      width: 119px;
+      height: 13px;
+    }
+    &__record {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      flex-grow: 1;
+      padding: 10px 5px;
+      letter-spacing: .25em;
+      text-align: left;
+      width: 100%;
+    }
+    &__sentence, &__memo {
+      display: flex;
+      justify-content: flex-end;
+      direction: rtl;
+      writing-mode: vertical-rl;
+      overflow: auto;
+      flex-shrink: 0;
+      max-height: 700px;
+      height: 100%;
+      text-align: justify;
+    }
+    &__sentence {
+      margin: 0;
+      max-width: 4.5em;
+      width: fit-content;
+      font-weight: 600;
+    }
+    &__memo {
+      margin-right: 10px;
+      border-left: none;
+      border-top: 2px solid #8c8b8c;
+      padding-top: 13px;
+      padding-left: 0;
+      max-width: 3em;
+      width: fit-content;
+      font-weight: 300;
+    }
+    &__actionButton {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      padding-top: 20px;
+    }
+  }
 }
 </style>
 

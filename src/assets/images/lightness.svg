@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="253px" height="36px" viewBox="0 0 253 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>亮度</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="130" cy="14" r="14"></circle>
+        <filter x="-25.0%" y="-17.9%" width="150.0%" height="150.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="任務一" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="顯示設定" transform="translate(-259.000000, -378.000000)">
+            <g transform="translate(224.000000, 324.000000)" id="亮度">
+                <g transform="translate(35.000000, 56.000000)">
+                    <path d="M38,14.5 L212.81597,14.5" id="路徑-8" stroke="#979797" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M38,14.5 L130,14.5" id="路徑-8" stroke="#4395FF" stroke-width="2" stroke-linecap="round"></path>
+                    <g id="橢圓形">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="亮度大" transform="translate(224.000000, 1.000000)" stroke="#979797">
+                        <circle id="橢圓形" cx="14" cy="13" r="5"></circle>
+                        <path d="M13.5,0 L13.5,5.17842755" id="路徑-9" stroke-width="2" stroke-linecap="round"></path>
+                        <path d="M21.184404,2.59519023 L21.184404,7.77361778" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(21.184404, 5.184404) rotate(45.000000) translate(-21.184404, -5.184404) "></path>
+                        <path d="M24.5892138,10.9107862 L24.5892138,16.0892138" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(24.589214, 13.500000) rotate(90.000000) translate(-24.589214, -13.500000) "></path>
+                        <path d="M21.184404,18.5951902 L21.184404,23.7736178" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(21.184404, 21.184404) rotate(135.000000) translate(-21.184404, -21.184404) "></path>
+                        <path d="M13.5,21 L13.5,26.1784275" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(13.500000, 23.589214) rotate(180.000000) translate(-13.500000, -23.589214) "></path>
+                        <path d="M6.18440401,18.5951902 L6.18440401,23.7736178" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(6.184404, 21.184404) rotate(225.000000) translate(-6.184404, -21.184404) "></path>
+                        <path d="M2.58921377,10.9107862 L2.58921377,16.0892138" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(2.589214, 13.500000) rotate(270.000000) translate(-2.589214, -13.500000) "></path>
+                        <path d="M6.18440401,2.59519023 L6.18440401,7.77361778" id="路徑-9" stroke-width="2" stroke-linecap="round" transform="translate(6.184404, 5.184404) rotate(315.000000) translate(-6.184404, -5.184404) "></path>
+                    </g>
+                    <g id="亮度小" transform="translate(0.000000, 2.000000)" stroke="#979797">
+                        <circle id="橢圓形" cx="12.81597" cy="12" r="3"></circle>
+                        <path d="M12.31597,0 L12.31597,5.17842755" id="路徑-9" stroke-linecap="round"></path>
+                        <path d="M18.6168474,2.60990886 L18.6168474,7.78833641" id="路徑-9" stroke-linecap="round" transform="translate(18.616847, 5.199123) rotate(45.000000) translate(-18.616847, -5.199123) "></path>
+                        <path d="M21.2267562,8.91078623 L21.2267562,14.0892138" id="路徑-9" stroke-linecap="round" transform="translate(21.226756, 11.500000) rotate(90.000000) translate(-21.226756, -11.500000) "></path>
+                        <path d="M18.6168474,15.2116636 L18.6168474,20.3900911" id="路徑-9" stroke-linecap="round" transform="translate(18.616847, 17.800877) rotate(135.000000) translate(-18.616847, -17.800877) "></path>
+                        <path d="M12.31597,17.8215725 L12.31597,23" id="路徑-9" stroke-linecap="round" transform="translate(12.315970, 20.410786) rotate(180.000000) translate(-12.315970, -20.410786) "></path>
+                        <path d="M6.01509263,15.2116636 L6.01509263,20.3900911" id="路徑-9" stroke-linecap="round" transform="translate(6.015093, 17.800877) rotate(225.000000) translate(-6.015093, -17.800877) "></path>
+                        <path d="M3.40518377,8.91078623 L3.40518377,14.0892138" id="路徑-9" stroke-linecap="round" transform="translate(3.405184, 11.500000) rotate(270.000000) translate(-3.405184, -11.500000) "></path>
+                        <path d="M6.01509263,2.60990886 L6.01509263,7.78833641" id="路徑-9" stroke-linecap="round" transform="translate(6.015093, 5.199123) rotate(315.000000) translate(-6.015093, -5.199123) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
