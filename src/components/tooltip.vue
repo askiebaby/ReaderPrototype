@@ -65,6 +65,7 @@ body {
   min-width: 393px;
   max-width: 393px;
   user-select: none;
+  z-index: 1;
 
   &__wrapper {
     position: relative;
@@ -156,10 +157,10 @@ body {
 
 .functions-row {
   .tooltip {
-    transform: rotate(45deg);
+    transform: rotate(-90deg);
     &__function {
       > div {
-        transform: rotate(-90deg);
+        transform: rotate(90deg);
         justify-content: center;
         padding-left: 0;
       }
@@ -168,6 +169,17 @@ body {
       }
       .tooltip__function__note {
         padding-left: 5px;
+      }
+    }
+  }
+  article {
+    // 筆記庫中
+    .tooltip {
+      transform: rotate(-90deg);
+      &__function {
+        > div {
+          transform: rotate(90deg);
+        }
       }
     }
   }

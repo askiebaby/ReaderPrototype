@@ -2,7 +2,6 @@
   <div>
     <tooltip
       v-if="isShowTooltip"
-      class="tooltip"
       :tooltip-position="tooltipPosition"
       :selected-to-notes="selectedToNotes"
       :from-content="true"

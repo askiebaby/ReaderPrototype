@@ -154,6 +154,7 @@
 .functions-row {
   .notes {
     &__all {
+    display: flex;
     flex-flow: row nowrap;
     overflow-x: auto;
     overflow-y: hidden;
@@ -187,7 +188,6 @@
     &__memo {
       display: flex;
       justify-content: flex-end;
-      direction: rtl;
       writing-mode: vertical-rl;
       overflow: auto;
       flex-shrink: 0;
@@ -200,6 +200,7 @@
       max-width: 4.5em;
       width: fit-content;
       font-weight: 600;
+      direction: rtl;
     }
     &__memo {
       margin-right: 13px;
@@ -210,6 +211,7 @@
       max-width: 3em;
       width: fit-content;
       font-weight: 300;
+      direction: ltr;
     }
     &__actionButton {
       position: absolute;
