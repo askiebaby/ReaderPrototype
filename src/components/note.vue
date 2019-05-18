@@ -154,19 +154,18 @@
 .functions-row {
   .notes {
     &__all {
-      direction: rtl;
-      flex-direction:nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      height: 100%;
-      overflow-x: auto;
+    flex-flow: row nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    direction: rtl;
     }
   }
   .note {
     position: relative;
     flex: 0 0 auto;
-    flex-basis: 130px;
+    width: 130px;
     flex-direction: column;
     padding: 10px;
     height: 90%;
@@ -180,7 +179,7 @@
       flex-wrap: nowrap;
       flex-grow: 1;
       padding: 10px 5px;
-      letter-spacing: .25em;
+      letter-spacing: 0.2em;
       text-align: left;
       width: 100%;
     }

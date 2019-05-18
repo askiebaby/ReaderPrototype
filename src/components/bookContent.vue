@@ -233,6 +233,32 @@
 .green-pen {
   background-color: $green-pen;
 }
+.words-column {
+  .book {
+    direction: rtl;
+    align-items: center;
+    flex-wrap: nowrap;
+    &__content {
+      direction: ltr;
+      writing-mode: tb-rl;
+      margin-right: 20px;
+      h3 {
+        letter-spacing: 0.2em;
+      }
+    }
+    &__chapter {
+      writing-mode: vertical-rl;
+      letter-spacing: 0.2em;
+    }
+  }
+  p {
+    letter-spacing: .2em;
+  }
+  span {
+    // 直排文字劃線的螢光筆粗細
+    padding: 0 0.25em;
+  }
+}
 </style>
 
 <script>
