@@ -261,7 +261,9 @@ export default {
       console.log('qwew', e);
       this.notesIndex = e.index;
       if (e.showComplete) {
-        this.isShowComplete = true;
+        setTimeout(() => {
+          this.isShowComplete = true;
+        }, 3000);
       }
     },
     closeNotes() {
