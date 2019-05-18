@@ -232,7 +232,7 @@
 .green-pen {
   background-color: $green-pen;
 }
-.words-column {
+.words-row {
   .book {
     direction: rtl;
     align-items: center;
