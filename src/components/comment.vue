@@ -4,13 +4,17 @@
     <div class="memo__background"></div>
     <div class="memo__container">
       <form action="">
-        <h3>註解 <span class="memo__cancel">取消</span></h3>
+        <h3>
+          註解 <span class="memo__cancel" @click="showComment">取消</span>
+        </h3>
         <main>
           <p>
-            你可以採用錄影的測量方法，或者簡單地每天照一照鏡子，感受一下你的進步。
+            {{ getNote.text }}
           </p>
-          <div contenteditable class="memo__textarea">體內平衡</div>
-          <span class="memo__submit">完成</span>
+          <div contenteditable class="memo__textarea">
+            {{ getNote.comment }}
+          </div>
+          <span class="memo__submit" @click="updateComment">完成</span>
         </main>
       </form>
     </div>
@@ -167,5 +171,41 @@
 </style>
 
 <script>
-export default {};
+import documentContent from '@/assets/document.json';
+export default {
+  props: {
+    notesIndex: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      documentContent
+    };
+  },
+  computed: {
+    getNote() {
+      const note = this.$store.getters.getNotes[this.notesIndex];
+      return {
+        text: this.documentContent.books[note.chapterIndex].sections[
+          note.sectionIndex
+        ].content.slice(note.textStart, note.textEnd),
+        comment: note.comment
+      };
+    }
+  },
+  methods: {
+    showComment() {
+      this.$emit('showComment', false);
+    },
+    updateComment() {
+      this.$store.commit('changeNoteComment', {
+        index: this.notesIndex,
+        comment: document.querySelector('.memo__textarea').innerText
+      });
+      this.$emit('showComment', false);
+    }
+  }
+};
 </script>

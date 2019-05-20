@@ -1,7 +1,6 @@
 <template>
   <section class="notes">
     <complete-mission v-if="isShowComplete" :task-index="1"></complete-mission>
-    <comment v-if="isShowComment"></comment>
     <div class="notes__background" @click="closeNotes"></div>
     <div class="notes__container">
       <nav class="notes__nav">
@@ -26,8 +25,13 @@
             :notes-index="notesIndex"
             @finishTask2="finishTask2($event)"
             @changeColor="changeColor($event, index)"
-            @showComment="showComment($event)"
+            @showComment="isShowComment = $event"
           ></tooltip>
+          <comment
+            v-if="showComment(index)"
+            :notes-index="index"
+            @showComment="isShowComment = $event"
+          ></comment>
           <div class="note__highlight" :class="item.color"></div>
           <div class="note__record">
             <div class="note__sentence">{{ item.text }}</div>
@@ -262,9 +266,8 @@ export default {
     }
   },
   methods: {
-    showComment(event) {
-      this.isShowTooltip = -1;
-      this.isShowComment = event;
+    showComment(index) {
+      return this.isShowComment == true && this.notesIndex == index;
     },
     finishTask2(e) {
       console.log('qwew', e);
@@ -279,7 +282,7 @@ export default {
       this.$emit('switchShowNotes', false);
     },
     isShowTooltip(index) {
-      return this.notesIndex == index;
+      return this.isShowComment == false && this.notesIndex == index;
     },
     selectedNote(index, color) {
       this.$store.commit('changeTooltipColor', color.split('-')[0]);

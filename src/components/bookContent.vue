@@ -1,10 +1,13 @@
 <template>
   <div>
-    <comment v-if="isShowComment"></comment>
+    <comment
+      v-if="isShowComment"
+      :notes-index="isSelectedPart"
+      @showComment="showComment($event)"
+    ></comment>
     <tooltip
       v-if="isShowTooltip"
       :tooltip-position="tooltipPosition"
-      :selected-to-notes="selectedToNotes"
       :from-content="true"
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
@@ -471,6 +474,9 @@ export default {
 
   methods: {
     showComment(event) {
+      if (this.isSelectedPart < 0) {
+        this.changeColor('yellow-pen');
+      }
       this.clearSelected();
       this.isShowComment = event;
     },
@@ -514,6 +520,7 @@ export default {
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
         this.selectedPartColor = e.target.parentElement.className.split('-')[0];
+        this.$store.commit('changeTooltipColor', this.selectedPartColor);
         if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = 72;
         } else if (partPosition.left + 392 > 695) {
@@ -572,6 +579,7 @@ export default {
         console.log('855651', this.$store.getters.getTask);
         return;
       }
+
       const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
@@ -613,7 +621,9 @@ export default {
         // console.log('581651', this.$store.getters.getTask);
         return;
       }
+
       this.$store.commit('addNotes', obj);
+      this.isSelectedPart = 0;
       this.clearSelected();
     },
     hightLight(i) {
@@ -933,6 +943,7 @@ export default {
       if (this.selected.start > 0 && this.selected.end > 0) {
         this.isSelectedPart = -1;
         this.selectedPartColor = '';
+        this.$store.commit('changeTooltipColor', this.selectedPartColor);
         this.isShowTooltip = true;
       }
     },

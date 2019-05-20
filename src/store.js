@@ -187,6 +187,9 @@ export const store = new Vuex.Store({
     },
     deleteNote(state, payload) {
       state.notes.splice(payload, 1);
+    },
+    changeNoteComment(state, payload) {
+      state.notes[payload.index].comment = payload.comment;
     }
   }
 });

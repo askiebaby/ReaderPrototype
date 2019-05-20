@@ -202,10 +202,6 @@ export default {
         };
       }
     },
-    selectedToNotes: {
-      type: Object,
-      default: () => {}
-    },
     selectedColor: {
       type: String,
       default: ''
