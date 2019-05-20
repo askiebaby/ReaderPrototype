@@ -282,47 +282,80 @@ export default {
       fontLevels: [
         {
           fontSize: '12',
-          line: '34'
+          line: {
+            'column': '34',
+            'row': ''
+          }
         },
         {
           fontSize: '14',
-          line: '29'
+          line: {
+            'column': '29',
+            'row': ''
+          }
         },
         {
           fontSize: '16',
-          line: '26'
+          line: {
+            'column': '26',
+            'row': ''
+          }
         },
         {
           fontSize: '18',
-          line: '23'
+          line: {
+            'column': '23',
+            'row': ''
+          }
         },
         {
           fontSize: '20',
-          line: '20'
+          line: {
+            'column': '20',
+            'row': ''
+          }
         },
         {
           fontSize: '24',
-          line: '17'
+          line: {
+            'column': '17',
+            'row': ''
+          }
         },
         {
           fontSize: '30',
-          line: '13'
+          line: {
+            'column': '13',
+            'row': ''
+          }
         },
         {
           fontSize: '36',
-          line: '11'
+          line: {
+            'column': '11',
+            'row': ''
+          }
         },
         {
           fontSize: '42',
-          line: '9'
+          line: {
+            'column': '9',
+            'row': ''
+          }
         },
         {
           fontSize: '48',
-          line: '8'
+          line: {
+            'column': '8',
+            'row': ''
+          }
         },
         {
           fontSize: '52',
-          line: '8'
+          line: {
+            'column': '8',
+            'row': ''
+          }
         }
       ],
       togglePageAction: '',
@@ -419,7 +452,7 @@ export default {
       return result;
     },
     containerHeight() {
-      const line = this.fontLevels[this.sizeLevel].line;
+      const line = this.fontLevels[this.sizeLevel].line[this.$store.getters.getDirections.words];
       const viewport = Math.floor(this.aLineHeight) * line;
       console.log(
         `${viewport} = ${line} 行 x 』${Math.floor(this.aLineHeight)}`
