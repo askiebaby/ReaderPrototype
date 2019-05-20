@@ -4,7 +4,7 @@
       v-show="isShowNavigation"
       @showLeaveBubble="isLeaveMission = $event"
     ></menu-top>
-    <note v-if="isShowNotes"></note>
+    <note v-if="isShowNotes" @switchShowNotes="isShowNotes = $event"></note>
     <bookContent
       :class="[fontFamilyClass, fontSizeClass]"
       :size-level="sizeLevel"
@@ -37,6 +37,7 @@
       v-show="isShowNavigation"
       @showSettingBubble="isShowSetting = $event"
       @openIndexStatus="isShowIndex = $event"
+      @switchShowNotes="isShowNotes = $event"
     ></menu-bottom>
   </div>
 </template>
@@ -76,6 +77,7 @@ export default {
       isShowSetting: false,
       isShowIndex: false,
       isShowComplete: false,
+      isShowNotes: false,
       backgroundColor: 'background__change__white',
       fontFamilyClass: 'book__fontFamily__ming',
       fontSizeClass: 'fontSize__24px',
@@ -89,19 +91,16 @@ export default {
     };
   },
   computed: {
-    isShowNotes() {
-      return this.$store.getters.getIsShowNotes;
+    directions() {
+      return this.$store.getters.getDirections;
     },
-    directions () {
-      return this.$store.getters.getDirections
+    wordsDirectionClass() {
+      const wordsClassName = `words-${this.directions.words}`;
+      return wordsClassName;
     },
-    wordsDirectionClass () {
-      const wordsClassName = `words-${this.directions.words}`
-      return wordsClassName
-    },
-    functionsDirectionClass () {
-      const functionsClassName = `functions-${this.directions.functions}`
-      return functionsClassName
+    functionsDirectionClass() {
+      const functionsClassName = `functions-${this.directions.functions}`;
+      return functionsClassName;
     }
   },
   created() {

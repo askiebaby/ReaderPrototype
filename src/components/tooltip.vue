@@ -1,5 +1,9 @@
 <template>
-  <div class="tooltip" data-tooltip="" :style="{ top: topStyle, left: leftStyle }">
+  <div
+    class="tooltip"
+    data-tooltip=""
+    :style="{ top: topStyle, left: leftStyle }"
+  >
     <div class="tooltip__wrapper">
       <div class="tooltip__top">
         <div class="tooltip__penColor">
@@ -14,8 +18,8 @@
           <div v-if="isShowIcon">
             <img src="@/assets/images/icons/copy.svg" alt="複製" />
           </div>
-          <div class="tooltip__function__note" @click="showNotes">
-            <img src="@/assets/images/icons/note.svg" alt="筆記庫" />
+          <div class="tooltip__function__comment" @click="showComment">
+            <img src="@/assets/images/icons/comment.svg" alt="註解" />
           </div>
           <div class="tooltip__function__share">
             <img src="@/assets/images/icons/share.svg" alt="分享" />
@@ -165,7 +169,7 @@ body {
       &__share {
         margin-left: 0;
       }
-      .tooltip__function__note {
+      .tooltip__function__comment {
         padding-left: 5px;
       }
     }
@@ -283,9 +287,7 @@ export default {
       this.$store.commit('changeTooltipColor', color);
       this.$emit('changeColor', color + '-pen');
     },
-    showNotes() {
-      this.$store.commit('switchShowNotes');
-    }
+    showComment() {}
   }
 };
 </script>

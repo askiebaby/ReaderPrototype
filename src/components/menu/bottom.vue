@@ -81,7 +81,7 @@ export default {
       this.$emit('openIndexStatus', true);
     },
     showNotes() {
-      this.$store.commit('switchShowNotes');
+      this.$emit('switchShowNotes', true);
     }
   }
 };

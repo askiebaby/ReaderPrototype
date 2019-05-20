@@ -587,12 +587,14 @@ export default {
         this.clearSelected();
         return;
       }
+      // 任務二檢查
       if (
         this.selectedToNotes.chapterIndex == step1.chapterIndex &&
         this.selectedToNotes.sectionIndex == step1.sectionIndex &&
         this.selectedToNotes.textStart == step1.textStart &&
         this.selectedToNotes.textEnd == step1.textEnd
       ) {
+        // 標記
         obj.task = 2;
         this.$store.commit('addNotes', obj);
         this.clearSelected();

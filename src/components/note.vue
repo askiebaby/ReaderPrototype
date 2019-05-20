@@ -267,7 +267,7 @@ export default {
       }
     },
     closeNotes() {
-      this.$store.commit('switchShowNotes');
+      this.$emit('switchShowNotes', false);
     },
     isShowTooltip(index) {
       return this.notesIndex == index;
