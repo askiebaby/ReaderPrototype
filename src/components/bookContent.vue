@@ -14,15 +14,9 @@
       <div
         ref="viewport"
         class="book__content"
-        :style="{
-          height: `${containerHeight}px`
-        }"
       >
         <div
           ref="bookContainer"
-          :style="{
-            height: `${bookLocation.newContentHeight}`
-          }"
         >
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
           <p>
@@ -237,10 +231,11 @@
     direction: rtl;
     align-items: center;
     flex-wrap: nowrap;
+    justify-content: flex-start;
     &__content {
       direction: ltr;
       writing-mode: tb-rl;
-      margin-right: 20px;
+      margin-right: 10px;
       h3 {
         letter-spacing: 0.2em;
       }
@@ -275,6 +270,7 @@ export default {
       documentContent,
       nowWordsCount: 0,
       scrollHeight: 0,
+      scrollWidth: 0,
       setting: {
         lineHeight: 1.75,
         fontInitIndex: 5
@@ -284,77 +280,77 @@ export default {
           fontSize: '12',
           line: {
             'column': '34',
-            'row': ''
+            'row': '27'
           }
         },
         {
           fontSize: '14',
           line: {
             'column': '29',
-            'row': '11'
+            'row': '24'
           }
         },
         {
           fontSize: '16',
           line: {
             'column': '26',
-            'row': '11'
+            'row': '21'
           }
         },
         {
           fontSize: '18',
           line: {
             'column': '23',
-            'row': '11'
+            'row': '18'
           }
         },
         {
           fontSize: '20',
           line: {
             'column': '20',
-            'row': '11'
+            'row': '16'
           }
         },
         {
           fontSize: '24',
           line: {
             'column': '17',
-            'row': '11'
+            'row': '13'
           }
         },
         {
           fontSize: '30',
           line: {
             'column': '13',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '36',
           line: {
             'column': '11',
-            'row': '11'
+            'row': '9'
           }
         },
         {
           fontSize: '42',
           line: {
             'column': '9',
-            'row': '11'
+            'row': '8'
           }
         },
         {
           fontSize: '48',
           line: {
             'column': '8',
-            'row': '11'
+            'row': '7'
           }
         },
         {
           fontSize: '52',
           line: {
             'column': '8',
-            'row': '11'
+            'row': '6'
           }
         }
       ],
@@ -455,7 +451,7 @@ export default {
       const line = this.fontLevels[this.sizeLevel].line[this.$store.getters.getDirections.words];
       const viewport = Math.floor(this.aLineHeight) * line;
       console.log(
-        `${viewport} = ${line} 行 x 』${Math.floor(this.aLineHeight)}`
+        `${viewport} = ${line} 行 x ${Math.floor(this.aLineHeight)}`
       );
       return viewport;
     },
@@ -470,23 +466,20 @@ export default {
     bookContent: {
       handler: function() {
         console.log('I watch!!!!!!!!!!!!!!!!!!');
-        if (this.$store.getters.getDirections.words === 'column') {
-          this.bookLocation.newContentHeight = '';
-          this.$store.commit('setBookLocation', this.bookLocation);
 
-          switch (this.togglePageAction) {
-            case 'prev':
-            case 'next':
-              this.countPageHeight();
-              break;
-            default:
-              this.togglePageAction = 'default';
-              this.countPageHeight();
-          };
-        } else {
-          console.log('現在是row的排版');
-        }
-        
+        // reset 寬度或高度，以便取得原始容器寬高
+        this.bookLocation.newContentHeight = '';
+        this.$store.commit('setBookLocation', this.bookLocation);
+
+        switch (this.togglePageAction) {
+          case 'prev':
+          case 'next':
+            this.countPageWidthHeight();
+            break;
+          default:
+            this.togglePageAction = 'default';
+            this.countPageWidthHeight();
+        };
       },
       deep: true
     },
@@ -494,7 +487,7 @@ export default {
       // reset word container's height
       this.bookLocation.newContentHeight = '';
       this.$store.commit('setBookLocation', this.bookLocation);
-      this.countPageHeight();
+      this.countPageWidthHeight();
     }
   },
   mounted() {
@@ -672,33 +665,41 @@ export default {
         },
         fontactive: () => {
           console.log('WebFont called');
-          this.countPageHeight();
+          this.countPageWidthHeight();
         }
       });
     },
     toggleNavigation() {
       this.$emit('toggleNavigation');
     },
-    countPageHeight() {
+    countPageWidthHeight() {
       this.$nextTick(() => {
-        // 內容原長度
+        // 內容原高度、原寬度
         this.scrollHeight = this.$refs.viewport.scrollHeight;
+        this.scrollWidth = this.$refs.viewport.scrollWidth;
 
-        // 頁數
-        const remain = this.scrollHeight % this.containerHeight;
-        this.pages = Math.floor(this.scrollHeight / this.containerHeight);
-        this.bookLocation.pages =
-          remain >= this.aLineHeight ? (this.pages += 1) : this.pages;
+        // 拿到文字排列方向
+        const wordsDirection = this.$store.getters.getDirections.words
 
-        // 算出應有的高度
-        this.bookLocation.newContentHeight = `${this.bookLocation.pages *
-          this.containerHeight}px`;
+        // 計算頁數。註記：column 橫排、row 直排
+        const remain = (wordsDirection === 'column') ? this.scrollHeight % this.containerHeight : this.scrollWidth % this.containerHeight;
+
+        this.pages = (wordsDirection === 'column') ? Math.floor(this.scrollHeight / this.containerHeight) : Math.floor(this.scrollWidth / this.containerHeight) ;
+        this.bookLocation.pages = remain >= this.aLineHeight ? (this.pages += 1) : this.pages;
+
+        // 計算應有的寬度或高度
+        this.bookLocation.newContentHeight = this.bookLocation.pages *
+          this.containerHeight;
         this.$store.commit('setBookLocation', this.bookLocation);
 
-        this.checkPagePosition();
+        // 設定viewport及bookContainer寬高
+        this.setContainerSize(wordsDirection);
 
-        console.log(
-          'countPageHeight called! \n',
+        // 更新文章內容或字級，要重新定位頁數位置
+        this.checkPagePosition(wordsDirection);
+
+        console.warn(
+          'countPageWidthHeight called! \n',
           'scrollHeight: ',
           this.scrollHeight,
           'scrollTop: ',
@@ -718,7 +719,25 @@ export default {
         );
       });
     },
-    checkPagePosition() {
+    setContainerSize(wordsDirection){
+      switch (wordsDirection) {
+        case 'column':
+          this.$refs.viewport.style.height = `${this.containerHeight}px`;
+          this.$refs.bookContainer.style.height = `${this.bookLocation.newContentHeight}px`;
+          break;
+
+        case 'row':
+          
+          this.$refs.viewport.style.width = `${this.containerHeight}px`;
+          this.$refs.bookContainer.style.width = `${this.bookLocation.newContentHeight}px`;
+          break;
+
+        default:
+          console.error(`Error, Please Check method "setContainerSize", and your argument wordsDirection is ${wordsDirection}`);
+      }
+      return
+    },
+    checkPagePosition(wordsDirection) {
       if (this.togglePageAction === 'next' || 'default') {
         this.$refs.viewport.scrollTop = 0;
         this.bookLocation.pageIndex = 0;
