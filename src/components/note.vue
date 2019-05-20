@@ -1,6 +1,7 @@
 <template>
   <section class="notes">
     <complete-mission v-if="isShowComplete" :task-index="1"></complete-mission>
+    <comment v-if="isShowComment"></comment>
     <div class="notes__background" @click="closeNotes"></div>
     <div class="notes__container">
       <nav class="notes__nav">
@@ -25,6 +26,7 @@
             :notes-index="notesIndex"
             @finishTask2="finishTask2($event)"
             @changeColor="changeColor($event, index)"
+            @showComment="showComment($event)"
           ></tooltip>
           <div class="note__highlight" :class="item.color"></div>
           <div class="note__record">
@@ -230,16 +232,19 @@
 import documentContent from '@/assets/document.json';
 import tooltip from './tooltip.vue';
 import completeMission from './lightBox/completeMission.vue';
+import comment from './comment.vue';
 export default {
   components: {
     tooltip,
-    completeMission
+    completeMission,
+    comment
   },
   data() {
     return {
       documentContent,
       notesIndex: -1,
-      isShowComplete: false
+      isShowComplete: false,
+      isShowComment: false
     };
   },
   computed: {
@@ -257,6 +262,10 @@ export default {
     }
   },
   methods: {
+    showComment(event) {
+      this.isShowTooltip = -1;
+      this.isShowComment = event;
+    },
     finishTask2(e) {
       console.log('qwew', e);
       this.notesIndex = e.index;

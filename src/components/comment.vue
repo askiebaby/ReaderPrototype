@@ -6,7 +6,9 @@
       <form action="">
         <h3>註解 <span class="memo__cancel">取消</span></h3>
         <main>
-          <p>你可以採用錄影的測量方法，或者簡單地每天照一照鏡子，感受一下你的進步。</p>
+          <p>
+            你可以採用錄影的測量方法，或者簡單地每天照一照鏡子，感受一下你的進步。
+          </p>
           <div contenteditable class="memo__textarea">體內平衡</div>
           <span class="memo__submit">完成</span>
         </main>
@@ -52,7 +54,8 @@
     font-weight: 300;
     outline: none;
   }
-  &__cancel, &__submit {
+  &__cancel,
+  &__submit {
     position: absolute;
     right: 10px;
     font-size: $indexSize;
@@ -145,7 +148,7 @@
     &__cancel,
     &__submit {
       bottom: 5px;
-      letter-spacing: .5em;
+      letter-spacing: 0.5em;
       padding: 0 5px;
       height: 6em;
       text-align: center;
@@ -164,7 +167,5 @@
 </style>
 
 <script>
-export default {
-  
-}
+export default {};
 </script>

@@ -1,11 +1,13 @@
 <template>
   <div>
+    <comment v-if="isShowComment"></comment>
     <tooltip
       v-if="isShowTooltip"
       :tooltip-position="tooltipPosition"
       :selected-to-notes="selectedToNotes"
       :from-content="true"
       @changeColor="changeColor($event)"
+      @showComment="showComment($event)"
     ></tooltip>
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
@@ -264,10 +266,12 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
+import comment from './comment.vue';
 
 export default {
   components: {
-    tooltip
+    tooltip,
+    comment
   },
   props: ['sizeLevel'],
   data() {
@@ -351,6 +355,7 @@ export default {
       notes: [],
       pointerEvents: 'auto',
       isSelectedPart: -1,
+      isShowComment: false,
       selectedPartColor: ''
     };
   },
@@ -465,6 +470,10 @@ export default {
   },
 
   methods: {
+    showComment(event) {
+      this.clearSelected();
+      this.isShowComment = event;
+    },
     checkFinishStep1() {
       if (this.task.length <= 0) {
         return;
