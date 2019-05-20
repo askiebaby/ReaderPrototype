@@ -11,7 +11,7 @@
           <p>
             {{ getNote.text }}
           </p>
-          <div contenteditable class="memo__textarea">
+          <div ref="noteComment" contenteditable class="memo__textarea">
             {{ getNote.comment }}
           </div>
           <span class="memo__submit" @click="updateComment">完成</span>
@@ -202,7 +202,7 @@ export default {
     updateComment() {
       this.$store.commit('changeNoteComment', {
         index: this.notesIndex,
-        comment: document.querySelector('.memo__textarea').innerText
+        comment: this.$refs.noteComment.innerText
       });
       this.$emit('showComment', false);
     }
