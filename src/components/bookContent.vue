@@ -291,35 +291,35 @@ export default {
           fontSize: '14',
           line: {
             'column': '29',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '16',
           line: {
             'column': '26',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '18',
           line: {
             'column': '23',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '20',
           line: {
             'column': '20',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '24',
           line: {
             'column': '17',
-            'row': ''
+            'row': '11'
           }
         },
         {
@@ -333,28 +333,28 @@ export default {
           fontSize: '36',
           line: {
             'column': '11',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '42',
           line: {
             'column': '9',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '48',
           line: {
             'column': '8',
-            'row': ''
+            'row': '11'
           }
         },
         {
           fontSize: '52',
           line: {
             'column': '8',
-            'row': ''
+            'row': '11'
           }
         }
       ],
@@ -470,17 +470,23 @@ export default {
     bookContent: {
       handler: function() {
         console.log('I watch!!!!!!!!!!!!!!!!!!');
-        this.bookLocation.newContentHeight = '';
-        this.$store.commit('setBookLocation', this.bookLocation);
-        if (
-          this.togglePageAction === 'prev' ||
-          this.togglePageAction === 'next'
-        ) {
-          this.countPageHeight();
+        if (this.$store.getters.getDirections.words === 'column') {
+          this.bookLocation.newContentHeight = '';
+          this.$store.commit('setBookLocation', this.bookLocation);
+
+          switch (this.togglePageAction) {
+            case 'prev':
+            case 'next':
+              this.countPageHeight();
+              break;
+            default:
+              this.togglePageAction = 'default';
+              this.countPageHeight();
+          };
         } else {
-          this.togglePageAction = 'default';
-          this.countPageHeight();
+          console.log('現在是row的排版');
         }
+        
       },
       deep: true
     },
@@ -519,18 +525,23 @@ export default {
     },
     changePage(e) {
       this.clearSelected();
-      const x = e.target.getBoundingClientRect().left;
-      let action = '';
-      if (72 < x && x < 272) {
-        action = 'prev';
-      } else if (472 < x && x < 674) {
-        action = 'next';
+      const xPosition = e.clientX; // 全局橫向座標
+      const bookWidth = document.querySelector('.book').getBoundingClientRect().width; // 自適應書本寬度
+      const xRatio = (xPosition / bookWidth).toFixed(3) * 100
+      // console.log(`${xRatio} = (${xPosition} / ${bookWidth}).toFixed(3) * 100`)
+      if (xRatio >= 0 && xRatio < 33.333)
+      {
+        this.togglePageRules('prev');
+        return
+      } else if (xRatio >= 33.333 && xRatio < 66.666)
+      {
+        this.toggleNavigation();
+        return
+      } else if (xRatio >= 66.666 && xRatio < 100)
+      {
+        this.togglePageRules('next');
+        return
       }
-      if (action.length > 0) {
-        this.loadBookContent(action);
-        return;
-      }
-      this.toggleNavigation();
     },
     selectedPart(e, notesIndex) {
       if (notesIndex != undefined) {
@@ -735,36 +746,38 @@ export default {
       this.$store.commit('setBookLocation', this.bookLocation);
       this.togglePageAction = '';
     },
-    loadBookContent(action) {
+    togglePageRules(action) {
       this.$nextTick(() => {
-        console.log(this.$refs.viewport.scrollTop);
+
         let viewport = this.$refs.viewport;
+        console.log(this.$refs.viewport.scrollTop);
+        switch (action) {
+          case 'next':
+            if (
+              viewport.scrollHeight - viewport.clientHeight <= viewport.scrollTop
+            ) {
+              this.toggleSection(action);
+              return;
+            }
 
-        if (action === 'next') {
-          if (
-            viewport.scrollHeight - viewport.clientHeight <=
-            viewport.scrollTop
-          ) {
-            this.toggleSection(action);
-            return;
-          }
-
-          this.bookLocation.pageIndex += 1;
-          this.$store.commit('setBookLocation', this.bookLocation);
-
-          viewport.scrollTop =
-            this.bookLocation.pageIndex * viewport.clientHeight;
-        } else if (action === 'prev') {
-          if (this.bookLocation.pageIndex < 1) {
-            this.toggleSection(action);
-            return;
-          } else {
-            this.bookLocation.pageIndex -= 1;
+            this.bookLocation.pageIndex += 1;
             this.$store.commit('setBookLocation', this.bookLocation);
-          }
 
-          viewport.scrollTop =
-            this.bookLocation.pageIndex * viewport.clientHeight;
+            viewport.scrollTop = this.bookLocation.pageIndex * viewport.clientHeight;
+            break;
+
+          case 'prev':
+            if (this.bookLocation.pageIndex < 1)
+            {
+              this.toggleSection(action);
+              return;
+            } else
+            {
+              this.bookLocation.pageIndex -= 1;
+              this.$store.commit('setBookLocation', this.bookLocation);
+            }
+            viewport.scrollTop = this.bookLocation.pageIndex * viewport.clientHeight;
+            break;
         }
         return;
       });
@@ -852,7 +865,7 @@ export default {
           content: this.documentContent.books[this.bookLocation.chapterIndex]
             .sections[this.bookLocation.sectionIndex - 1].content
         };
-        //         this.bookLocation.sectionIndex -= 1;
+        this.bookLocation.sectionIndex -= 1;
         this.$store.commit('setBookContent', addContent);
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'prevChapter') {
@@ -864,17 +877,14 @@ export default {
         addContent = {
           chapter: this.documentContent.books[prevChapterIndex].chapter,
           h1title: this.documentContent.books[prevChapterIndex].title,
-          h3title: this.documentContent.books[prevChapterIndex].sections[
-            lastSectionIndex
-          ].title,
-          content: this.documentContent.books[prevChapterIndex].sections[
-            lastSectionIndex
-          ].content
+          h3title: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex].title,
+          content: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex].content
         };
-        //         this.$store.commit('setBookContent', addContent);
+        this.$store.commit('setBookContent', addContent);
+
         this.bookLocation.chapterIndex -= 1;
         this.bookLocation.sectionIndex =
-          this.documentContent.books[prevChapterIndex].sections.length - 1;
+        this.documentContent.books[prevChapterIndex].sections.length - 1;
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'nextSection') {
         this.togglePageAction = 'next';
