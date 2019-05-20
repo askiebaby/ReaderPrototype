@@ -82,17 +82,20 @@ export default {
     }
   },
   mounted() {
-    this.CookiesData.task.time = this.task.time.map((item, index) => {
-      return this.$moment
-        .duration(this.$moment(this.task.time[index + 1]).diff(item))
-        .asSeconds();
-    });
-    this.CookiesData.task.counts = this.task.counts
+    this.CookiesData.task.time = this.task.time
+      .map((item, index) => {
+        return this.$moment
+          .duration(this.$moment(this.task.time[index + 1]).diff(item))
+          .asSeconds();
+      })
+      .filter((value, index, array) => index + 1 != array.length);
+    console.log(this.CookiesData.task[this.taskIndex].time);
+    this.CookiesData.task[this.taskIndex].counts = this.task.counts
       .map((item, index) => {
         return this.task.counts[index + 1] - item;
       })
-      .filter(item => item);
-    this.CookiesData.task.finishTime = this.$moment(
+      .filter((value, index, array) => index + 1 != array.length);
+    this.CookiesData.task[this.taskIndex].finishTime = this.$moment(
       this.task.time[this.task.time.length - 1]
     ).format('YYYY/MM/DD HH:mm');
     console.log(this.CookiesData.task.finishTime);
