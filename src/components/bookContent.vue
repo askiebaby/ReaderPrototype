@@ -16,13 +16,8 @@
       <h2 class="book__chapter">
         {{ bookContent.chapter }} {{ bookContent.h1title }}
       </h2>
-      <div
-        ref="viewport"
-        class="book__content"
-      >
-        <div
-          ref="bookContainer"
-        >
+      <div ref="viewport" class="book__content">
+        <div ref="bookContainer">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
           <p>
             <span
@@ -286,78 +281,78 @@ export default {
         {
           fontSize: '12',
           line: {
-            'column': '34',
-            'row': '27'
+            column: '34',
+            row: '27'
           }
         },
         {
           fontSize: '14',
           line: {
-            'column': '29',
-            'row': '24'
+            column: '29',
+            row: '24'
           }
         },
         {
           fontSize: '16',
           line: {
-            'column': '26',
-            'row': '21'
+            column: '26',
+            row: '21'
           }
         },
         {
           fontSize: '18',
           line: {
-            'column': '23',
-            'row': '18'
+            column: '23',
+            row: '18'
           }
         },
         {
           fontSize: '20',
           line: {
-            'column': '20',
-            'row': '16'
+            column: '20',
+            row: '16'
           }
         },
         {
           fontSize: '24',
           line: {
-            'column': '17',
-            'row': '13'
+            column: '17',
+            row: '13'
           }
         },
         {
           fontSize: '30',
           line: {
-            'column': '13',
-            'row': '11'
+            column: '13',
+            row: '11'
           }
         },
         {
           fontSize: '36',
           line: {
-            'column': '11',
-            'row': '9'
+            column: '11',
+            row: '9'
           }
         },
         {
           fontSize: '42',
           line: {
-            'column': '9',
-            'row': '8'
+            column: '9',
+            row: '8'
           }
         },
         {
           fontSize: '48',
           line: {
-            'column': '8',
-            'row': '7'
+            column: '8',
+            row: '7'
           }
         },
         {
           fontSize: '52',
           line: {
-            'column': '8',
-            'row': '6'
+            column: '8',
+            row: '6'
           }
         }
       ],
@@ -456,11 +451,11 @@ export default {
       return result;
     },
     containerHeight() {
-      const line = this.fontLevels[this.sizeLevel].line[this.$store.getters.getDirections.words];
+      const line = this.fontLevels[this.sizeLevel].line[
+        this.$store.getters.getDirections.words
+      ];
       const viewport = Math.floor(this.aLineHeight) * line;
-      console.log(
-        `${viewport} = ${line} 行 x ${Math.floor(this.aLineHeight)}`
-      );
+      console.log(`${viewport} = ${line} 行 x ${Math.floor(this.aLineHeight)}`);
       return viewport;
     },
     bookContent() {
@@ -480,12 +475,16 @@ export default {
         this.$store.commit('setBookLocation', this.bookLocation);
 
         // 拿到文字排列方向
-        const wordsDirection = this.$store.getters.getDirections.words
-        
+        const wordsDirection = this.$store.getters.getDirections.words;
+
         // 內容改變時，也要初始化容器寬高一次
         this.resetContainerSize(wordsDirection);
 
-        console.log(`${this.bookLocation.newContentHeight} this.bookLocation.newContentHeight`)
+        console.log(
+          `${
+            this.bookLocation.newContentHeight
+          } this.bookLocation.newContentHeight`
+        );
         switch (this.togglePageAction) {
           case 'prev':
           case 'next':
@@ -494,7 +493,7 @@ export default {
           default:
             this.togglePageAction = 'default';
             this.countPageWidthHeight();
-        };
+        }
       },
       deep: true
     },
@@ -544,28 +543,26 @@ export default {
       const xPosition = e.clientX;
 
       // 自適應書本寬度
-      const bookWidth = document.querySelector('.book').getBoundingClientRect().width;
+      const bookWidth = document.querySelector('.book').getBoundingClientRect()
+        .width;
 
       // 計算公式
-      const xRatio = (xPosition / bookWidth).toFixed(3) * 100
+      const xRatio = (xPosition / bookWidth).toFixed(3) * 100;
 
       // 文字方向
-      const wordsDirection = this.$store.getters.getDirections.words
-      
-      if (xRatio >= 0 && xRatio < 33.333)
-      {
+      const wordsDirection = this.$store.getters.getDirections.words;
+
+      if (xRatio >= 0 && xRatio < 33.333) {
         if (wordsDirection === 'column') this.togglePageRules('prev');
         if (wordsDirection === 'row') this.togglePageRules('next');
-        return
-      } else if (xRatio >= 33.333 && xRatio < 66.666)
-      {
+        return;
+      } else if (xRatio >= 33.333 && xRatio < 66.666) {
         this.toggleNavigation();
-        return
-      } else if (xRatio >= 66.666 && xRatio < 100)
-      {
+        return;
+      } else if (xRatio >= 66.666 && xRatio < 100) {
         if (wordsDirection === 'column') this.togglePageRules('next');
         if (wordsDirection === 'row') this.togglePageRules('prev');
-        return
+        return;
       }
     },
     selectedPart(e, notesIndex) {
@@ -717,63 +714,85 @@ export default {
         this.scrollWidth = this.$refs.viewport.scrollWidth;
 
         // 拿到文字排列方向
-        const wordsDirection = this.$store.getters.getDirections.words
+        const wordsDirection = this.$store.getters.getDirections.words;
 
         // 計算頁數。註記：column 橫排、row 直排
-        const remain = (wordsDirection === 'column') ? this.scrollHeight % this.containerHeight : this.scrollWidth % this.containerHeight;
+        const remain =
+          wordsDirection === 'column'
+            ? this.scrollHeight % this.containerHeight
+            : this.scrollWidth % this.containerHeight;
 
-        this.pages = (wordsDirection === 'column') ? Math.floor(this.scrollHeight / this.containerHeight) : Math.floor(this.scrollWidth / this.containerHeight) ;
-        this.bookLocation.pages = remain >= this.aLineHeight ? (this.pages += 1) : this.pages;
+        this.pages =
+          wordsDirection === 'column'
+            ? Math.floor(this.scrollHeight / this.containerHeight)
+            : Math.floor(this.scrollWidth / this.containerHeight);
+        this.bookLocation.pages =
+          remain >= this.aLineHeight ? (this.pages += 1) : this.pages;
 
         // 計算應有的寬度或高度
-        this.bookLocation.newContentHeight = this.bookLocation.pages *
-          this.containerHeight;
+        this.bookLocation.newContentHeight =
+          this.bookLocation.pages * this.containerHeight;
         this.$store.commit('setBookLocation', this.bookLocation);
-
 
         // 更新文章內容或字級，要重新定位頁數位置
         this.checkPagePosition(wordsDirection, this.resetContainerSize);
 
         console.warn(
           'countPageWidthHeight called!',
-          '\n viewport: ', this.containerHeight,
-          '\n 原本高度 scrollHeight: ', this.scrollHeight,
-          '初始定位 scrollTop: ', this.$refs.viewport.scrollTop,
-          '\n 原本寬度 scrollWidth: ', this.scrollWidth,
-          '初始定位 scrollLeft: ', this.$refs.viewport.scrollLeft,
-          '\n remain: ', remain,
-          'lineHeight: ', this.aLineHeight, // 單行的總高度
-          'page: ', this.pages,
-          'totalPage: ', this.bookLocation.pages,
-          '\n 真正容器應該要有的寬(直向)、高(橫向): ', this.bookLocation.newContentHeight
+          '\n viewport: ',
+          this.containerHeight,
+          '\n 原本高度 scrollHeight: ',
+          this.scrollHeight,
+          '初始定位 scrollTop: ',
+          this.$refs.viewport.scrollTop,
+          '\n 原本寬度 scrollWidth: ',
+          this.scrollWidth,
+          '初始定位 scrollLeft: ',
+          this.$refs.viewport.scrollLeft,
+          '\n remain: ',
+          remain,
+          'lineHeight: ',
+          this.aLineHeight, // 單行的總高度
+          'page: ',
+          this.pages,
+          'totalPage: ',
+          this.bookLocation.pages,
+          '\n 真正容器應該要有的寬(直向)、高(橫向): ',
+          this.bookLocation.newContentHeight
         );
       });
     },
-    resetContainerSize(wordsDirection){
+    resetContainerSize(wordsDirection) {
       switch (wordsDirection) {
         case 'column':
           this.$refs.viewport.style.height = `${this.containerHeight}px`;
-          this.$refs.bookContainer.style.height = `${this.bookLocation.newContentHeight}px`;
+          this.$refs.bookContainer.style.height = `${
+            this.bookLocation.newContentHeight
+          }px`;
           console.log(`更新resetContainerSize
           viewport：${this.containerHeight}
-          bookContainer：${this.bookLocation.newContentHeight}`)
+          bookContainer：${this.bookLocation.newContentHeight}`);
           break;
 
         case 'row':
           this.$refs.viewport.style.width = `${this.containerHeight}px`;
-          this.$refs.bookContainer.style.width = `${this.bookLocation.newContentHeight}px`;
+          this.$refs.bookContainer.style.width = `${
+            this.bookLocation.newContentHeight
+          }px`;
           console.log(`更新resetContainerSize
           viewport：${this.containerHeight}
-          bookContainer：${this.bookLocation.newContentHeight}`)
+          bookContainer：${this.bookLocation.newContentHeight}`);
           break;
 
         default:
-          console.error(`Error, Please Check method "resetContainerSize", and your argument wordsDirection is ${wordsDirection}`);
+          console.error(
+            `Error, Please Check method "resetContainerSize", and your argument wordsDirection is ${wordsDirection}`
+          );
       }
     },
     checkPagePosition(wordsDirection, callback) {
       // 更新內容，根據欄位確定動作，才定位
-      if (wordsDirection === 'column'){
+      if (wordsDirection === 'column') {
         // 文字橫向
         switch (this.togglePageAction) {
           case 'next':
@@ -782,7 +801,7 @@ export default {
             this.bookLocation.pageIndex = 0;
             this.$store.commit('setBookLocation', this.bookLocation);
             console.log(
-            'next',
+              'next',
               this.$refs.viewport.scrollTop,
               this.bookLocation.pages,
               this.containerHeight
@@ -808,15 +827,16 @@ export default {
         }
       } else {
         // 文字直向
-        console.log('checkPagePosition!!!')
+        console.log('checkPagePosition!!!');
         switch (this.togglePageAction) {
           case 'next':
           case 'default':
-            this.$refs.viewport.scrollLeft = (this.bookLocation.pages - 1) * this.containerHeight + 210;
+            this.$refs.viewport.scrollLeft =
+              (this.bookLocation.pages - 1) * this.containerHeight + 210;
             this.bookLocation.pageIndex = 0;
             this.$store.commit('setBookLocation', this.bookLocation);
             console.log(
-            'next',
+              'next',
               this.$refs.viewport.scrollLeft,
               this.bookLocation.pages,
               this.containerHeight
@@ -836,7 +856,8 @@ export default {
             break;
 
           default:
-            this.$refs.viewport.scrollLeft = (this.bookLocation.pages - 1) * this.containerHeight + 210;
+            this.$refs.viewport.scrollLeft =
+              (this.bookLocation.pages - 1) * this.containerHeight + 210;
             this.bookLocation.pageIndex = 0;
             this.$store.commit('setBookLocation', this.bookLocation);
         }
@@ -852,9 +873,8 @@ export default {
     },
     togglePageRules(action) {
       this.$nextTick(() => {
-
         const viewport = this.$refs.viewport;
-        const wordsDirection = this.$store.getters.getDirections.words
+        const wordsDirection = this.$store.getters.getDirections.words;
 
         if (wordsDirection === 'column') {
           // 文字橫向
@@ -868,24 +888,34 @@ export default {
                 this.bookLocation.pageIndex -= 1;
                 this.$store.commit('setBookLocation', this.bookLocation);
               }
-              viewport.scrollTop = this.bookLocation.pageIndex * viewport.clientHeight;
+              viewport.scrollTop =
+                this.bookLocation.pageIndex * viewport.clientHeight;
               break;
             case 'next':
-              if ( viewport.scrollHeight - viewport.clientHeight <= viewport.scrollTop ) {
-                console.log('viewport.scrollHeight', viewport.scrollHeight, '- viewport.clientHeight', viewport.clientHeight, '<= viewport.scrollTop',viewport.scrollTop )
+              if (
+                viewport.scrollHeight - viewport.clientHeight <=
+                viewport.scrollTop
+              ) {
+                console.log(
+                  'viewport.scrollHeight',
+                  viewport.scrollHeight,
+                  '- viewport.clientHeight',
+                  viewport.clientHeight,
+                  '<= viewport.scrollTop',
+                  viewport.scrollTop
+                );
                 this.toggleSection(action);
                 return;
               }
-              
 
               this.bookLocation.pageIndex += 1;
               this.$store.commit('setBookLocation', this.bookLocation);
 
-              viewport.scrollTop = this.bookLocation.pageIndex * viewport.clientHeight;
+              viewport.scrollTop =
+                this.bookLocation.pageIndex * viewport.clientHeight;
 
               break;
-
-            }
+          }
         } else {
           // 文字直向
           console.log(this.$refs.viewport.scrollLeft);
@@ -901,12 +931,16 @@ export default {
                 this.$store.commit('setBookLocation', this.bookLocation);
               }
               // 總頁數 - (目前頁數：index) * viewport
-              viewport.scrollLeft = (this.bookLocation.pages - this.bookLocation.pageIndex - 1) * viewport.clientWidth;
+              viewport.scrollLeft =
+                (this.bookLocation.pages - this.bookLocation.pageIndex - 1) *
+                viewport.clientWidth;
               break;
 
             case 'next':
-
-              if ( viewport.scrollWidth - viewport.scrollLeft === viewport.scrollWidth ) {
+              if (
+                viewport.scrollWidth - viewport.scrollLeft ===
+                viewport.scrollWidth
+              ) {
                 console.log(`最後一頁，要換section`);
                 this.toggleSection(action);
                 return;
@@ -915,20 +949,27 @@ export default {
               this.bookLocation.pageIndex += 1;
               this.$store.commit('setBookLocation', this.bookLocation);
 
-              viewport.scrollLeft = (this.bookLocation.pages - this.bookLocation.pageIndex - 1) * viewport.clientWidth;
-              console.log(`換頁數：定位${viewport.scrollLeft} = (${this.bookLocation.pages} - ${this.bookLocation.pageIndex} - 1) * ${viewport.clientWidth}`)
+              viewport.scrollLeft =
+                (this.bookLocation.pages - this.bookLocation.pageIndex - 1) *
+                viewport.clientWidth;
+              console.log(
+                `換頁數：定位${viewport.scrollLeft} = (${
+                  this.bookLocation.pages
+                } - ${this.bookLocation.pageIndex} - 1) * ${
+                  viewport.clientWidth
+                }`
+              );
 
               break;
-            
           }
         }
 
-        function pagePlus () {
+        function pagePlus() {
           this.bookLocation.pageIndex += 1;
           this.$store.commit('setBookLocation', this.bookLocation);
         }
 
-        function pageMinus () {
+        function pageMinus() {
           this.bookLocation.pageIndex -= 1;
           this.$store.commit('setBookLocation', this.bookLocation);
         }
@@ -1018,7 +1059,6 @@ export default {
         pageIndex: ${pageIndex} \n
         page: ${page} \n
       `);
-
     },
     changeContent(action) {
       let addContent = this.$store.getters.getBookContent;
@@ -1046,14 +1086,18 @@ export default {
         addContent = {
           chapter: this.documentContent.books[prevChapterIndex].chapter,
           h1title: this.documentContent.books[prevChapterIndex].title,
-          h3title: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex].title,
-          content: this.documentContent.books[prevChapterIndex].sections[lastSectionIndex].content
+          h3title: this.documentContent.books[prevChapterIndex].sections[
+            lastSectionIndex
+          ].title,
+          content: this.documentContent.books[prevChapterIndex].sections[
+            lastSectionIndex
+          ].content
         };
         this.$store.commit('setBookContent', addContent);
 
         this.bookLocation.chapterIndex -= 1;
         this.bookLocation.sectionIndex =
-        this.documentContent.books[prevChapterIndex].sections.length - 1;
+          this.documentContent.books[prevChapterIndex].sections.length - 1;
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'nextSection') {
         this.togglePageAction = 'next';

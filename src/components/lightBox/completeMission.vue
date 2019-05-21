@@ -89,13 +89,13 @@ export default {
           .asSeconds();
       })
       .filter((value, index, array) => index + 1 != array.length);
-    console.log(this.CookiesData.task[this.taskIndex].time);
-    this.CookiesData.task[this.taskIndex].counts = this.task.counts
+    console.log(this.CookiesData.task.time);
+    this.CookiesData.task.counts = this.task.counts
       .map((item, index) => {
         return this.task.counts[index + 1] - item;
       })
       .filter((value, index, array) => index + 1 != array.length);
-    this.CookiesData.task[this.taskIndex].finishTime = this.$moment(
+    this.CookiesData.task.finishTime = this.$moment(
       this.task.time[this.task.time.length - 1]
     ).format('YYYY/MM/DD HH:mm');
     console.log(this.CookiesData.task.finishTime);
@@ -103,7 +103,7 @@ export default {
   methods: {
     backToTasks(isFinish) {
       if (isFinish === true) {
-        $cookies.set(this.id, this.CookiesData);
+        this.$cookies.set(this.id, this.CookiesData);
       }
       this.$router.push({ name: 'tasks' });
     }

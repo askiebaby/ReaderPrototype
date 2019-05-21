@@ -18,7 +18,6 @@ Vue.use(Vue2TouchEvents, {
 new Vue({
   disableRightClick,
   cookies,
-  moment,
   router,
   store,
   render: h => h(App)
