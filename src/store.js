@@ -86,7 +86,7 @@ export const store = new Vuex.Store({
       /*
         row 直，column 橫
       */
-      words: 'column',
+      words: 'row',
       functions: 'row'
     }
   },
