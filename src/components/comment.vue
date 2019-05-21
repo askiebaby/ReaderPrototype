@@ -187,6 +187,9 @@ export default {
   computed: {
     getNote() {
       const note = this.$store.getters.getNotes[this.notesIndex];
+      if (note == undefined) {
+        return { text: '', comment: '' };
+      }
       return {
         text: this.documentContent.books[note.chapterIndex].sections[
           note.sectionIndex

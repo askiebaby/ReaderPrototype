@@ -2,7 +2,7 @@
   <div>
     <comment
       v-if="isShowComment"
-      :notes-index="isSelectedPart"
+      :notes-index="selectedNoteIndex"
       @showComment="showComment($event)"
     ></comment>
     <tooltip
@@ -381,7 +381,7 @@ export default {
       },
       notes: [],
       pointerEvents: 'auto',
-      isSelectedPart: -1,
+      selectedNoteIndex: -1,
       isShowComment: false,
       selectedPartColor: ''
     };
@@ -511,9 +511,9 @@ export default {
   },
 
   methods: {
-    showComment(event) {
-      if (this.isSelectedPart < 0) {
-        this.changeColor('yellow-pen');
+    async showComment(event) {
+      if (this.selectedNoteIndex < 0) {
+        await this.changeColor('yellow-pen');
       }
       this.clearSelected();
       this.isShowComment = event;
@@ -567,7 +567,7 @@ export default {
     },
     selectedPart(e, notesIndex) {
       if (notesIndex != undefined) {
-        this.isSelectedPart = notesIndex;
+        this.selectedNoteIndex = notesIndex;
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
         this.selectedPartColor = e.target.parentElement.className.split('-')[0];
@@ -584,18 +584,18 @@ export default {
           partPosition.top - 42 - this.fontLevels[this.sizeLevel].fontSize;
         this.isShowTooltip = true;
       } else {
-        this.isSelectedPart = -1;
+        this.selectedNoteIndex = -1;
         this.switchTouch(e, 'auto');
       }
     },
     changeColor(color) {
       const step1 = this.$store.getters.getTarget[1].step[0];
-      if (this.isSelectedPart >= 0) {
+      if (this.selectedNoteIndex >= 0) {
         this.$store.commit('changeNotesColor', {
-          index: this.isSelectedPart,
+          index: this.selectedNoteIndex,
           color: color
         });
-        const checkTask = this.$store.getters.getNotes[this.isSelectedPart]
+        const checkTask = this.$store.getters.getNotes[this.selectedNoteIndex]
           .task;
         if (checkTask != 2) {
           return;
@@ -672,9 +672,8 @@ export default {
         // console.log('581651', this.$store.getters.getTask);
         return;
       }
-
       this.$store.commit('addNotes', obj);
-      this.isSelectedPart = 0;
+      this.selectedNoteIndex = 0;
       this.clearSelected();
     },
     hightLight(i) {
@@ -1176,7 +1175,7 @@ export default {
         this.tooltipPosition.x = averageX - 196;
       }
       if (this.selected.start > 0 && this.selected.end > 0) {
-        this.isSelectedPart = -1;
+        this.selectedNoteIndex = -1;
         this.selectedPartColor = '';
         this.$store.commit('changeTooltipColor', this.selectedPartColor);
         this.isShowTooltip = true;
