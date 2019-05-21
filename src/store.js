@@ -9,7 +9,6 @@ export const store = new Vuex.Store({
     totalCounts: 0,
     id: '',
     name: '',
-    showNotes: false,
     tooltipColor: '',
     task: [],
     bookContent: {
@@ -112,9 +111,6 @@ export const store = new Vuex.Store({
     getNotes: state => {
       return state.notes;
     },
-    getIsShowNotes: state => {
-      return state.showNotes;
-    },
     getDirections: state => {
       return state.directions;
     },
@@ -131,9 +127,6 @@ export const store = new Vuex.Store({
   mutations: {
     addTotalCounts(state) {
       state.totalCounts++;
-    },
-    switchShowNotes(state) {
-      state.showNotes = !state.showNotes;
     },
 
     setBookContent(state, payload) {
@@ -194,6 +187,9 @@ export const store = new Vuex.Store({
     },
     deleteNote(state, payload) {
       state.notes.splice(payload, 1);
+    },
+    changeNoteComment(state, payload) {
+      state.notes[payload.index].comment = payload.comment;
     }
   }
 });

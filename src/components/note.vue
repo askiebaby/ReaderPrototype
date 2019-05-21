@@ -25,7 +25,13 @@
             :notes-index="notesIndex"
             @finishTask2="finishTask2($event)"
             @changeColor="changeColor($event, index)"
+            @showComment="isShowComment = $event"
           ></tooltip>
+          <comment
+            v-if="showComment(index)"
+            :notes-index="index"
+            @showComment="isShowComment = $event"
+          ></comment>
           <div class="note__highlight" :class="item.color"></div>
           <div class="note__record">
             <div class="note__sentence">{{ item.text }}</div>
@@ -230,16 +236,19 @@
 import documentContent from '@/assets/document.json';
 import tooltip from './tooltip.vue';
 import completeMission from './lightBox/completeMission.vue';
+import comment from './comment.vue';
 export default {
   components: {
     tooltip,
-    completeMission
+    completeMission,
+    comment
   },
   data() {
     return {
       documentContent,
       notesIndex: -1,
-      isShowComplete: false
+      isShowComplete: false,
+      isShowComment: false
     };
   },
   computed: {
@@ -257,6 +266,9 @@ export default {
     }
   },
   methods: {
+    showComment(index) {
+      return this.isShowComment == true && this.notesIndex == index;
+    },
     finishTask2(e) {
       console.log('qwew', e);
       this.notesIndex = e.index;
@@ -267,10 +279,10 @@ export default {
       }
     },
     closeNotes() {
-      this.$store.commit('switchShowNotes');
+      this.$emit('switchShowNotes', false);
     },
     isShowTooltip(index) {
-      return this.notesIndex == index;
+      return this.isShowComment == false && this.notesIndex == index;
     },
     selectedNote(index, color) {
       this.$store.commit('changeTooltipColor', color.split('-')[0]);

@@ -1,11 +1,16 @@
 <template>
   <div>
+    <comment
+      v-if="isShowComment"
+      :notes-index="isSelectedPart"
+      @showComment="showComment($event)"
+    ></comment>
     <tooltip
       v-if="isShowTooltip"
       :tooltip-position="tooltipPosition"
-      :selected-to-notes="selectedToNotes"
       :from-content="true"
       @changeColor="changeColor($event)"
+      @showComment="showComment($event)"
     ></tooltip>
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
@@ -259,10 +264,12 @@
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
+import comment from './comment.vue';
 
 export default {
   components: {
-    tooltip
+    tooltip,
+    comment
   },
   props: ['sizeLevel'],
   data() {
@@ -380,6 +387,7 @@ export default {
       notes: [],
       pointerEvents: 'auto',
       isSelectedPart: -1,
+      isShowComment: false,
       selectedPartColor: ''
     };
   },
@@ -504,6 +512,13 @@ export default {
   },
 
   methods: {
+    showComment(event) {
+      if (this.isSelectedPart < 0) {
+        this.changeColor('yellow-pen');
+      }
+      this.clearSelected();
+      this.isShowComment = event;
+    },
     checkFinishStep1() {
       if (this.task.length <= 0) {
         return;
@@ -559,6 +574,7 @@ export default {
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
         this.selectedPartColor = e.target.parentElement.className.split('-')[0];
+        this.$store.commit('changeTooltipColor', this.selectedPartColor);
         if (partPosition.left < 196 && partPosition.width <= 392) {
           this.tooltipPosition.x = 72;
         } else if (partPosition.left + 392 > 695) {
@@ -617,6 +633,7 @@ export default {
         console.log('855651', this.$store.getters.getTask);
         return;
       }
+
       const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
@@ -641,12 +658,14 @@ export default {
         this.clearSelected();
         return;
       }
+      // 任務二檢查
       if (
         this.selectedToNotes.chapterIndex == step1.chapterIndex &&
         this.selectedToNotes.sectionIndex == step1.sectionIndex &&
         this.selectedToNotes.textStart == step1.textStart &&
         this.selectedToNotes.textEnd == step1.textEnd
       ) {
+        // 標記
         obj.task = 2;
         this.$store.commit('addNotes', obj);
         this.clearSelected();
@@ -656,7 +675,9 @@ export default {
         // console.log('581651', this.$store.getters.getTask);
         return;
       }
+
       this.$store.commit('addNotes', obj);
+      this.isSelectedPart = 0;
       this.clearSelected();
     },
     hightLight(i) {
@@ -1113,6 +1134,7 @@ export default {
       if (this.selected.start > 0 && this.selected.end > 0) {
         this.isSelectedPart = -1;
         this.selectedPartColor = '';
+        this.$store.commit('changeTooltipColor', this.selectedPartColor);
         this.isShowTooltip = true;
       }
     },
