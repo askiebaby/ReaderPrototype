@@ -871,7 +871,7 @@ export default {
 
           switch (action) {
             case 'prev':
-              console.log('row, prev');
+              console.log('row, prev', this.bookLocation.pageIndex);
               if (this.bookLocation.pageIndex < 1) {
                 this.toggleSection(action);
                 return;
@@ -879,7 +879,8 @@ export default {
                 this.bookLocation.pageIndex -= 1;
                 this.$store.commit('setBookLocation', this.bookLocation);
               }
-              viewport.scrollLeft = this.bookLocation.pageIndex * viewport.clientWidth;
+              // 總頁數 - (目前頁數：index) * viewport
+              viewport.scrollLeft = (this.bookLocation.pages - this.bookLocation.pageIndex - 1) * viewport.clientWidth;
               break;
 
             case 'next':
