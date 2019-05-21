@@ -2,4 +2,7 @@
 @import './modules/font';
 @import './partials/normalize';
 
-
+body {
+  -moz-user-select : none;
+  -webkit-user-select: none;
+  }

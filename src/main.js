@@ -5,7 +5,8 @@ import router from './router';
 import { store } from './store';
 import moment from 'vue-moment';
 import Vue2TouchEvents from 'vue2-touch-events';
-// import inobounce from "./inobounce";
+import disableRightClick from './disableRightClick';
+// import inobounce from './inobounce';
 
 Vue.config.productionTip = false;
 cookies.config('90d');
@@ -15,6 +16,7 @@ Vue.use(Vue2TouchEvents, {
 });
 
 new Vue({
+  disableRightClick,
   cookies,
   moment,
   router,
