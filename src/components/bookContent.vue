@@ -1,21 +1,20 @@
 <template>
   <div>
-    <comment
-      v-if="isShowComment"
-      :notes-index="isSelectedPart"
-      @showComment="showComment($event)"
-    ></comment>
+    <comment v-if="isShowComment" :notes-index="isSelectedPart" @showComment="showComment($event)"></comment>
     <tooltip
       v-if="isShowTooltip"
       :tooltip-position="tooltipPosition"
       :from-content="true"
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
+      @showShareUI="showShareUI($event)"
     ></tooltip>
+    <share
+      v-if="isShowShare"
+      @showShareUI="showShareUI($event)"
+    ></share>
     <div class="book" @click="changePage">
-      <h2 class="book__chapter">
-        {{ bookContent.chapter }} {{ bookContent.h1title }}
-      </h2>
+      <h2 class="book__chapter">{{ bookContent.chapter }} {{ bookContent.h1title }}</h2>
       <div ref="viewport" class="book__content">
         <div ref="bookContainer">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
@@ -34,15 +33,12 @@
                 v-touch:end="touchEnd"
                 :index="g.boundary + j"
                 :class="hightLight(g.boundary + j)"
-                >{{ c }}</span
-              ></span
-            >
+              >{{ c }}</span>
+            </span>
           </p>
         </div>
       </div>
-      <div class="page">
-        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
-      </div>
+      <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁</div>
     </div>
   </div>
 </template>
@@ -260,11 +256,13 @@ import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
 import comment from './comment.vue';
+import share from './share.vue';
 
 export default {
   components: {
     tooltip,
-    comment
+    comment,
+    share
   },
   props: ['sizeLevel'],
   data() {
@@ -383,6 +381,7 @@ export default {
       pointerEvents: 'auto',
       isSelectedPart: -1,
       isShowComment: false,
+      isShowShare: false,
       selectedPartColor: ''
     };
   },
@@ -517,6 +516,11 @@ export default {
       }
       this.clearSelected();
       this.isShowComment = event;
+    },
+    showShareUI(event) {
+      this.clearSelected();
+      this.isShowComment = (this.isShowComment) ? true : false;
+      this.isShowShare = event;
     },
     checkFinishStep1() {
       if (this.task.length <= 0) {

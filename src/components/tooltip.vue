@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div
-      class="tooltip"
-      data-tooltip=""
-      :style="{ top: topStyle, left: leftStyle }"
-    >
+    <div class="tooltip" data-tooltip :style="{ top: topStyle, left: leftStyle }">
       <div class="tooltip__wrapper">
         <div class="tooltip__top">
           <div class="tooltip__penColor">
@@ -17,19 +13,19 @@
           </div>
           <div class="tooltip__function">
             <div v-if="isShowIcon">
-              <img src="@/assets/images/icons/copy.svg" alt="複製" />
+              <img src="@/assets/images/icons/copy.svg" alt="複製">
             </div>
             <div class="tooltip__function__comment" @click="showComment">
-              <img src="@/assets/images/icons/comment.svg" alt="註解" />
+              <img src="@/assets/images/icons/comment.svg" alt="註解">
             </div>
-            <div class="tooltip__function__share">
-              <img src="@/assets/images/icons/share.svg" alt="分享" />
+            <div class="tooltip__function__share" @click="$emit('showShareUI', true);">
+              <img src="@/assets/images/icons/share.svg" alt="分享">
             </div>
             <div v-if="isShowIcon" class="tooltip__function__search">
-              <img src="@/assets/images/icons/search.svg" alt="搜尋" />
+              <img src="@/assets/images/icons/search.svg" alt="搜尋">
             </div>
             <div v-else @click="deleteNotes">
-              <img src="@/assets/images/icons/delete.svg" alt="刪除" />
+              <img src="@/assets/images/icons/delete.svg" alt="刪除">
             </div>
           </div>
         </div>

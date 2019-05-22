@@ -1,6 +1,6 @@
 <template>
   <section class="share">
-    <div class="share__background"></div>
+    <div class="share__background" @click="$emit('showShareUI', false);"></div>
     <div class="share__container">
       <h3>點一下來使用AirDrop分享</h3>
       <div class="share__flexRow">
@@ -64,7 +64,11 @@
 .share {
   display: flex;
   align-content: center;
+  position: fixed;
+  width: 100%;
   height: 100vh;
+  z-index: 1;
+
   &__background {
     position: fixed;
     left: 0;
@@ -127,5 +131,6 @@
 
 <script>
 export default {
+
 };
 </script>
