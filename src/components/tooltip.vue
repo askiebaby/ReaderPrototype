@@ -158,6 +158,12 @@ body {
 .functions-row {
   .tooltip {
     transform: rotate(-90deg);
+    &__top {
+      flex-direction: row-reverse;
+    }
+    &__penColor, &__function {
+      flex-direction: row-reverse;
+    }
     &__function {
       > div {
         transform: rotate(90deg);
