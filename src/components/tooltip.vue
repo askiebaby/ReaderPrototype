@@ -2,7 +2,7 @@
   <div>
     <div class="tooltip" data-tooltip :style="{ top: topStyle, left: leftStyle }">
       <div class="tooltip__wrapper">
-        <div class="tooltip__top">
+        <div :class="['tooltip__top', {'note__tooltip': !isShowIcon}]">
           <div class="tooltip__penColor">
             <div
               v-for="item in color"
@@ -187,6 +187,17 @@ body {
           transform: rotate(90deg);
         }
       }
+    }
+  }
+}
+
+.note__tooltip {
+  .tooltip {
+    &__penColor {
+      flex-basis: 57.4%;
+    }
+    &__function {
+      flex-basis: 42.6%;
     }
   }
 }
