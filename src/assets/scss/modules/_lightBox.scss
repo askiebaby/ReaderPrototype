@@ -51,12 +51,22 @@
   }
 
   &__subtitle {
-    padding-left: 10px;
     margin-bottom: 25px;
   }
 
   &__taskDescription {
     margin-bottom: 97px;
+    p {
+      display: flex;
+    }
+    span {
+      &:first-child {
+        flex-shrink: 0;
+      }
+      &:last-child {
+        text-align: justify;
+      }
+    }
   }
   .button {
     margin: auto;
