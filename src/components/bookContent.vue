@@ -594,7 +594,7 @@ export default {
         this.clearSelected();
         return;
       }
-      const step1 = this.$store.getters.getTarget[1].step[0];
+      const step2_1 = this.$store.getters.getTarget[1].step[0];
       if (this.selectedNoteIndex >= 0) {
         this.$store.commit('changeNotesColor', {
           index: this.selectedNoteIndex,
@@ -602,40 +602,27 @@ export default {
         });
         const checkTask = this.$store.getters.getNotes[this.selectedNoteIndex]
           .task;
-        if (checkTask != 2) {
+        if (checkTask == 0) {
           return;
         }
         if (this.task.length <= 0) {
           return;
         }
-        if (this.task[1] == undefined) {
+        if (this.task[1] == undefined || this.task[2] == undefined) {
           return;
         }
-        let isFinishStep1 = false;
-        if (this.task[1].time.length == 2) {
-          isFinishStep1 = true;
-        }
-        if (isFinishStep1 == false) {
-          if (color != step1.css) {
-            return;
-          }
-
+        if (this.task[1].time.length == 1 && color == step2_1.css) {
           this.$store.commit('setTask', 1);
           console.log('8522256', this.$store.getters.getTask);
           return;
         }
-        const step2 = this.$store.getters.getTarget[1].step[1];
-        if (color != step2.css) {
+        const step2_2 = this.$store.getters.getTarget[1].step[1];
+        if (this.task[1].time.length == 2 && color != step2_2.css) {
+          this.$store.commit('setTask', 1);
+          console.log('855651', this.$store.getters.getTask);
           return;
         }
-        if (this.task[1].time.length != 2) {
-          return;
-        }
-        this.$store.commit('setTask', 1);
-        console.log('855651', this.$store.getters.getTask);
-        return;
       }
-
       const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
         sectionIndex: this.selectedToNotes.sectionIndex,
@@ -645,41 +632,55 @@ export default {
         comment: '',
         task: 0
       };
+      let addObj = this.checkFinishStep2_1(step2_1, obj, color);
+      addObj = this.checkcheckFinishStep3_1(obj);
+      this.$store.commit('addNotes', addObj);
+      this.selectedNoteIndex = 0;
+    },
+    checkFinishStep2_1(step, obj, color) {
       if (this.task.length <= 0) {
-        this.$store.commit('addNotes', obj);
-        this.clearSelected();
-        return;
+        return obj;
       }
       if (this.task[1] == undefined) {
-        this.$store.commit('addNotes', obj);
-        this.clearSelected();
-        return;
+        return obj;
       }
       if (this.task[1].time.length != 1) {
-        this.$store.commit('addNotes', obj);
-        this.clearSelected();
-        return;
+        return obj;
       }
-      // 任務二檢查
       if (
-        this.selectedToNotes.chapterIndex == step1.chapterIndex &&
-        this.selectedToNotes.sectionIndex == step1.sectionIndex &&
-        this.selectedToNotes.textStart == step1.textStart &&
-        this.selectedToNotes.textEnd == step1.textEnd
+        this.selectedToNotes.chapterIndex == step.chapterIndex &&
+        this.selectedToNotes.sectionIndex == step.sectionIndex &&
+        this.selectedToNotes.textStart == step.textStart &&
+        this.selectedToNotes.textEnd == step.textEnd
       ) {
         // 標記
         obj.task = 2;
-        this.$store.commit('addNotes', obj);
-        this.clearSelected();
-        if (color == step1.css) {
+        if (color == step.css) {
           this.$store.commit('setTask', 1);
+          console.log('581651', this.$store.getters.getTask);
         }
-        // console.log('581651', this.$store.getters.getTask);
-        return;
+        return obj;
       }
-      this.$store.commit('addNotes', obj);
-      this.selectedNoteIndex = 0;
-      this.clearSelected();
+      return obj;
+    },
+    checkcheckFinishStep3_1(obj) {
+      const step = this.$store.getters.getTarget[2].step[0];
+      if (this.task[2].time.length != 1) {
+        return obj;
+      }
+      if (
+        this.selectedToNotes.chapterIndex == step.chapterIndex &&
+        this.selectedToNotes.sectionIndex == step.sectionIndex &&
+        this.selectedToNotes.textStart == step.textStart &&
+        this.selectedToNotes.textEnd == step.textEnd
+      ) {
+        // 標記
+        obj.task = 3;
+        this.$store.commit('setTask', 2);
+        console.log('5555551', this.$store.getters.getTask);
+        return obj;
+      }
+      return obj;
     },
     hightLight(i) {
       let css = '';
