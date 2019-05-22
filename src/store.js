@@ -78,6 +78,17 @@ export const store = new Vuex.Store({
           '將此段話附上註解，註解內容為：體內平衡。',
           '用evernote分享此段落。',
           '請刪除“體內平衡”的註解。'
+        ],
+        step: [
+          {
+            chapterIndex: 3,
+            sectionIndex: 3,
+            textStart: 251,
+            textEnd: 356
+          },
+          { task: 3, comment: '體內平衡' },
+          { task: 3 },
+          { task: 3, comment: '' }
         ]
       }
     ],
