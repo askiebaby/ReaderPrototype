@@ -127,6 +127,42 @@
     line-height: 1;
   }
 }
+.functions-row {
+  .share{
+    &__container {
+      width: 526px;
+      transform: rotate(90deg);
+      padding-top: 20px;
+      h3 {
+        writing-mode: vertical-rl;
+        transform: rotate(-90deg);
+        position: absolute;
+        top: -15%;
+        left: 40%;
+        letter-spacing: .2em;
+      }
+    }
+    &__flexRow {
+      padding: 10px 13px;
+    }
+    &__app, &__macbook {
+      transform: rotate(-90deg);
+    }
+    &__app {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      &__icon {
+        margin-bottom: 10px;
+      }
+      p {
+        flex-basis: 70px;
+      }
+    }
+  }
+  
+}
 </style>
 
 <script>
