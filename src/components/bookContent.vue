@@ -207,6 +207,7 @@
   color: $gray-3;
   font-size: 20px;
   line-height: 1.75;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .tooltip {
   position: absolute;
@@ -237,6 +238,7 @@
       direction: ltr;
       writing-mode: tb-rl;
       margin-right: 10px;
+      height: 745px;
       h3 {
         letter-spacing: 0.2em;
       }
@@ -244,6 +246,10 @@
     &__chapter {
       writing-mode: vertical-rl;
       letter-spacing: 0.2em;
+    }
+    .page {
+      left: 0;
+      right: 0;
     }
   }
   p {
