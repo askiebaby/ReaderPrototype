@@ -1,20 +1,20 @@
 <template>
   <!-- <div class="functions-row"> -->
-  <section class="memo">
-    <div class="memo__background"></div>
-    <div class="memo__container">
+  <section class="comment">
+    <div class="comment__background"></div>
+    <div class="comment__container">
       <form action="">
         <h3>
-          註解 <span class="memo__cancel" @click="showComment">取消</span>
+          註解 <span class="comment__cancel" @click="showComment">取消</span>
         </h3>
         <main>
           <p>
             {{ getNote.text }}
           </p>
-          <div ref="noteComment" contenteditable class="memo__textarea">
+          <div ref="noteComment" contenteditable class="comment__textarea">
             {{ getNote.comment }}
           </div>
-          <span class="memo__submit" @click="updateComment">完成</span>
+          <span class="comment__submit" @click="updateComment">完成</span>
         </main>
       </form>
     </div>
@@ -25,7 +25,9 @@
 <style lang="scss" scoped>
 @import '@/assets/scss/modules/_words-lines.scss';
 
-.memo {
+.comment {
+  position: fixed;
+  top: 0;
   display: flex;
   align-content: center;
   height: 100vh;
@@ -41,7 +43,7 @@
   &__container {
     position: relative;
     width: 567px;
-    margin: auto auto 50%;
+    margin: auto auto 70%;
     background: $white;
     border-radius: 18px;
   }
@@ -108,7 +110,7 @@
   }
 }
 .functions-row {
-  .memo {
+  .comment {
     &__container {
       width: 55%;
       max-width: 424px;
