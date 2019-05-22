@@ -14,12 +14,11 @@
       @showComment="showComment($event)"
       @showShareUI="showShareUI($event)"
     ></tooltip>
-    <share
-      v-if="isShowShare"
-      @showShareUI="showShareUI($event)"
-    ></share>
+    <share v-if="isShowShare" @showShareUI="showShareUI($event)"></share>
     <div class="book" @click="changePage">
-      <h2 class="book__chapter">{{ bookContent.chapter }} {{ bookContent.h1title }}</h2>
+      <h2 class="book__chapter">
+        {{ bookContent.chapter }} {{ bookContent.h1title }}
+      </h2>
       <div ref="viewport" class="book__content">
         <div ref="bookContainer">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
@@ -38,12 +37,15 @@
                 v-touch:end="touchEnd"
                 :index="g.boundary + j"
                 :class="hightLight(g.boundary + j)"
-              >{{ c }}</span>
+                >{{ c }}</span
+              >
             </span>
           </p>
         </div>
       </div>
-      <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁</div>
+      <div class="page">
+        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+      </div>
     </div>
   </div>
 </template>
@@ -524,7 +526,7 @@ export default {
     },
     showShareUI(event) {
       this.clearSelected();
-      this.isShowComment = (this.isShowComment) ? true : false;
+      this.isShowComment = this.isShowComment ? true : false;
       this.isShowShare = event;
     },
     checkFinishStep1() {
@@ -673,6 +675,9 @@ export default {
     },
     checkcheckFinishStep3_1(obj) {
       const step = this.$store.getters.getTarget[2].step[0];
+      if (this.task[2] == undefined) {
+        return obj;
+      }
       if (this.task[2].time.length != 1) {
         return obj;
       }
