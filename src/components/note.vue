@@ -293,6 +293,10 @@ export default {
       this.notesIndex = index;
     },
     changeColor(color, index) {
+      if (color == '') {
+        this.notesIndex = -1;
+        return;
+      }
       this.$store.commit('changeNotesColor', {
         index: index,
         color: color
