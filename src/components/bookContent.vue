@@ -9,6 +9,7 @@
       v-if="isShowTooltip"
       :tooltip-position="tooltipPosition"
       :from-content="true"
+      :notes-index="selectedNoteIndex"
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
     ></tooltip>
@@ -589,6 +590,10 @@ export default {
       }
     },
     changeColor(color) {
+      if (color == '') {
+        this.clearSelected();
+        return;
+      }
       const step1 = this.$store.getters.getTarget[1].step[0];
       if (this.selectedNoteIndex >= 0) {
         this.$store.commit('changeNotesColor', {
@@ -963,15 +968,15 @@ export default {
           }
         }
 
-        function pagePlus() {
-          this.bookLocation.pageIndex += 1;
-          this.$store.commit('setBookLocation', this.bookLocation);
-        }
+        // function pagePlus() {
+        //   this.bookLocation.pageIndex += 1;
+        //   this.$store.commit('setBookLocation', this.bookLocation);
+        // }
 
-        function pageMinus() {
-          this.bookLocation.pageIndex -= 1;
-          this.$store.commit('setBookLocation', this.bookLocation);
-        }
+        // function pageMinus() {
+        //   this.bookLocation.pageIndex -= 1;
+        //   this.$store.commit('setBookLocation', this.bookLocation);
+        // }
 
         return;
       });
@@ -1101,8 +1106,8 @@ export default {
       } else if (action === 'nextSection') {
         this.togglePageAction = 'next';
         let nextChapterIndex = this.bookLocation.chapterIndex;
-        let lastSectionIndex =
-          this.documentContent.books[nextChapterIndex].sections.length - 1;
+        // let lastSectionIndex =
+        //   this.documentContent.books[nextChapterIndex].sections.length - 1;
 
         // 切換 section
         addContent = {

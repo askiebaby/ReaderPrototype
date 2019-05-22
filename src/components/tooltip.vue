@@ -282,6 +282,12 @@ export default {
       return arrary;
     },
     changeColor(color) {
+      if (this.selected == color) {
+        this.$store.commit('deleteNote', this.notesIndex);
+        this.$store.commit('changeTooltipColor', '');
+        this.$emit('changeColor', '');
+        return;
+      }
       this.$store.commit('changeTooltipColor', color);
       this.$emit('changeColor', color + '-pen');
     },
