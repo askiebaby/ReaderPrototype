@@ -1,9 +1,10 @@
 <template>
   <div>
     <div
-      :class="['tooltip', {'note__tooltip': !isShowIcon}]" data-tooltip
-      :style="{ top: topStyle, left: leftStyle }
-    ">
+      :class="['tooltip', { note__tooltip: !isShowIcon }]"
+      data-tooltip
+      :style="{ top: topStyle, left: leftStyle }"
+    >
       <div class="tooltip__wrapper">
         <div class="tooltip__top">
           <div class="tooltip__penColor">
@@ -16,19 +17,22 @@
           </div>
           <div class="tooltip__function">
             <div v-if="isShowIcon">
-              <img src="@/assets/images/icons/copy.svg" alt="複製">
+              <img src="@/assets/images/icons/copy.svg" alt="複製" />
             </div>
             <div class="tooltip__function__comment" @click="showComment">
-              <img src="@/assets/images/icons/comment.svg" alt="註解">
+              <img src="@/assets/images/icons/comment.svg" alt="註解" />
             </div>
-            <div class="tooltip__function__share" @click="showShareBubble">
-              <img src="@/assets/images/icons/share.svg" alt="分享">
+            <div
+              class="tooltip__function__share"
+              @click="$emit('showShareUI', true)"
+            >
+              <img src="@/assets/images/icons/share.svg" alt="分享" />
             </div>
             <div v-if="isShowIcon" class="tooltip__function__search">
-              <img src="@/assets/images/icons/search.svg" alt="搜尋">
+              <img src="@/assets/images/icons/search.svg" alt="搜尋" />
             </div>
-            <div v-else @click="deleteNotes" class="tooltip__function__delete">
-              <img src="@/assets/images/icons/delete.svg" alt="刪除">
+            <div v-else class="tooltip__function__delete" @click="deleteNotes">
+              <img src="@/assets/images/icons/delete.svg" alt="刪除" />
             </div>
           </div>
         </div>
@@ -164,7 +168,8 @@ body {
     &__top {
       flex-direction: row-reverse;
     }
-    &__penColor, &__function {
+    &__penColor,
+    &__function {
       flex-direction: row-reverse;
     }
     &__function {
@@ -277,7 +282,7 @@ export default {
   methods: {
     showShareBubble() {
       if (!this.isShowShare) {
-        if(this.isShowTooltip) this.$emit('closeTooltip', false)
+        if (this.isShowTooltip) this.$emit('closeTooltip', false);
         this.$store.commit('toggleShareBubble', true);
       }
     },
@@ -338,7 +343,7 @@ export default {
       this.$emit('changeColor', color + '-pen');
     },
     showComment() {
-      this.$emit('showComment', true);
+      this.$emit('showComment', { showComment: true });
     }
   }
 };

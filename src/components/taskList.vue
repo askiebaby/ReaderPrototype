@@ -4,10 +4,15 @@
     <div class="taskList__tasks-type1">
       <div
         v-for="loopIndex in taskAmountInList"
-        class="task"
         :key="`M${countTaskAmount(loopIndex)}`"
+        class="task"
         :class="{ task__completed: isFinish('M' + countTaskAmount(loopIndex)) }"
-        @click="commitDirectionsToVueX(directions, nextPage('M' + countTaskAmount(loopIndex)))"
+        @click="
+          commitDirectionsToVueX(
+            directions,
+            nextPage('M' + countTaskAmount(loopIndex))
+          )
+        "
       >
         <span>{{ countTaskAmount(loopIndex) }}</span>
       </div>
@@ -15,10 +20,15 @@
     <div class="taskList__tasks-type2">
       <div
         v-for="loopIndex in taskAmountInList"
-        class="task"
         :key="`F${countTaskAmount(loopIndex)}`"
+        class="task"
         :class="{ task__completed: isFinish('F' + countTaskAmount(loopIndex)) }"
-        @click="commitDirectionsToVueX(directions, nextPage('F' + countTaskAmount(loopIndex)))"
+        @click="
+          commitDirectionsToVueX(
+            directions,
+            nextPage('F' + countTaskAmount(loopIndex))
+          )
+        "
       >
         <span>{{ countTaskAmount(loopIndex) }}</span>
       </div>
@@ -135,7 +145,9 @@ export default {
   },
   methods: {
     makeTitleTemplate(directionWords, directionFunctions) {
-      const titleString = `文${directionToString(directionWords)}功能${directionToString(directionFunctions)}`;
+      const titleString = `文${directionToString(
+        directionWords
+      )}功能${directionToString(directionFunctions)}`;
 
       this.titleTemplate = titleString
         .split('')
@@ -151,8 +163,8 @@ export default {
     },
     isFinish(id) {
       let result = false;
-      if ($cookies.get(id) !== null) {
-        console.log($cookies.get(id));
+      if (this.$cookies.get(id) !== null) {
+        console.log(this.$cookies.get(id));
         result = true;
       }
       return result;
@@ -165,7 +177,9 @@ export default {
     nextPage(id) {
       return () => {
         const result = this.isFinish(id);
-        let idToRouter = result ?{ name: 'finishTask', params: { id } } : { name: 'login', params: { id } };
+        let idToRouter = result
+          ? { name: 'finishTask', params: { id } }
+          : { name: 'login', params: { id } };
         this.$router.push(idToRouter);
       };
     }

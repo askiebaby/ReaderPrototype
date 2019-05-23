@@ -1,5 +1,6 @@
 <template>
   <div>
+    <complete-mission v-if="isShowComplete" :task-index="2"></complete-mission>
     <comment
       v-if="isShowComment"
       :notes-index="selectedNoteIndex"
@@ -13,11 +14,11 @@
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
     ></tooltip>
-<<<<<<< HEAD
-    <share v-if="isShowShare" @showShareUI="showShareUI($event)"></share>
-=======
-    <share v-if="isShowShare"></share>
->>>>>>> hotfix-css-problems2
+    <share
+      v-if="isShowShare"
+      :notes-index="selectedNoteIndex"
+      @showShareUI="showShareUI($event)"
+    ></share>
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
         {{ bookContent.chapter }} {{ bookContent.h1title }}
@@ -268,6 +269,7 @@
 </style>
 
 <script>
+import completeMission from './lightBox/completeMission.vue';
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
@@ -278,7 +280,8 @@ export default {
   components: {
     tooltip,
     comment,
-    share
+    share,
+    completeMission
   },
   props: ['sizeLevel'],
   data() {
@@ -287,6 +290,7 @@ export default {
       nowWordsCount: 0,
       scrollHeight: 0,
       scrollWidth: 0,
+      isShowComplete: false,
       setting: {
         lineHeight: 1.75,
         fontInitIndex: 5
@@ -404,7 +408,7 @@ export default {
   computed: {
     isShowShare() {
       this.clearSelected();
-      this.isShowComment = (this.isShowComment) ? true : false;
+      this.isShowComment = this.isShowComment ? true : false;
       return this.$store.getters.getShareBubbleStatus;
     },
     selectedToNotes() {
@@ -530,12 +534,17 @@ export default {
   },
 
   methods: {
-    async showComment(event) {
+    async showComment(state) {
       if (this.selectedNoteIndex < 0) {
         await this.changeColor('yellow-pen');
       }
       this.clearSelected();
-      this.isShowComment = event;
+      this.isShowComment = state.showComment;
+      if (state.showComplete == true) {
+        setTimeout(() => {
+          this.isShowComplete = true;
+        }, 3000);
+      }
     },
     checkFinishStep1() {
       if (this.task.length <= 0) {
@@ -626,20 +635,24 @@ export default {
         if (this.task.length <= 0) {
           return;
         }
-        if (this.task[1] == undefined || this.task[2] == undefined) {
+        if (this.task[1] != undefined) {
+          if (this.task[1].time.length == 1 && color == step2_1.css) {
+            this.$store.commit('setTask', 1);
+            console.log('8522256', this.$store.getters.getTask);
+            return;
+          }
+
           return;
         }
-        if (this.task[1].time.length == 1 && color == step2_1.css) {
-          this.$store.commit('setTask', 1);
-          console.log('8522256', this.$store.getters.getTask);
-          return;
+        if (this.task[2] != undefined) {
+          const step2_2 = this.$store.getters.getTarget[1].step[1];
+          if (this.task[1].time.length == 2 && color == step2_2.css) {
+            this.$store.commit('setTask', 1);
+            console.log('855651', this.$store.getters.getTask);
+            return;
+          }
         }
-        const step2_2 = this.$store.getters.getTarget[1].step[1];
-        if (this.task[1].time.length == 2 && color != step2_2.css) {
-          this.$store.commit('setTask', 1);
-          console.log('855651', this.$store.getters.getTask);
-          return;
-        }
+        return;
       }
       const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
@@ -653,6 +666,7 @@ export default {
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
       addObj = this.checkcheckFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
+      this.clearSelected();
       this.selectedNoteIndex = 0;
     },
     checkFinishStep2_1(step, obj, color) {

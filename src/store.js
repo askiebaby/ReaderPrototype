@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import moment from 'vue-moment';
 import VueCookies from 'vue-cookies';
+import { stat } from 'fs';
 Vue.use(Vuex);
 Vue.use(moment);
 export const store = new Vuex.Store({
@@ -28,18 +29,7 @@ export const store = new Vuex.Store({
       pages: 1,
       newContentHeight: ''
     },
-    notes: [
-      {
-        chapterIndex: 2,
-        sectionIndex: 3,
-        textStart: 1655,
-        textEnd: 1779,
-        color: 'purple-pen',
-        comment:
-          '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。',
-        task: 0
-      }
-    ],
+    notes: [],
     target: [
       {
         description: [
@@ -208,6 +198,21 @@ export const store = new Vuex.Store({
     },
     changeNoteComment(state, payload) {
       state.notes[payload.index].comment = payload.comment;
+    },
+    resetNotes(state) {
+      state.notes.length = 0;
+      state.notes = [
+        {
+          chapterIndex: 2,
+          sectionIndex: 3,
+          textStart: 1655,
+          textEnd: 1779,
+          color: 'purple-pen',
+          comment:
+            '人們通常錯誤地理解這種現象，因為他們自以為，繼續開車、打網球或烘焙餅乾，就是一種形式的練習，如果不停地做下去，自己一定能夠更擅長，也許進步較為緩慢，但最終還是會更出色。',
+          task: 0
+        }
+      ];
     }
   }
 });

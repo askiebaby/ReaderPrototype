@@ -3,9 +3,9 @@
     <template v-for="(words, wordsIndex) in directions">
       <taskList
         v-for="(functions, funIndex) in directions"
-        :directions="{ 'words': words, 'functions': functions}"
-        :listIndex="(wordsIndex * directions.length) + funIndex"
         :key="`${wordsIndex}${funIndex}`"
+        :directions="{ words: words, functions: functions }"
+        :list-index="wordsIndex * directions.length + funIndex"
       ></taskList>
     </template>
   </div>
@@ -31,7 +31,6 @@ export default {
       directions: ['column', 'row']
     };
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>

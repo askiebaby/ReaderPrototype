@@ -11,7 +11,10 @@
         v-for="n in 3"
         :key="n"
         class="button buttonBig taskPage__button"
-        :class="{ button__primary: !finish, button__completed: finish }"
+        :class="{
+          button__primary: !finishCss(n),
+          button__completed: finishCss(n)
+        }"
         @click="nextPage(n)"
       >
         Task {{ n }}
@@ -57,13 +60,19 @@ export default {
       finish: false
     };
   },
-  mounted() {
-    if ($cookies.get(this.id) !== null) {
-      console.log($cookies.get(this.id));
-      this.finish = true;
-    }
-  },
   methods: {
+    finishCss(n) {
+      const cookiesArrary = this.$cookies.keys();
+      console.log('565660', cookiesArrary);
+      if (cookiesArrary == null) {
+        return false;
+      }
+      if (cookiesArrary[n - 1] != null) {
+        console.log('5656');
+        return true;
+      }
+      return false;
+    },
     backHome() {
       this.$router.push({ name: 'home' });
     },

@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     removeRecord() {
-      $cookies.remove(this.id);
+      this.$cookies.remove(this.id);
       this.$router.push({ name: 'tasks' });
     },
     cancel() {

@@ -74,6 +74,7 @@ export default {
       if (this.task.length > 0) {
         this.$store.commit('setTask', this.order);
         console.log(this.$store.getters.getTask);
+        this.$store.commit('resetNotes');
       }
     }
   }
