@@ -231,10 +231,10 @@ body {
 <script>
 export default {
   props: {
-    isShowTooltip: {
-      type: [Boolean, Function],
-      default: false
-    },
+    // isShowTooltip: {
+    //   type: [Boolean, Function],
+    //   default: false
+    // },
     tooltipPosition: {
       type: Object,
       default: () => {
@@ -263,9 +263,9 @@ export default {
     };
   },
   computed: {
-    isShowShare() {
-      return this.$store.getters.getShareBubbleStatus;
-    },
+    // isShowShare() {
+    //   return this.$store.getters.getShareBubbleStatus;
+    // },
     isShowIcon() {
       return this.fromContent;
     },
@@ -280,12 +280,15 @@ export default {
     }
   },
   methods: {
-    showShareBubble() {
-      if (!this.isShowShare) {
-        if (this.isShowTooltip) this.$emit('closeTooltip', false);
-        this.$store.commit('toggleShareBubble', true);
-      }
+    test() {
+      this.$emit('showShareUI', true);
     },
+    // showShareBubble() {
+    //   if (!this.isShowShare) {
+    //     if (this.isShowTooltip) this.$emit('closeTooltip', false);
+    //     this.$store.commit('toggleShareBubble', true);
+    //   }
+    // },
     deleteNotes() {
       const task = this.$store.getters.getTask;
       const checkTask = this.$store.getters.getNotes[this.notesIndex].task;

@@ -13,6 +13,7 @@
       :notes-index="selectedNoteIndex"
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
+      @showShareUI="showShareUI($event)"
     ></tooltip>
     <share
       v-if="isShowShare"
@@ -401,16 +402,17 @@ export default {
       pointerEvents: 'auto',
       selectedNoteIndex: -1,
       isShowComment: false,
-      selectedPartColor: ''
+      selectedPartColor: '',
+      isShowShare: false
     };
   },
 
   computed: {
-    isShowShare() {
-      this.clearSelected();
-      this.isShowComment = this.isShowComment ? true : false;
-      return this.$store.getters.getShareBubbleStatus;
-    },
+    // showShareUI() {
+    //   this.clearSelected();
+    //   this.isShowComment = this.isShowComment ? true : false;
+    //   return this.$store.getters.getShareBubbleStatus;
+    // },
     selectedToNotes() {
       let textStart = this.selected.start;
       let textEnd = this.selected.end;
@@ -534,6 +536,11 @@ export default {
   },
 
   methods: {
+    showShareUI(event) {
+      this.clearSelected();
+      this.isShowComment = this.isShowComment ? true : false;
+      this.isShowShare = event;
+    },
     async showComment(state) {
       if (this.selectedNoteIndex < 0) {
         await this.changeColor('yellow-pen');
@@ -641,10 +648,6 @@ export default {
             console.log('8522256', this.$store.getters.getTask);
             return;
           }
-
-          return;
-        }
-        if (this.task[2] != undefined) {
           const step2_2 = this.$store.getters.getTarget[1].step[1];
           if (this.task[1].time.length == 2 && color == step2_2.css) {
             this.$store.commit('setTask', 1);
