@@ -87,7 +87,7 @@ export default {
     };
   },
   mounted() {
-    this.member = $cookies.get(this.id);
+    this.member = this.$cookies.get(this.id);
     let info = {
       id: this.id,
       name: this.member.name
@@ -100,7 +100,7 @@ export default {
       this.restCheck = !this.restCheck;
     },
     restRecord() {
-      $cookies.remove(this.id);
+      this.$cookies.remove(this.id);
       this.$router.push({ name: 'home' });
     }
   }

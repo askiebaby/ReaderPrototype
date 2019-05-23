@@ -631,19 +631,22 @@ export default {
         if (this.task.length <= 0) {
           return;
         }
-        if (this.task[1] != undefined || this.task[2] != undefined) {
+        if (this.task[1] != undefined) {
           if (this.task[1].time.length == 1 && color == step2_1.css) {
             this.$store.commit('setTask', 1);
             console.log('8522256', this.$store.getters.getTask);
             return;
           }
+
+          return;
+        }
+        if (this.task[2] != undefined) {
           const step2_2 = this.$store.getters.getTarget[1].step[1];
           if (this.task[1].time.length == 2 && color == step2_2.css) {
             this.$store.commit('setTask', 1);
             console.log('855651', this.$store.getters.getTask);
             return;
           }
-          return;
         }
         return;
       }

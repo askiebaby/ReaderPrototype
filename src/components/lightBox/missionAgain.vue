@@ -53,8 +53,8 @@ export default {
     };
   },
   mounted() {
-    console.log($cookies.get(this.id));
-    this.member = $cookies.get(this.id);
+    console.log(this.$cookies.get(this.id));
+    this.member = this.$cookies.get(this.id);
     console.log(this.member);
   },
   methods: {

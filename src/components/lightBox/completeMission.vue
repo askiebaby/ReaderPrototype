@@ -102,8 +102,15 @@ export default {
   },
   methods: {
     backToTasks(isFinish) {
+      let cookiesArray = [];
       if (isFinish === true) {
-        this.$cookies.set(this.id, this.CookiesData);
+        if (this.$cookies.get(this.id) == null) {
+          cookiesArray.push(this.CookiesData);
+          console.log('4456645', cookiesArray);
+        } else {
+          cookiesArray = this.$cookies.get(this.id);
+        }
+        this.$cookies.set(this.id, cookiesArray);
       }
       this.$router.push({ name: 'tasks' });
     }

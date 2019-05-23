@@ -10,6 +10,7 @@ import disableRightClick from './disableRightClick';
 
 Vue.config.productionTip = false;
 cookies.config('90d');
+Vue.use(cookies);
 Vue.use(moment);
 Vue.use(Vue2TouchEvents, {
   longTapTimeInterval: 500
@@ -17,7 +18,6 @@ Vue.use(Vue2TouchEvents, {
 
 new Vue({
   disableRightClick,
-  cookies,
   router,
   store,
   render: h => h(App)
