@@ -618,20 +618,21 @@ export default {
         if (this.task.length <= 0) {
           return;
         }
-        if (this.task[1] == undefined || this.task[2] == undefined) {
+        if (this.task[1] != undefined || this.task[2] != undefined) {
+          if (this.task[1].time.length == 1 && color == step2_1.css) {
+            this.$store.commit('setTask', 1);
+            console.log('8522256', this.$store.getters.getTask);
+            return;
+          }
+          const step2_2 = this.$store.getters.getTarget[1].step[1];
+          if (this.task[1].time.length == 2 && color == step2_2.css) {
+            this.$store.commit('setTask', 1);
+            console.log('855651', this.$store.getters.getTask);
+            return;
+          }
           return;
         }
-        if (this.task[1].time.length == 1 && color == step2_1.css) {
-          this.$store.commit('setTask', 1);
-          console.log('8522256', this.$store.getters.getTask);
-          return;
-        }
-        const step2_2 = this.$store.getters.getTarget[1].step[1];
-        if (this.task[1].time.length == 2 && color != step2_2.css) {
-          this.$store.commit('setTask', 1);
-          console.log('855651', this.$store.getters.getTask);
-          return;
-        }
+        return;
       }
       const obj = {
         chapterIndex: this.selectedToNotes.chapterIndex,
@@ -645,6 +646,7 @@ export default {
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
       addObj = this.checkcheckFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
+      this.clearSelected();
       this.selectedNoteIndex = 0;
     },
     checkFinishStep2_1(step, obj, color) {
