@@ -295,7 +295,7 @@ export default {
       this.$emit('changeColor', color + '-pen');
     },
     showComment() {
-      this.$emit('showComment', true);
+      this.$emit('showComment', { showComment: true });
     }
   }
 };

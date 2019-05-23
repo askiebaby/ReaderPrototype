@@ -1,5 +1,6 @@
 <template>
   <div>
+    <complete-mission v-if="isShowComplete" :task-index="2"></complete-mission>
     <comment
       v-if="isShowComment"
       :notes-index="selectedNoteIndex"
@@ -14,7 +15,11 @@
       @showComment="showComment($event)"
       @showShareUI="showShareUI($event)"
     ></tooltip>
-    <share v-if="isShowShare" @showShareUI="showShareUI($event)"></share>
+    <share
+      v-if="isShowShare"
+      :notes-index="selectedNoteIndex"
+      @showShareUI="showShareUI($event)"
+    ></share>
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
         {{ bookContent.chapter }} {{ bookContent.h1title }}
@@ -259,6 +264,7 @@
 </style>
 
 <script>
+import completeMission from './lightBox/completeMission.vue';
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
@@ -269,7 +275,8 @@ export default {
   components: {
     tooltip,
     comment,
-    share
+    share,
+    completeMission
   },
   props: ['sizeLevel'],
   data() {
@@ -278,6 +285,7 @@ export default {
       nowWordsCount: 0,
       scrollHeight: 0,
       scrollWidth: 0,
+      isShowComplete: false,
       setting: {
         lineHeight: 1.75,
         fontInitIndex: 5
@@ -517,12 +525,17 @@ export default {
   },
 
   methods: {
-    async showComment(event) {
+    async showComment(state) {
       if (this.selectedNoteIndex < 0) {
         await this.changeColor('yellow-pen');
       }
       this.clearSelected();
-      this.isShowComment = event;
+      this.isShowComment = state.showComment;
+      if (state.showComplete == true) {
+        setTimeout(() => {
+          this.isShowComplete = true;
+        }, 3000);
+      }
     },
     showShareUI(event) {
       this.clearSelected();

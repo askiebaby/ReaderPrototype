@@ -5,7 +5,8 @@
     <div class="memo__container">
       <form action="">
         <h3>
-          註解 <span class="memo__cancel" @click="showComment">取消</span>
+          註解
+          <span class="memo__cancel" @click="showComment(false)">取消</span>
         </h3>
         <main>
           <p>
@@ -172,6 +173,7 @@
 
 <script>
 import documentContent from '@/assets/document.json';
+
 export default {
   props: {
     notesIndex: {
@@ -199,15 +201,55 @@ export default {
     }
   },
   methods: {
-    showComment() {
-      this.$emit('showComment', false);
+    showComment(showComplete) {
+      this.$emit('showComment', {
+        showComment: false,
+        showComplete: showComplete
+      });
     },
     updateComment() {
+      const comment = this.$refs.noteComment.innerText;
+      const task = this.$store.getters.getTask;
+      const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
+      const step3_2 = this.$store.getters.getTarget[2].step[1];
+      const step3_4 = this.$store.getters.getTarget[2].step[3];
+      if (checkTask != step3_2.task) {
+        this.updateCommentFn(false);
+        return;
+      }
+      if (task.length <= 0) {
+        this.updateCommentFn(false);
+        return;
+      }
+      if (task[2] == undefined) {
+        this.updateCommentFn(false);
+        return;
+      }
+      if (task[2].time.length == 2) {
+        if (comment.trim() == step3_2.comment) {
+          this.$store.commit('setTask', 2);
+          console.log('87777', this.$store.getters.getTask);
+        }
+        this.updateCommentFn(false);
+        return;
+      }
+      if (task[2].time.length == 4) {
+        if (comment.trim() == step3_4.comment) {
+          this.$store.commit('setTask', 2);
+          // console.log('87777', this.$store.getters.getTask);
+          this.updateCommentFn(true);
+          return;
+        }
+        this.updateCommentFn(false);
+        return;
+      }
+    },
+    updateCommentFn(showComplete) {
       this.$store.commit('changeNoteComment', {
         index: this.notesIndex,
         comment: this.$refs.noteComment.innerText
       });
-      this.$emit('showComment', false);
+      this.showComment(showComplete);
     }
   }
 };

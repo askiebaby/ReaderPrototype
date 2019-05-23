@@ -1,6 +1,6 @@
 <template>
   <section class="share">
-    <div class="share__background" @click="$emit('showShareUI', false);"></div>
+    <div class="share__background" @click="$emit('showShareUI', false)"></div>
     <div class="share__container">
       <h3>點一下來使用AirDrop分享</h3>
       <div class="share__flexRow">
@@ -13,50 +13,56 @@
         <div class="share__app">
           <img
             class="share__app__icon"
-            src="@/assets/images/icons/inbox@2x.png" />
+            src="@/assets/images/icons/inbox@2x.png"
+          />
           <p>訊息</p>
         </div>
-        <div class="share__app">
-          <img 
+        <div class="share__app" @click="checkStep3_3">
+          <img
             class="share__app__icon"
-            src="@/assets/images/icons/evernote@2x.png" />
+            src="@/assets/images/icons/evernote@2x.png"
+          />
           <p>Evernote</p>
         </div>
         <div class="share__app">
-          <img 
-            class="share__app__icon" 
-            src="@/assets/images/icons/mail@2x.png" />
+          <img
+            class="share__app__icon"
+            src="@/assets/images/icons/mail@2x.png"
+          />
           <p>郵件</p>
         </div>
         <div class="share__app">
-          <img 
+          <img
             class="share__app__icon"
-            src="@/assets/images/icons/memo@2x.png" />
+            src="@/assets/images/icons/memo@2x.png"
+          />
           <p>加入到「備忘錄」</p>
         </div>
       </div>
       <div class="share__flexRow">
         <div class="share__app">
-          <img 
+          <img
             class="share__app__icon"
-            src="@/assets/images/icons/copy-ios@2x.png" />
+            src="@/assets/images/icons/copy-ios@2x.png"
+          />
           <p>拷貝</p>
         </div>
         <div class="share__app">
-          <img 
+          <img
             class="share__app__icon"
-            src="@/assets/images/icons/directory@2x.png" />
+            src="@/assets/images/icons/directory@2x.png"
+          />
           <p>儲存到檔案</p>
         </div>
         <div class="share__app">
-          <img 
+          <img
             class="share__app__icon"
-            src="@/assets/images/icons/more@2x.png" />
+            src="@/assets/images/icons/more@2x.png"
+          />
           <p>更多</p>
         </div>
       </div>
     </div>
-    
   </section>
 </template>
 
@@ -114,7 +120,8 @@
       margin-bottom: 5px;
     }
   }
-  h3, p {
+  h3,
+  p {
     font-size: 12px;
     color: $black-1;
     font-weight: light;
@@ -128,7 +135,7 @@
   }
 }
 .functions-row {
-  .share{
+  .share {
     &__container {
       width: 526px;
       transform: rotate(90deg);
@@ -139,13 +146,14 @@
         position: absolute;
         top: -15%;
         left: 40%;
-        letter-spacing: .2em;
+        letter-spacing: 0.2em;
       }
     }
     &__flexRow {
       padding: 10px 13px;
     }
-    &__app, &__macbook {
+    &__app,
+    &__macbook {
       transform: rotate(-90deg);
     }
     &__app {
@@ -161,12 +169,37 @@
       }
     }
   }
-  
 }
 </style>
 
 <script>
 export default {
-
+  props: {
+    notesIndex: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    checkStep3_3() {
+      const task = this.$store.getters.getTask;
+      const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
+      const step3_3 = this.$store.getters.getTarget[2].step[2];
+      if (checkTask != step3_3.task) {
+        return;
+      }
+      if (task.length <= 0) {
+        return;
+      }
+      if (task[2] == undefined) {
+        return;
+      }
+      if (task[2].time.length != 3) {
+        return;
+      }
+      console.log('759544');
+      this.$store.commit('setTask', 2);
+    }
+  }
 };
 </script>
