@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div class="tooltip" data-tooltip :style="{ top: topStyle, left: leftStyle }">
+    <div
+      :class="['tooltip', {'note__tooltip': !isShowIcon}]" data-tooltip
+      :style="{ top: topStyle, left: leftStyle }
+    ">
       <div class="tooltip__wrapper">
-        <div :class="['tooltip__top', {'note__tooltip': !isShowIcon}]">
+        <div class="tooltip__top">
           <div class="tooltip__penColor">
             <div
               v-for="item in color"
@@ -18,13 +21,13 @@
             <div class="tooltip__function__comment" @click="showComment">
               <img src="@/assets/images/icons/comment.svg" alt="註解">
             </div>
-            <div class="tooltip__function__share" @click="$emit('showShareUI', true);">
+            <div class="tooltip__function__share" @click="showShareBubble">
               <img src="@/assets/images/icons/share.svg" alt="分享">
             </div>
             <div v-if="isShowIcon" class="tooltip__function__search">
               <img src="@/assets/images/icons/search.svg" alt="搜尋">
             </div>
-            <div v-else @click="deleteNotes">
+            <div v-else @click="deleteNotes" class="tooltip__function__delete">
               <img src="@/assets/images/icons/delete.svg" alt="刪除">
             </div>
           </div>
@@ -192,12 +195,29 @@ body {
 }
 
 .note__tooltip {
+  min-width: 350px;
+  max-width: 350px;
   .tooltip {
     &__penColor {
       flex-basis: 57.4%;
     }
     &__function {
       flex-basis: 42.6%;
+      &__comment {
+        img {
+          width: 23px;
+        }
+      }
+      &__share {
+        img {
+          width: 17px;
+        }
+      }
+      &__delete {
+        img {
+          width: 16px;
+        }
+      }
     }
   }
 }
@@ -206,6 +226,10 @@ body {
 <script>
 export default {
   props: {
+    isShowTooltip: {
+      type: [Boolean, Function],
+      default: false
+    },
     tooltipPosition: {
       type: Object,
       default: () => {
@@ -234,6 +258,9 @@ export default {
     };
   },
   computed: {
+    isShowShare() {
+      return this.$store.getters.getShareBubbleStatus;
+    },
     isShowIcon() {
       return this.fromContent;
     },
@@ -248,6 +275,12 @@ export default {
     }
   },
   methods: {
+    showShareBubble() {
+      if (!this.isShowShare) {
+        if(this.isShowTooltip) this.$emit('closeTooltip', false)
+        this.$store.commit('toggleShareBubble', true);
+      }
+    },
     deleteNotes() {
       const task = this.$store.getters.getTask;
       const checkTask = this.$store.getters.getNotes[this.notesIndex].task;

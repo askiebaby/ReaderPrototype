@@ -6,6 +6,7 @@ Vue.use(Vuex);
 Vue.use(moment);
 export const store = new Vuex.Store({
   state: {
+    isShowShare: false,
     totalCounts: 0,
     id: '',
     name: '',
@@ -97,10 +98,13 @@ export const store = new Vuex.Store({
         row 直 column 橫
       */
       words: 'row',
-      functions: 'column'
+      functions: 'row'
     }
   },
   getters: {
+    getShareBubbleStatus: state => {
+      return state.isShowShare;
+    },
     getID: state => {
       return state.id;
     },
@@ -186,6 +190,9 @@ export const store = new Vuex.Store({
         comment: payload.comment,
         task: payload.task
       });
+    },
+    toggleShareBubble(state, payload) {
+      state.isShowShare = payload;
     },
     setDirections(state, payload) {
       state.directions = payload;

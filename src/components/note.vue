@@ -16,16 +16,18 @@
           v-for="(item, index) in getNotes"
           :key="index"
           class="note"
-          style="position:relative"
+          style="position: relative"
         >
           <tooltip
             v-if="isShowTooltip(index)"
             style="position:absolute"
             :from-content="false"
             :notes-index="notesIndex"
+            :is-show-tooltip="isShowTooltip"
             @finishTask2="finishTask2($event)"
             @changeColor="changeColor($event, index)"
             @showComment="isShowComment = $event"
+            @closeTooltip="isShowTooltip = $event"
           ></tooltip>
           <comment
             v-if="showComment(index)"
@@ -34,8 +36,14 @@
           ></comment>
           <div class="note__highlight" :class="item.color"></div>
           <div class="note__record">
-            <div class="note__sentence">{{ item.text }}</div>
-            <div v-if="item.comment.length > 0" class="note__memo">
+            <div
+              class="note__sentence"
+              @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
+            >{{ item.text }}</div>
+            <div v-if="item.comment.length > 0"
+              class="note__memo"
+              @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
+            >
               {{ item.comment }}
             </div>
           </div>
@@ -256,6 +264,8 @@ export default {
       const Notes = this.$store.getters.getNotes;
       return Notes.map(item => {
         return {
+          chapterIndex: item.chapterIndex,
+          sectionIndex: item.sectionIndex,
           text: this.documentContent.books[item.chapterIndex].sections[
             item.sectionIndex
           ].content.slice(item.textStart, item.textEnd),
@@ -266,6 +276,32 @@ export default {
     }
   },
   methods: {
+    loadBookContent(chapterIndex, sectionIndex) {
+      
+      // ?????
+      this.closeNotes();
+
+      // ?????????
+      const location = {
+        chapters: this.documentContent.books.length,
+        chapterIndex: chapterIndex,
+        sections: this.documentContent.books[chapterIndex].sections.length,
+        sectionIndex: sectionIndex,
+        pageIndex: 0
+      }
+
+      // ????????
+      const bookContent = {
+        chapter: this.documentContent.books[chapterIndex].chapter,
+        h1title: this.documentContent.books[chapterIndex].title,
+        h3title: this.documentContent.books[chapterIndex].sections[sectionIndex].title,
+        content: this.documentContent.books[chapterIndex].sections[sectionIndex].content
+      };
+
+      // ?? VueX
+      this.$store.commit('setBookLocation', location);
+      this.$store.commit('setBookContent', bookContent);
+    },
     showComment(index) {
       return this.isShowComment == true && this.notesIndex == index;
     },
@@ -281,7 +317,7 @@ export default {
     closeNotes() {
       this.$emit('switchShowNotes', false);
     },
-    isShowTooltip(index) {
+    isShowTooltip(index, isShow) {
       return this.isShowComment == false && this.notesIndex == index;
     },
     selectedNote(index, color) {

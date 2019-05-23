@@ -12,9 +12,12 @@
       :notes-index="selectedNoteIndex"
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
-      @showShareUI="showShareUI($event)"
     ></tooltip>
+<<<<<<< HEAD
     <share v-if="isShowShare" @showShareUI="showShareUI($event)"></share>
+=======
+    <share v-if="isShowShare"></share>
+>>>>>>> hotfix-css-problems2
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
         {{ bookContent.chapter }} {{ bookContent.h1title }}
@@ -394,12 +397,16 @@ export default {
       pointerEvents: 'auto',
       selectedNoteIndex: -1,
       isShowComment: false,
-      isShowShare: false,
       selectedPartColor: ''
     };
   },
 
   computed: {
+    isShowShare() {
+      this.clearSelected();
+      this.isShowComment = (this.isShowComment) ? true : false;
+      return this.$store.getters.getShareBubbleStatus;
+    },
     selectedToNotes() {
       let textStart = this.selected.start;
       let textEnd = this.selected.end;
@@ -529,11 +536,6 @@ export default {
       }
       this.clearSelected();
       this.isShowComment = event;
-    },
-    showShareUI(event) {
-      this.clearSelected();
-      this.isShowComment = this.isShowComment ? true : false;
-      this.isShowShare = event;
     },
     checkFinishStep1() {
       if (this.task.length <= 0) {
