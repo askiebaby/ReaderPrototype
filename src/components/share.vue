@@ -1,6 +1,6 @@
 <template>
   <section class="share">
-    <div class="share__background" @click="$emit('showShareUI', false);"></div>
+    <div class="share__background" @click="closeShareBubble"></div>
     <div class="share__container">
       <h3>點一下來使用AirDrop分享</h3>
       <div class="share__flexRow">
@@ -67,7 +67,7 @@
   position: fixed;
   width: 100%;
   height: 100vh;
-  z-index: 1;
+  z-index: 100;
 
   &__background {
     position: fixed;
@@ -167,6 +167,17 @@
 
 <script>
 export default {
-
+  computed: {
+    isShowShare() {
+      return this.$store.getters.getShareBubbleStatus;
+    },
+  },
+  methods: {
+    closeShareBubble() {
+      if (this.isShowShare) {
+        this.$store.commit('toggleShareBubble', false);
+      }
+    }
+  }
 };
 </script>

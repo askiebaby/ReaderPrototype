@@ -4,7 +4,11 @@
       v-show="isShowNavigation"
       @showLeaveBubble="isLeaveMission = $event"
     ></menu-top>
-    <note v-if="isShowNotes" @switchShowNotes="isShowNotes = $event"></note>
+    <note
+      v-if="isShowNotes"
+      @switchShowNotes="isShowNotes = $event"
+      @showShareUI="showShareUI($event)"
+    ></note>
     <bookContent
       :class="[fontFamilyClass, fontSizeClass]"
       :size-level="sizeLevel"

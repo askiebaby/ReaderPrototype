@@ -23,9 +23,11 @@
             style="position:absolute"
             :from-content="false"
             :notes-index="notesIndex"
+            :is-show-tooltip="isShowTooltip"
             @finishTask2="finishTask2($event)"
             @changeColor="changeColor($event, index)"
             @showComment="isShowComment = $event"
+            @closeTooltip="isShowTooltip = $event"
           ></tooltip>
           <comment
             v-if="showComment(index)"
@@ -281,7 +283,7 @@ export default {
     closeNotes() {
       this.$emit('switchShowNotes', false);
     },
-    isShowTooltip(index) {
+    isShowTooltip(index, isShow) {
       return this.isShowComment == false && this.notesIndex == index;
     },
     selectedNote(index, color) {
