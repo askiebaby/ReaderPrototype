@@ -62,13 +62,11 @@ export default {
   },
   methods: {
     finishCss(n) {
-      const cookiesArrary = this.$cookies.keys();
-      console.log('565660', cookiesArrary);
+      const cookiesArrary = JSON.parse(this.$cookies.get(this.id));
       if (cookiesArrary == null) {
         return false;
       }
       if (cookiesArrary[n - 1] != null) {
-        console.log('5656');
         return true;
       }
       return false;
