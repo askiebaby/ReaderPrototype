@@ -7,40 +7,43 @@
         <div class="notes__nav__close" @click="closeNotes">
           <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
         </div>
+        <share
+          v-if="isShowShare"
+          :notes-index="notesIndex"
+          @showShareUI="showShare($event)"
+        ></share>
+        <comment
+          v-if="isShowComment"
+          :notes-index="notesIndex"
+          @showComment="showComment($event.showComment)"
+        ></comment>
+        <tooltip
+          v-if="isShowTooltip"
+          :from-content="false"
+          :notes-index="notesIndex"
+          :is-show-tooltip="isShowTooltip"
+          :tooltip-position="tooltipPosition"
+          @finishTask2="finishTask2($event)"
+          @changeColor="changeColor($event, notesIndex)"
+          @showComment="showComment($event.showComment)"
+          @showShareUI="showShare($event)"
+        ></tooltip>
         <div class="notes__nav__title">
           <h2>筆記庫</h2>
         </div>
       </nav>
       <div class="notes__all">
-        <article
-          v-for="(item, index) in getNotes"
-          :key="index"
-          class="note"
-          style="position: relative"
-        >
-          <tooltip
-            v-if="isShowTooltip(index)"
-            style="position:absolute"
-            :from-content="false"
-            :notes-index="notesIndex"
-            :is-show-tooltip="isShowTooltip"
-            @finishTask2="finishTask2($event)"
-            @changeColor="changeColor($event, index)"
-            @showComment="isShowComment = $event"
-            @closeTooltip="isShowTooltip = $event"
-          ></tooltip>
-          <comment
-            v-if="showComment(index)"
-            :notes-index="index"
-            @showComment="isShowComment = $event"
-          ></comment>
+        <article v-for="(item, index) in getNotes" :key="index" class="note">
           <div class="note__highlight" :class="item.color"></div>
           <div class="note__record">
             <div
               class="note__sentence"
               @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
-            >{{ item.text }}</div>
-            <div v-if="item.comment.length > 0"
+            >
+              {{ item.text }}
+            </div>
+            <div
+              v-if="item.comment.length > 0"
               class="note__memo"
               @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
             >
@@ -49,7 +52,7 @@
           </div>
           <div
             class="note__actionButton"
-            @click="selectedNote(index, item.color)"
+            @click="e => selectedNote(e, index, item.color)"
           >
             <img
               :src="require('@/assets/menu/dropdown-doubleline.svg')"
@@ -245,10 +248,12 @@ import documentContent from '@/assets/document.json';
 import tooltip from './tooltip.vue';
 import completeMission from './lightBox/completeMission.vue';
 import comment from './comment.vue';
+import share from './share.vue';
 export default {
   components: {
     tooltip,
     completeMission,
+    share,
     comment
   },
   data() {
@@ -256,7 +261,13 @@ export default {
       documentContent,
       notesIndex: -1,
       isShowComplete: false,
-      isShowComment: false
+      isShowComment: false,
+      isShowTooltip: false,
+      isShowShare: false,
+      tooltipPosition: {
+        x: 303,
+        y: 0
+      }
     };
   },
   computed: {
@@ -276,8 +287,15 @@ export default {
     }
   },
   methods: {
+    showShare(event) {
+      this.isShowShare = event;
+      this.isShowTooltip = !event;
+    },
+    showComment(event) {
+      this.isShowComment = event;
+      this.isShowTooltip = !event;
+    },
     loadBookContent(chapterIndex, sectionIndex) {
-      
       // ?????
       this.closeNotes();
 
@@ -288,22 +306,21 @@ export default {
         sections: this.documentContent.books[chapterIndex].sections.length,
         sectionIndex: sectionIndex,
         pageIndex: 0
-      }
+      };
 
       // ????????
       const bookContent = {
         chapter: this.documentContent.books[chapterIndex].chapter,
         h1title: this.documentContent.books[chapterIndex].title,
-        h3title: this.documentContent.books[chapterIndex].sections[sectionIndex].title,
-        content: this.documentContent.books[chapterIndex].sections[sectionIndex].content
+        h3title: this.documentContent.books[chapterIndex].sections[sectionIndex]
+          .title,
+        content: this.documentContent.books[chapterIndex].sections[sectionIndex]
+          .content
       };
 
       // ?? VueX
       this.$store.commit('setBookLocation', location);
       this.$store.commit('setBookContent', bookContent);
-    },
-    showComment(index) {
-      return this.isShowComment == true && this.notesIndex == index;
     },
     finishTask2(e) {
       console.log('qwew', e);
@@ -317,16 +334,16 @@ export default {
     closeNotes() {
       this.$emit('switchShowNotes', false);
     },
-    isShowTooltip(index, isShow) {
-      return this.isShowComment == false && this.notesIndex == index;
-    },
-    selectedNote(index, color) {
+    selectedNote(e, index, color) {
+      this.tooltipPosition.y = e.target.getBoundingClientRect().top + 50;
       this.$store.commit('changeTooltipColor', color.split('-')[0]);
       if (this.notesIndex == index) {
         this.notesIndex = -1;
+        this.isShowTooltip = false;
         return;
       }
       this.notesIndex = index;
+      this.isShowTooltip = true;
     },
     changeColor(color, index) {
       if (color == '') {

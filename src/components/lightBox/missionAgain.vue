@@ -32,7 +32,7 @@
           >上一頁</router-link
         >
         <!-- <button class="button button__primary taskPage__button">上一頁</button> -->
-        <button class="button button__default taskPage__button" @click="rest">
+        <button class="button button__default taskPage__button" @click="reset">
           重新測試
         </button>
       </div>
@@ -58,7 +58,7 @@ export default {
     console.log(this.member);
   },
   methods: {
-    rest() {
+    reset() {
       this.$emit('showConfirm');
     }
   }

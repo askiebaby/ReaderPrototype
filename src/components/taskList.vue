@@ -164,7 +164,6 @@ export default {
     isFinish(id) {
       let result = false;
       if (this.$cookies.get(id) !== null) {
-        console.log(this.$cookies.get(id));
         result = true;
       }
       return result;
@@ -178,7 +177,7 @@ export default {
       return () => {
         const result = this.isFinish(id);
         let idToRouter = result
-          ? { name: 'finishTask', params: { id } }
+          ? { name: 'tasks', params: { id } }
           : { name: 'login', params: { id } };
         this.$router.push(idToRouter);
       };

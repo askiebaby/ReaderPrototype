@@ -12,8 +12,8 @@
         :key="n"
         class="button buttonBig taskPage__button"
         :class="{
-          button__primary: !finishCss(n),
-          button__completed: finishCss(n)
+          button__primary: !isFinish(n),
+          button__completed: isFinish(n)
         }"
         @click="nextPage(n)"
       >
@@ -56,19 +56,16 @@
 export default {
   data() {
     return {
-      id: this.$store.getters.getID,
-      finish: false
+      id: this.$store.getters.getID
     };
   },
   methods: {
-    finishCss(n) {
-      const cookiesArrary = this.$cookies.keys();
-      console.log('565660', cookiesArrary);
+    isFinish(n) {
+      const cookiesArrary = JSON.parse(this.$cookies.get(this.id));
       if (cookiesArrary == null) {
         return false;
       }
       if (cookiesArrary[n - 1] != null) {
-        console.log('5656');
         return true;
       }
       return false;
@@ -77,7 +74,7 @@ export default {
       this.$router.push({ name: 'home' });
     },
     nextPage(order) {
-      if (this.finish) {
+      if (this.isFinish(order)) {
         this.$router.push({ name: 'taskRecord' });
       } else {
         this.$store.commit('taskDefault', order - 1);
