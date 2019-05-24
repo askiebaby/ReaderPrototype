@@ -408,11 +408,6 @@ export default {
   },
 
   computed: {
-    // showShareUI() {
-    //   this.clearSelected();
-    //   this.isShowComment = this.isShowComment ? true : false;
-    //   return this.$store.getters.getShareBubbleStatus;
-    // },
     selectedToNotes() {
       let textStart = this.selected.start;
       let textEnd = this.selected.end;

@@ -280,9 +280,6 @@ export default {
     }
   },
   methods: {
-    test() {
-      this.$emit('showShareUI', true);
-    },
     // showShareBubble() {
     //   if (!this.isShowShare) {
     //     if (this.isShowTooltip) this.$emit('closeTooltip', false);
