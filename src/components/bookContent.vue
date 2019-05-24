@@ -681,7 +681,8 @@ export default {
         this.selectedToNotes.chapterIndex == step.chapterIndex &&
         this.selectedToNotes.sectionIndex == step.sectionIndex &&
         this.selectedToNotes.textStart == step.textStart &&
-        this.selectedToNotes.textEnd == step.textEnd
+        (this.selectedToNotes.textEnd == step.textEnd ||
+          this.selectedToNotes.textEnd == step.textEnd - 1)
       ) {
         // 標記
         obj.task = 2;
