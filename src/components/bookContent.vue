@@ -237,7 +237,7 @@
 }
 .words-row {
   .book {
-    direction: rtl;
+    flex-direction: row-reverse;
     align-items: center;
     flex-wrap: nowrap;
     justify-content: flex-start;

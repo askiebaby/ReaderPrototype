@@ -15,7 +15,7 @@
           <div ref="noteComment" contenteditable class="comment__textarea">
             {{ getNote.comment }}
           </div>
-          <span class="comment__submit" @click="updateComment">完成</span>
+          <span class="memo__submit" @click="updateComment">完成</span>
         </main>
       </form>
     </div>
@@ -29,10 +29,12 @@
 .comment {
   position: fixed;
   top: 0;
+  z-index: 1;
   display: flex;
   align-content: center;
-  height: 100vh;
   font-family: 'Noto Sans TC', sans-serif;
+  height: 100vh;
+  width: 100%;
   &__background {
     position: fixed;
     left: 0;
@@ -44,7 +46,8 @@
   &__container {
     position: relative;
     width: 567px;
-    margin: auto auto 70%;
+    height: 424px;
+    margin: 20% auto 0;
     background: $white;
     border-radius: 18px;
   }
@@ -61,25 +64,27 @@
     font-weight: 300;
     outline: none;
   }
-  &__cancel,
-  &__submit {
-    position: absolute;
-    right: 10px;
-    font-size: $indexSize;
-    padding: 14px 20px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  &__cancel {
-    color: $white;
-    top: 3px;
-    border-radius: 18px;
-  }
-  &__submit {
-    color: $black-1;
-    background-color: $white;
-    padding: 12px 20px;
-    bottom: 1px;
+  .memo {
+    &__cancel,
+    &__submit {
+      position: absolute;
+      right: 10px;
+      font-size: $indexSize;
+      padding: 14px 20px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    &__cancel {
+      color: $white;
+      top: 3px;
+      border-radius: 18px;
+    }
+    &__submit {
+      color: $black-1;
+      background-color: $white;
+      padding: 12px 20px;
+      bottom: 1px;
+    }
   }
   form {
     display: flex;
@@ -92,14 +97,16 @@
   }
   h3 {
     position: relative;
-    font-size: $titleSize;
-    text-align: center;
+    flex-basis: 100%;
+    flex-direction: column;
+    justify-content: center;
     background-color: $black-1;
+    font-size: $titleSize;
+    font-weight: 300;
+    text-align: center;
     color: $white;
     border-radius: 18px 18px 0 0;
     padding: 10px;
-    flex-basis: 100%;
-    font-weight: 300;
   }
   p {
     margin-bottom: 1.5em;
@@ -118,17 +125,19 @@
       min-height: 567px;
       display: flex;
       flex-grow: 1;
+      margin-top: 100px;
     }
     form {
-      flex-basis: 100%;
+      width: 100%;
       flex-direction: row-reverse;
     }
     main {
+      position: relative;
       flex-direction: column;
       flex-wrap: nowrap;
       flex-grow: 1;
       writing-mode: tb-rl;
-      padding-bottom: 18px;
+      padding: 18px 12px;
     }
     h3 {
       display: flex;
@@ -142,33 +151,46 @@
       letter-spacing: 0.2em;
     }
     p {
-      padding: 15px 0 14px 3em;
-      min-width: 120px;
+      display: block;
       line-height: 1.75;
+      padding: 15px 0 14px 0;
+      margin-bottom: 0;
+      max-height: 100%;
+      max-width: 7em;
+      min-width: auto;
+      overflow: hidden;
     }
     &__textarea {
       max-width: 173px;
       min-width: 173px;
-      min-height: 100%;
+      min-height: 531px;
       padding: 14px 15px;
+      position: absolute;
+      left: 50px;
+      top: auto;
     }
-    &__cancel,
-    &__submit {
-      bottom: 5px;
-      letter-spacing: 0.5em;
-      padding: 0 5px;
-      height: 6em;
-      text-align: center;
-      writing-mode: vertical-rl;
+    .memo {
+      &__cancel,
+      &__submit {
+        position: absolute;
+        bottom: 5px;
+        letter-spacing: 0.5em;
+        padding: 0 5px;
+        height: 6em;
+        text-align: center;
+        writing-mode: vertical-rl;
+      }
+      &__cancel {
+        left: 0;
+        right: auto;
+        font-size: 16px;
+      }
+      &__submit {
+        right: unset;
+        left: 8px;
+      }
     }
-    &__cancel {
-      left: 0;
-      right: auto;
-    }
-    &__submit {
-      right: unset;
-      left: 0;
-    }
+    
   }
 }
 </style>
