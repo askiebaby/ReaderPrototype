@@ -19,7 +19,7 @@
               ({{ taskIndex + 1 }}-{{ index + 1 }})
               {{ CookiesData.task.time[index] }}秒/{{
                 CookiesData.task.counts[index]
-              }}
+              }}次
             </p>
           </div>
         </div>

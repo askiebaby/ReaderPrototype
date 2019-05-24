@@ -334,20 +334,23 @@ export default {
     closeNotes() {
       this.$emit('switchShowNotes', false);
     },
+    resetTooltip() {
+      this.notesIndex = -1;
+      this.isShowTooltip = false;
+    },
     selectedNote(e, index, color) {
       this.tooltipPosition.y = e.target.getBoundingClientRect().top + 50;
       this.$store.commit('changeTooltipColor', color.split('-')[0]);
       if (this.notesIndex == index) {
-        this.notesIndex = -1;
-        this.isShowTooltip = false;
+        this.resetTooltip();
         return;
       }
       this.notesIndex = index;
       this.isShowTooltip = true;
     },
     changeColor(color, index) {
+      this.resetTooltip();
       if (color == '') {
-        this.notesIndex = -1;
         return;
       }
       this.$store.commit('changeNotesColor', {

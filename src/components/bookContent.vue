@@ -625,6 +625,7 @@ export default {
       }
       const step2_1 = this.$store.getters.getTarget[1].step[0];
       if (this.selectedNoteIndex >= 0) {
+        this.clearSelected();
         this.$store.commit('changeNotesColor', {
           index: this.selectedNoteIndex,
           color: color
