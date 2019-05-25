@@ -107,7 +107,7 @@ export default {
         if (this.$cookies.get(this.id) != null) {
           cookiesArray = JSON.parse(this.$cookies.get(this.id));
         }
-        cookiesArray.push(this.CookiesData);
+        cookiesArray[this.taskIndex] = this.CookiesData;
         this.$cookies.set(this.id, JSON.stringify(cookiesArray));
       }
       this.$router.push({ name: 'tasks' });
