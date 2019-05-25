@@ -663,7 +663,7 @@ export default {
         task: 0
       };
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
-      addObj = this.checkcheckFinishStep3_1(obj);
+      addObj = this.checkFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
       this.clearSelected();
       this.selectedNoteIndex = 0;
@@ -695,7 +695,7 @@ export default {
       }
       return obj;
     },
-    checkcheckFinishStep3_1(obj) {
+    checkFinishStep3_1(obj) {
       const step = this.$store.getters.getTarget[2].step[0];
       if (this.task[2] == undefined) {
         return obj;
@@ -707,7 +707,8 @@ export default {
         this.selectedToNotes.chapterIndex == step.chapterIndex &&
         this.selectedToNotes.sectionIndex == step.sectionIndex &&
         this.selectedToNotes.textStart == step.textStart &&
-        this.selectedToNotes.textEnd == step.textEnd
+        (this.selectedToNotes.textEnd == step.textEnd ||
+          this.selectedToNotes.textEnd == step.textEnd - 1)
       ) {
         // 標記
         obj.task = 3;

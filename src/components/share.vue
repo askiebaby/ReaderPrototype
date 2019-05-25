@@ -177,12 +177,12 @@ export default {
   props: {
     notesIndex: {
       type: Number,
-      default: 0
+      default: -1
     }
   },
   methods: {
     checkStep3_3() {
-      if (this.notesIndex == 0) {
+      if (this.notesIndex == -1) {
         this.$emit('showShareUI', false);
         return;
       }

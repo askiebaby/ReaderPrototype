@@ -1,6 +1,9 @@
 <template>
   <section class="notes">
-    <complete-mission v-if="isShowComplete" :task-index="1"></complete-mission>
+    <complete-mission
+      v-if="isShowComplete"
+      :task-index="taskIndex"
+    ></complete-mission>
     <div class="notes__background" @click="closeNotes"></div>
     <div class="notes__container">
       <nav class="notes__nav">
@@ -23,7 +26,7 @@
           :notes-index="notesIndex"
           :is-show-tooltip="isShowTooltip"
           :tooltip-position="tooltipPosition"
-          @finishTask2="finishTask2($event)"
+          @afterDelete="afterDelete($event)"
           @changeColor="changeColor($event, notesIndex)"
           @showComment="showComment($event.showComment)"
           @showShareUI="showShare($event)"
@@ -259,6 +262,7 @@ export default {
   data() {
     return {
       documentContent,
+      taskIndex: -1,
       notesIndex: -1,
       isShowComplete: false,
       isShowComment: false,
@@ -322,11 +326,14 @@ export default {
       this.$store.commit('setBookLocation', location);
       this.$store.commit('setBookContent', bookContent);
     },
-    finishTask2(e) {
+    afterDelete(e) {
       console.log('qwew', e);
+      this.resetTooltip();
       this.notesIndex = e.index;
-      if (e.showComplete) {
+      if (e.taskIndex != undefined) {
+        this.$emit('taskIndex', e.taskIndex);
         setTimeout(() => {
+          this.taskIndex = e.taskIndex;
           this.isShowComplete = true;
         }, 3000);
       }
@@ -341,6 +348,8 @@ export default {
     selectedNote(e, index, color) {
       this.tooltipPosition.y = e.target.getBoundingClientRect().top + 50;
       this.$store.commit('changeTooltipColor', color.split('-')[0]);
+      console.log('4894', index);
+      console.log('784654', this.notesIndex);
       if (this.notesIndex == index) {
         this.resetTooltip();
         return;

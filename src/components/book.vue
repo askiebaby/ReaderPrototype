@@ -8,6 +8,7 @@
       v-if="isShowNotes"
       @switchShowNotes="isShowNotes = $event"
       @showShareUI="showShareUI($event)"
+      @taskIndex="changeTaskIndex($event)"
     ></note>
     <bookContent
       :class="[fontFamilyClass, fontSizeClass]"
@@ -15,7 +16,6 @@
       @toggleNavigation="toggleNavigation"
       @toBookCover="toBookCover"
     ></bookContent>
-
     <index
       v-if="isShowIndex"
       @closeIndexStatus="isShowIndex = $event"
@@ -36,7 +36,10 @@
       v-show="isLeaveMission"
       @cancelLeaveBubble="isLeaveMission = $event"
     ></leave-mission>
-    <complete-mission v-if="isShowComplete" :task-index="0"></complete-mission>
+    <complete-mission
+      v-if="isShowComplete"
+      :task-index="taskIndex"
+    ></complete-mission>
     <menu-bottom
       v-show="isShowNavigation"
       @showSettingBubble="isShowSetting = $event"
@@ -86,6 +89,7 @@ export default {
       fontFamilyClass: 'book__fontFamily__ming',
       fontSizeClass: 'fontSize__24px',
       sizeLevel: 5,
+      taskIndex: -1,
       document,
       chapterIndex: '',
       sectionIndex: '',
@@ -111,6 +115,12 @@ export default {
     this.loadIntroContent();
   },
   methods: {
+    changeTaskIndex(event) {
+      setTimeout(() => {
+        this.taskIndex = event;
+        this.isShowComplete = true;
+      }, 3000);
+    },
     toggleNavigation() {
       this.isShowNavigation = this.isShowNavigation ? false : true;
     },
@@ -173,6 +183,7 @@ export default {
         this.$store.commit('setTask', 0);
         console.log(this.task);
         setTimeout(() => {
+          this.taskIndex = 0;
           this.isShowComplete = true;
         }, 3000);
       }
