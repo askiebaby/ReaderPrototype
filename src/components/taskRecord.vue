@@ -3,10 +3,12 @@
     <background-cover></background-cover>
     <mission-again
       v-if="showMissionAgain"
+      :task-index="taskIndex"
       @showConfirm="changelight"
     ></mission-again>
     <leave-mission-again
       v-if="showleaveMissionAgain"
+      :task-index="taskIndex"
       @backRecord="changelight"
     ></leave-mission-again>
   </div>
@@ -23,6 +25,7 @@ export default {
   },
   data() {
     return {
+      taskIndex: this.$route.params.taskIndex - 1,
       showMissionAgain: true,
       showleaveMissionAgain: false
     };

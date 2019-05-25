@@ -71,14 +71,15 @@ export default {
       return false;
     },
     backHome() {
-      this.$router.push({ name: 'home' });
+      const id = this.id;
+      this.$router.push({ name: 'finishTask', params: { id } });
     },
-    nextPage(order) {
-      if (this.isFinish(order)) {
-        this.$router.push({ name: 'taskRecord' });
+    nextPage(taskIndex) {
+      if (this.isFinish(taskIndex)) {
+        this.$router.push({ name: 'taskRecord', params: { taskIndex } });
       } else {
-        this.$store.commit('taskDefault', order - 1);
-        this.$router.push({ name: 'taskDescription', params: { order } });
+        this.$store.commit('taskDefault', taskIndex - 1);
+        this.$router.push({ name: 'taskDescription', params: { taskIndex } });
         console.log(this.$store.getters.getTask);
       }
     }

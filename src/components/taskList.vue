@@ -162,9 +162,14 @@ export default {
       return loopIndex + this.listIndex * this.taskAmountInList;
     },
     isFinish(id) {
-      let result = false;
-      if (this.$cookies.get(id) !== null) {
-        result = true;
+      let result = true;
+      const cookiesArray = JSON.parse(this.$cookies.get(id));
+      if (cookiesArray == undefined) {
+        result = false;
+        return result;
+      }
+      if (cookiesArray.length == 0) {
+        result = false;
       }
       return result;
     },
@@ -177,7 +182,7 @@ export default {
       return () => {
         const result = this.isFinish(id);
         let idToRouter = result
-          ? { name: 'tasks', params: { id } }
+          ? { name: 'finishTask', params: { id } }
           : { name: 'login', params: { id } };
         this.$router.push(idToRouter);
       };

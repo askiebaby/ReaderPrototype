@@ -35,7 +35,7 @@ export default new Router({
       component: tasks
     },
     {
-      path: '/taskDescription/:order',
+      path: '/taskDescription/:taskIndex',
       name: 'taskDescription',
       component: taskDescription
     },
@@ -65,7 +65,7 @@ export default new Router({
       component: setting
     },
     {
-      path: '/taskRecord',
+      path: '/taskRecord/:taskIndex',
       name: 'taskRecord',
       component: taskRecord
     },

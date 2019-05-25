@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="finishTadk" class="background__male">
+    <div v-if="finishTask" class="background__male">
       <button
         class="button button__alert button__reset positionTopRight"
         @click="isShowligtBox"
@@ -8,8 +8,8 @@
         清除紀錄
       </button>
       <div class="input-center">
-        <div class="member_id">編號:{{ id }}</div>
-        <input v-model="member.name" type="text" disabled />
+        <div class="member_id">編號:{{ showInfo.id }}</div>
+        <input v-model="showInfo.name" type="text" disabled />
         <div class="buttons">
           <router-link
             tag="button"
@@ -27,7 +27,7 @@
       </div>
     </div>
     <!-- 刷新紀錄 -->
-    <div v-if="restCheck" class="lightBox deleteRecord">
+    <div v-if="resetCheck" class="lightBox deleteRecord">
       <div class="lightBox__background"></div>
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleLarge">
@@ -35,8 +35,8 @@
           <br />所有紀錄
         </h3>
         <p class="lightBox__subtitle">
-          <span>編號：{{ id }}</span>
-          <span>{{ member.name }}</span>
+          <span>編號：{{ showInfo.id }}</span>
+          <span>{{ showInfo.name }}</span>
         </p>
         <button
           class="button button__primary taskPage__button"
@@ -46,7 +46,7 @@
         </button>
         <button
           class="button button__default taskPage__button"
-          @click="restRecord"
+          @click="resetRecord"
         >
           清除記錄
         </button>
@@ -80,27 +80,29 @@
 export default {
   data() {
     return {
-      id: this.$route.params.id,
-      finishTadk: true,
-      restCheck: false,
-      member: {}
+      finishTask: true,
+      resetCheck: false
     };
   },
-  mounted() {
-    this.member = this.$cookies.get(this.id);
-    let info = {
-      id: this.id,
-      name: this.member.name
-    };
-    this.$store.commit('memberInfo', info);
+  computed: {
+    showInfo() {
+      const id = this.$route.params.id;
+      const cookie = JSON.parse(this.$cookies.get(id));
+      let info = {
+        id: id,
+        name: cookie[0].name
+      };
+      this.$store.commit('memberInfo', info);
+      return info;
+    }
   },
   methods: {
     isShowligtBox() {
-      this.finishTadk = !this.finishTadk;
-      this.restCheck = !this.restCheck;
+      this.finishTask = !this.finishTask;
+      this.resetCheck = !this.resetCheck;
     },
-    restRecord() {
-      this.$cookies.remove(this.id);
+    resetRecord() {
+      this.$cookies.remove(this.showInfo.id);
       this.$router.push({ name: 'home' });
     }
   }

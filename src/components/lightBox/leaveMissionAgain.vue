@@ -26,6 +26,12 @@
 
 <script>
 export default {
+  props: {
+    taskIndex: {
+      type: Number,
+      default: -1
+    }
+  },
   data() {
     return {
       id: this.$store.getters.getID
@@ -33,7 +39,9 @@ export default {
   },
   methods: {
     removeRecord() {
-      this.$cookies.remove(this.id);
+      const cookiesArray = JSON.parse(this.$cookies.get(this.id));
+      delete cookiesArray[this.taskIndex];
+      this.$cookies.set(this.id, JSON.stringify(cookiesArray));
       this.$router.push({ name: 'tasks' });
     },
     cancel() {

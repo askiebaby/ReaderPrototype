@@ -107,10 +107,12 @@ export default {
         if (this.$cookies.get(this.id) != null) {
           cookiesArray = JSON.parse(this.$cookies.get(this.id));
         }
+        // console.log('54654', cookiesArray);
         cookiesArray[this.taskIndex] = this.CookiesData;
         this.$cookies.set(this.id, JSON.stringify(cookiesArray));
       }
-      this.$router.push({ name: 'tasks' });
+      const id = this.id;
+      this.$router.push({ name: 'finishTask', params: { id } });
     }
   }
 };

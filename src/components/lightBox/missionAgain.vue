@@ -6,24 +6,20 @@
       <div class="lightBox__bubble">
         <h3 class="lightBox__titleLarge">任務已完成</h3>
         <p class="lightBox__subtitle">
-          <span>{{ id }} {{ member.name }}</span>
-          <span>{{ member.task[0].finishTime }}</span>
+          <span>{{ id }}{{ taskRecord.name }}</span>
+          <span>{{ taskRecord.task.finishTime }}</span>
         </p>
         <div class="lightBox__content">
-          <p class="lightBox__subtitle">任務一完成時間/點擊次數</p>
-          <p class="lightBox__taskDescription">
-            （1-1）{{ member.task[0].time[0] }}秒/{{
-              member.task[0].counts[0]
-            }}次
-            <br />
-            （1-2）{{ member.task[0].time[1] }}秒/{{
-              member.task[0].counts[1]
-            }}次
-            <br />
-            （1-3）{{ member.task[0].time[2] }}秒/{{
-              member.task[0].counts[2]
-            }}次
+          <p class="lightBox__subtitle">
+            任務{{ chineseOrder }}完成時間/點擊次數
           </p>
+          <div class="lightBox__taskDescription">
+            <p v-for="(item, index) in taskRecord.task.counts" :key="index">
+              ({{ taskIndex + 1 }}-{{ index + 1 }}){{
+                taskRecord.task.time[index]
+              }}秒/{{ taskRecord.task.counts[index] }}次
+            </p>
+          </div>
         </div>
         <router-link
           tag="button"
@@ -31,7 +27,6 @@
           class="button button__primary taskPage__button"
           >上一頁</router-link
         >
-        <!-- <button class="button button__primary taskPage__button">上一頁</button> -->
         <button class="button button__default taskPage__button" @click="reset">
           重新測試
         </button>
@@ -46,16 +41,25 @@
 
 <script>
 export default {
+  props: {
+    taskIndex: {
+      type: Number,
+      default: -1
+    }
+  },
   data() {
     return {
-      id: this.$store.getters.getID,
-      member: {}
+      id: this.$store.getters.getID
     };
   },
-  mounted() {
-    console.log(this.$cookies.get(this.id));
-    this.member = this.$cookies.get(this.id);
-    console.log(this.member);
+  computed: {
+    chineseOrder() {
+      return this.$store.getters.getChineseOrder[this.taskIndex];
+    },
+    taskRecord() {
+      let cookiesArray = JSON.parse(this.$cookies.get(this.id));
+      return cookiesArray[this.taskIndex];
+    }
   },
   methods: {
     reset() {
