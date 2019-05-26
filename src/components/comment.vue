@@ -12,7 +12,7 @@
           <p>
             {{ getNote.text }}
           </p>
-          <div ref="noteComment" contenteditable class="comment__textarea">
+          <div ref="noteComment" contenteditable="false" class="comment__textarea" @click="contentConsole">
             {{ getNote.comment }}
           </div>
           <span class="memo__submit" @click="updateComment">完成</span>
@@ -94,6 +94,7 @@
     display: flex;
     flex-flow: row wrap;
     padding: 18px 18px 50px;
+    width: 100%;
   }
   h3 {
     position: relative;
@@ -138,6 +139,7 @@
       flex-grow: 1;
       writing-mode: tb-rl;
       padding: 18px 12px;
+      width: 300px;
     }
     h3 {
       display: flex;
@@ -145,6 +147,7 @@
       direction: rtl;
       flex-basis: 56px;
       border-radius: 0 18px 18px 0;
+      height: 100%;
     }
     p,
     &__textarea {
@@ -190,9 +193,9 @@
         left: 8px;
       }
     }
-    
   }
 }
+[contenteditable] { -webkit-user-select: text; user-select: text; }
 </style>
 
 <script>
@@ -225,6 +228,12 @@ export default {
     }
   },
   methods: {
+    contentConsole() {
+      // 解決 contenteditable div 在 mobile 無法 focus 的問題
+      const comment = this.$refs.noteComment;
+      comment.setAttribute('contenteditable', 'true');
+      comment.focus();
+    },
     showComment(showComplete) {
       this.$emit('showComment', {
         showComment: false,
