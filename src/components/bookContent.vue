@@ -292,6 +292,7 @@ export default {
       scrollHeight: 0,
       scrollWidth: 0,
       isShowComplete: false,
+      selectAlreadyNote: false,
       setting: {
         lineHeight: 1.75,
         fontInitIndex: 5
@@ -1216,6 +1217,9 @@ export default {
       } else {
         this.tooltipPosition.x = averageX - 196;
       }
+      if (this.selectAlreadyNote == true) {
+        return;
+      }
       if (this.selected.start > 0 && this.selected.end > 0) {
         this.selectedNoteIndex = -1;
         this.selectedPartColor = '';
@@ -1230,8 +1234,7 @@ export default {
         changedTouch.clientY
       );
       if (target.parentElement.className.length > 0) {
-        this.clearSelected();
-        return;
+        this.selectAlreadyNote = true;
       }
       if (this.selected.start >= 0) {
         const charEnd = parseInt(target.getAttribute('index'));
@@ -1241,6 +1244,7 @@ export default {
       }
     },
     clearSelected() {
+      this.selectAlreadyNote = false;
       this.isShowTooltip = false;
       this.selected.start = -1;
       this.selected.end = -1;
