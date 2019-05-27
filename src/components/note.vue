@@ -53,13 +53,11 @@
               {{ item.comment }}
             </div>
           </div>
-          <div
-            class="note__actionButton"
-            @click="e => selectedNote(e, index, item.color)"
-          >
+          <div class="note__actionButton">
             <img
               :src="require('@/assets/menu/dropdown-doubleline.svg')"
               alt="More Actions"
+              @click="e => selectedNote(e, index, item.color)"
             />
           </div>
         </article>
@@ -269,7 +267,7 @@ export default {
       isShowTooltip: false,
       isShowShare: false,
       tooltipPosition: {
-        x: 303,
+        x: 0,
         y: 0
       }
     };
@@ -346,10 +344,20 @@ export default {
       this.isShowTooltip = false;
     },
     selectedNote(e, index, color) {
-      this.tooltipPosition.y = e.target.getBoundingClientRect().top + 50;
+      const directions = this.$store.getters.getDirections.functions;
+      if (directions == 'column') {
+        this.tooltipPosition = {
+          x: 303,
+          y: e.target.getBoundingClientRect().top + 50
+        };
+      } else {
+        this.tooltipPosition = {
+          x: e.target.getBoundingClientRect().left - 327,
+          y: 755
+        };
+      }
+
       this.$store.commit('changeTooltipColor', color.split('-')[0]);
-      console.log('4894', index);
-      console.log('784654', this.notesIndex);
       if (this.notesIndex == index) {
         this.resetTooltip();
         return;

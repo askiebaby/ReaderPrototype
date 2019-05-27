@@ -400,7 +400,6 @@ export default {
         y: 0
       },
       notes: [],
-      pointerEvents: 'auto',
       selectedNoteIndex: -1,
       isShowComment: false,
       selectedPartColor: '',
@@ -616,7 +615,6 @@ export default {
         this.isShowTooltip = true;
       } else {
         this.selectedNoteIndex = -1;
-        this.switchTouch(e, 'auto');
       }
     },
     changeColor(color) {
@@ -728,11 +726,6 @@ export default {
         css = 'selected';
       }
       return css;
-    },
-    switchTouch(e, arg) {
-      this.isShowTooltip = false;
-      this.clearSelected();
-      this.pointerEvents = arg;
     },
     initContent() {
       WebFont.load({
