@@ -11,12 +11,18 @@
         <div class="member_id">編號:{{ showInfo.id }}</div>
         <input v-model="showInfo.name" type="text" disabled />
         <div class="buttons">
-          <router-link
+          <button
+            class="button button__space button__default"
+            @click="backHome"
+          >
+            上一頁
+          </button>
+          <!-- <router-link
             tag="button"
             :to="{ name: 'home' }"
             class="button button__space button__default"
             >上一頁</router-link
-          >
+          > -->
           <router-link
             tag="button"
             :to="{ name: 'tasks' }"
@@ -86,20 +92,33 @@ export default {
   },
   computed: {
     showInfo() {
-      return {
+      const obj = {
         id: this.$route.params.id,
         name: this.$store.getters.getName
       };
+      const cookiesArray = JSON.parse(this.$cookies.get(obj.id));
+      if (!cookiesArray) {
+        return obj;
+      }
+      const cookiesFilter = cookiesArray.filter(n => n);
+      if (cookiesFilter.length !== 0) {
+        obj.name = cookiesFilter[0].name;
+      }
+      return obj;
     }
   },
   methods: {
+    backHome() {
+      this.$store.commit('memberInfo', { id: '', name: '' });
+      this.$router.push({ name: 'home' });
+    },
     isShowligtBox() {
       this.finishTask = !this.finishTask;
       this.resetCheck = !this.resetCheck;
     },
     resetRecord() {
       this.$cookies.remove(this.showInfo.id);
-      this.$router.push({ name: 'home' });
+      this.backHome();
     }
   }
 };

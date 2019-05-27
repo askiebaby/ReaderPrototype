@@ -197,7 +197,7 @@ export default {
         this.$emit('showShareUI', false);
         return;
       }
-      if (task[2] == undefined) {
+      if (!task[2]) {
         this.$emit('showShareUI', false);
         return;
       }

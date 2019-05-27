@@ -275,7 +275,7 @@ export default {
   methods: {
     checkFinishStep2_4(checkTask, task) {
       const step = this.$store.getters.getTarget[1].step[3];
-      if (task[1] == undefined) {
+      if (!task[1]) {
         return false;
       }
       if (task[1].time.length != 4) {
@@ -291,7 +291,7 @@ export default {
     checkFinishStep3_4(checkTask, task) {
       const step = this.$store.getters.getTarget[2].step[3];
 
-      if (task[2] == undefined) {
+      if (!task[2]) {
         return false;
       }
       if (task[2].time.length != 4) {

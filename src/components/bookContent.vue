@@ -454,7 +454,7 @@ export default {
           textGroup: this.bookContent.content.slice(range[j].i, range[j + 1].i),
           boundary: range[j].i
         };
-        if (range[j].notesIndex != undefined && range[j].color != undefined) {
+        if (range[j].notesIndex && range[j].color) {
           Obj.hightLight = range[j].color;
           Obj.notesIndex = range[j].notesIndex;
         }
@@ -552,7 +552,7 @@ export default {
       if (this.task.length <= 0) {
         return;
       }
-      if (this.task[0] == undefined) {
+      if (!this.task[0]) {
         return;
       }
       if (this.task[0].time.length != 1) {
@@ -596,7 +596,7 @@ export default {
       }
     },
     selectedPart(e, notesIndex) {
-      if (notesIndex != undefined) {
+      if (notesIndex) {
         this.selectedNoteIndex = notesIndex;
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
@@ -637,7 +637,7 @@ export default {
         if (this.task.length <= 0) {
           return;
         }
-        if (this.task[1] != undefined) {
+        if (this.task[1]) {
           if (this.task[1].time.length == 1 && color == step2_1.css) {
             this.$store.commit('setTask', 1);
             console.log('8522256', this.$store.getters.getTask);
@@ -671,7 +671,7 @@ export default {
       if (this.task.length <= 0) {
         return obj;
       }
-      if (this.task[1] == undefined) {
+      if (!this.task[1]) {
         return obj;
       }
       if (this.task[1].time.length != 1) {
@@ -696,7 +696,7 @@ export default {
     },
     checkFinishStep3_1(obj) {
       const step = this.$store.getters.getTarget[2].step[0];
-      if (this.task[2] == undefined) {
+      if (!this.task[2]) {
         return obj;
       }
       if (this.task[2].time.length != 1) {

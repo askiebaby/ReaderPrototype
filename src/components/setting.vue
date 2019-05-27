@@ -5,7 +5,7 @@
     <div class="lightBox__bubbleLittle">
       <div class="lightBox__content">
         <div class="function function__lightness">
-          <img src="@/assets/images/lightness.svg" alt="調整亮度">
+          <img src="@/assets/images/lightness.svg" alt="調整亮度" />
         </div>
         <div class="function function__fontSize">
           <span class="changeSize" @click="changeFontSize('small')">
@@ -185,8 +185,6 @@
     justify-content: center;
     margin-bottom: 20px;
   }
-
-
 }
 .functions-row {
   .function {
@@ -299,7 +297,7 @@ export default {
       if (this.task.length <= 0) {
         return;
       }
-      if (this.task[0] == undefined) {
+      if (!this.task[0]) {
         return;
       }
       if (this.task[0].time.length != 2) {
