@@ -596,7 +596,7 @@ export default {
       }
     },
     selectedPart(e, notesIndex) {
-      if (notesIndex) {
+      if (notesIndex != undefined) {
         this.selectedNoteIndex = notesIndex;
         this.clearSelected();
         const partPosition = e.target.parentElement.getBoundingClientRect();
