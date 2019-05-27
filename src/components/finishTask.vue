@@ -86,22 +86,10 @@ export default {
   },
   computed: {
     showInfo() {
-      const id = this.$route.params.id;
-      const cookie = JSON.parse(this.$cookies.get(id));
-      let info = {};
-      if (cookie != undefined) {
-        info = {
-          id: id,
-          name: cookie[0].name
-        };
-        this.$store.commit('memberInfo', info);
-        return info;
-      }
-      info = {
-        id: id,
+      return {
+        id: this.$route.params.id,
         name: this.$store.getters.getName
       };
-      return info;
     }
   },
   methods: {
