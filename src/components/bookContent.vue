@@ -454,7 +454,7 @@ export default {
           textGroup: this.bookContent.content.slice(range[j].i, range[j + 1].i),
           boundary: range[j].i
         };
-        if (range[j].notesIndex && range[j].color) {
+        if (range[j].notesIndex != undefined && range[j].color != undefined) {
           Obj.hightLight = range[j].color;
           Obj.notesIndex = range[j].notesIndex;
         }
