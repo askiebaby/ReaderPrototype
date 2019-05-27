@@ -542,7 +542,7 @@ export default {
       }
       this.clearSelected();
       this.isShowComment = state.showComment;
-      if (state.showComplete == true) {
+      if (state.showComplete) {
         setTimeout(() => {
           this.isShowComplete = true;
         }, 3000);
@@ -1210,7 +1210,7 @@ export default {
       } else {
         this.tooltipPosition.x = averageX - 196;
       }
-      if (this.selectAlreadyNote == true) {
+      if (this.selectAlreadyNote) {
         return;
       }
       if (this.selected.start > 0 && this.selected.end > 0) {
