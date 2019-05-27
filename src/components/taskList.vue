@@ -162,10 +162,14 @@ export default {
       return loopIndex + this.listIndex * this.taskAmountInList;
     },
     isFinish(id) {
-      let result = false;
-      if (this.$cookies.get(id) !== null) {
-        console.log(this.$cookies.get(id));
-        result = true;
+      let result = true;
+      const cookiesArray = JSON.parse(this.$cookies.get(id));
+      if (cookiesArray == undefined) {
+        result = false;
+        return result;
+      }
+      if (cookiesArray.length == 0) {
+        result = false;
       }
       return result;
     },

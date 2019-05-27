@@ -2,12 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import moment from 'vue-moment';
 import VueCookies from 'vue-cookies';
-import { stat } from 'fs';
+
 Vue.use(Vuex);
 Vue.use(moment);
 export const store = new Vuex.Store({
   state: {
-    isShowShare: false,
     totalCounts: 0,
     id: '',
     name: '',

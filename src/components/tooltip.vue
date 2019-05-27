@@ -231,10 +231,6 @@ body {
 <script>
 export default {
   props: {
-    // isShowTooltip: {
-    //   type: [Boolean, Function],
-    //   default: false
-    // },
     tooltipPosition: {
       type: Object,
       default: () => {
@@ -263,9 +259,6 @@ export default {
     };
   },
   computed: {
-    // isShowShare() {
-    //   return this.$store.getters.getShareBubbleStatus;
-    // },
     isShowIcon() {
       return this.fromContent;
     },
@@ -280,52 +273,57 @@ export default {
     }
   },
   methods: {
-    test() {
-      this.$emit('showShareUI', true);
+    checkFinishStep2_4(checkTask, task) {
+      const step = this.$store.getters.getTarget[1].step[3];
+      if (task[1] == undefined) {
+        return false;
+      }
+      if (task[1].time.length != 4) {
+        return false;
+      }
+      if (checkTask != step.task) {
+        return false;
+      }
+      this.$store.commit('setTask', 1);
+      console.log('151681656', this.$store.getters.getTask);
+      return true;
     },
-    // showShareBubble() {
-    //   if (!this.isShowShare) {
-    //     if (this.isShowTooltip) this.$emit('closeTooltip', false);
-    //     this.$store.commit('toggleShareBubble', true);
-    //   }
-    // },
+    checkFinishStep3_4(checkTask, task) {
+      const step = this.$store.getters.getTarget[2].step[3];
+
+      if (task[2] == undefined) {
+        return false;
+      }
+      if (task[2].time.length != 4) {
+        return false;
+      }
+      if (checkTask != step.task) {
+        return false;
+      }
+      this.$store.commit('setTask', 2);
+      console.log('8874562', this.$store.getters.getTask);
+      return true;
+    },
     deleteNotes() {
       const task = this.$store.getters.getTask;
       const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
-      // console.log('232', this.notesIndex);
-      // debugger;
       if (this.notesIndex == -1) {
         return;
       }
-      if (checkTask != 2) {
-        this.finishTask2(false);
-        return;
-      }
       if (task.length <= 0) {
-        this.finishTask2(false);
         return;
       }
-      if (task[1] == undefined) {
-        this.finishTask2(false);
-        return;
-      }
-      if (task[1].time.length != 4) {
-        this.finishTask2(false);
-        return;
-      }
-      this.$store.commit('setTask', 1);
-      this.finishTask2(true);
-      console.log('151681656', this.$store.getters.getTask);
-    },
-    finishTask2(e) {
       const obj = {
         index: -1
       };
-      if (e) {
-        obj.showComplete = true;
+      if (this.checkFinishStep2_4(checkTask, task)) {
+        obj.taskIndex = 1;
+      }
+      if (this.checkFinishStep3_4(checkTask, task)) {
+        obj.taskIndex = 2;
       }
       this.$store.commit('deleteNote', this.notesIndex);
-      this.$emit('finishTask2', obj);
+      this.$emit('afterDelete', obj);
     },
     showColor(item) {
       let arrary = [];

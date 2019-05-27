@@ -19,7 +19,7 @@
               ({{ taskIndex + 1 }}-{{ index + 1 }})
               {{ CookiesData.task.time[index] }}秒/{{
                 CookiesData.task.counts[index]
-              }}
+              }}次
             </p>
           </div>
         </div>
@@ -104,15 +104,15 @@ export default {
     backToTasks(isFinish) {
       let cookiesArray = [];
       if (isFinish === true) {
-        if (this.$cookies.get(this.id) == null) {
-          cookiesArray.push(this.CookiesData);
-          console.log('4456645', cookiesArray);
-        } else {
-          cookiesArray = this.$cookies.get(this.id);
+        if (this.$cookies.get(this.id) != null) {
+          cookiesArray = JSON.parse(this.$cookies.get(this.id));
         }
-        this.$cookies.set(this.id, cookiesArray);
+        // console.log('54654', cookiesArray);
+        cookiesArray[this.taskIndex] = this.CookiesData;
+        this.$cookies.set(this.id, JSON.stringify(cookiesArray));
       }
-      this.$router.push({ name: 'tasks' });
+      const id = this.id;
+      this.$router.push({ name: 'finishTask', params: { id } });
     }
   }
 };

@@ -12,8 +12,8 @@
         :key="n"
         class="button buttonBig taskPage__button"
         :class="{
-          button__primary: !finishCss(n),
-          button__completed: finishCss(n)
+          button__primary: !isFinish(n),
+          button__completed: isFinish(n)
         }"
         @click="nextPage(n)"
       >
@@ -56,32 +56,30 @@
 export default {
   data() {
     return {
-      id: this.$store.getters.getID,
-      finish: false
+      id: this.$store.getters.getID
     };
   },
   methods: {
-    finishCss(n) {
-      const cookiesArrary = this.$cookies.keys();
-      console.log('565660', cookiesArrary);
+    isFinish(n) {
+      const cookiesArrary = JSON.parse(this.$cookies.get(this.id));
       if (cookiesArrary == null) {
         return false;
       }
       if (cookiesArrary[n - 1] != null) {
-        console.log('5656');
         return true;
       }
       return false;
     },
     backHome() {
-      this.$router.push({ name: 'home' });
+      const id = this.id;
+      this.$router.push({ name: 'finishTask', params: { id } });
     },
-    nextPage(order) {
-      if (this.finish) {
-        this.$router.push({ name: 'taskRecord' });
+    nextPage(taskIndex) {
+      if (this.isFinish(taskIndex)) {
+        this.$router.push({ name: 'taskRecord', params: { taskIndex } });
       } else {
-        this.$store.commit('taskDefault', order - 1);
-        this.$router.push({ name: 'taskDescription', params: { order } });
+        this.$store.commit('taskDefault', taskIndex - 1);
+        this.$router.push({ name: 'taskDescription', params: { taskIndex } });
         console.log(this.$store.getters.getTask);
       }
     }

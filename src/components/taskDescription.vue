@@ -54,7 +54,7 @@
 export default {
   data() {
     return {
-      order: this.$route.params.order - 1,
+      taskIndex: this.$route.params.taskIndex - 1,
       target: this.$store.getters.getTarget,
       task: this.$store.getters.getTask
     };
@@ -66,13 +66,13 @@ export default {
       ];
     },
     showTask() {
-      return this.target[this.order];
+      return this.target[this.taskIndex];
     }
   },
   methods: {
     taskStart() {
       if (this.task.length > 0) {
-        this.$store.commit('setTask', this.order);
+        this.$store.commit('setTask', this.taskIndex);
         console.log(this.$store.getters.getTask);
         this.$store.commit('resetNotes');
       }

@@ -292,6 +292,7 @@ export default {
       scrollHeight: 0,
       scrollWidth: 0,
       isShowComplete: false,
+      selectAlreadyNote: false,
       setting: {
         lineHeight: 1.75,
         fontInitIndex: 5
@@ -399,7 +400,6 @@ export default {
         y: 0
       },
       notes: [],
-      pointerEvents: 'auto',
       selectedNoteIndex: -1,
       isShowComment: false,
       selectedPartColor: '',
@@ -408,11 +408,6 @@ export default {
   },
 
   computed: {
-    // showShareUI() {
-    //   this.clearSelected();
-    //   this.isShowComment = this.isShowComment ? true : false;
-    //   return this.$store.getters.getShareBubbleStatus;
-    // },
     selectedToNotes() {
       let textStart = this.selected.start;
       let textEnd = this.selected.end;
@@ -620,7 +615,6 @@ export default {
         this.isShowTooltip = true;
       } else {
         this.selectedNoteIndex = -1;
-        this.switchTouch(e, 'auto');
       }
     },
     changeColor(color) {
@@ -630,6 +624,7 @@ export default {
       }
       const step2_1 = this.$store.getters.getTarget[1].step[0];
       if (this.selectedNoteIndex >= 0) {
+        this.clearSelected();
         this.$store.commit('changeNotesColor', {
           index: this.selectedNoteIndex,
           color: color
@@ -667,7 +662,7 @@ export default {
         task: 0
       };
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
-      addObj = this.checkcheckFinishStep3_1(obj);
+      addObj = this.checkFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
       this.clearSelected();
       this.selectedNoteIndex = 0;
@@ -686,7 +681,8 @@ export default {
         this.selectedToNotes.chapterIndex == step.chapterIndex &&
         this.selectedToNotes.sectionIndex == step.sectionIndex &&
         this.selectedToNotes.textStart == step.textStart &&
-        this.selectedToNotes.textEnd == step.textEnd
+        (this.selectedToNotes.textEnd == step.textEnd ||
+          this.selectedToNotes.textEnd == step.textEnd - 1)
       ) {
         // 標記
         obj.task = 2;
@@ -698,7 +694,7 @@ export default {
       }
       return obj;
     },
-    checkcheckFinishStep3_1(obj) {
+    checkFinishStep3_1(obj) {
       const step = this.$store.getters.getTarget[2].step[0];
       if (this.task[2] == undefined) {
         return obj;
@@ -710,7 +706,8 @@ export default {
         this.selectedToNotes.chapterIndex == step.chapterIndex &&
         this.selectedToNotes.sectionIndex == step.sectionIndex &&
         this.selectedToNotes.textStart == step.textStart &&
-        this.selectedToNotes.textEnd == step.textEnd
+        (this.selectedToNotes.textEnd == step.textEnd ||
+          this.selectedToNotes.textEnd == step.textEnd - 1)
       ) {
         // 標記
         obj.task = 3;
@@ -729,11 +726,6 @@ export default {
         css = 'selected';
       }
       return css;
-    },
-    switchTouch(e, arg) {
-      this.isShowTooltip = false;
-      this.clearSelected();
-      this.pointerEvents = arg;
     },
     initContent() {
       WebFont.load({
@@ -1218,6 +1210,9 @@ export default {
       } else {
         this.tooltipPosition.x = averageX - 196;
       }
+      if (this.selectAlreadyNote == true) {
+        return;
+      }
       if (this.selected.start > 0 && this.selected.end > 0) {
         this.selectedNoteIndex = -1;
         this.selectedPartColor = '';
@@ -1232,8 +1227,7 @@ export default {
         changedTouch.clientY
       );
       if (target.parentElement.className.length > 0) {
-        this.clearSelected();
-        return;
+        this.selectAlreadyNote = true;
       }
       if (this.selected.start >= 0) {
         const charEnd = parseInt(target.getAttribute('index'));
@@ -1243,6 +1237,7 @@ export default {
       }
     },
     clearSelected() {
+      this.selectAlreadyNote = false;
       this.isShowTooltip = false;
       this.selected.start = -1;
       this.selected.end = -1;
