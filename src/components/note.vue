@@ -367,7 +367,7 @@ export default {
     },
     changeColor(color, index) {
       this.resetTooltip();
-      if (color == '') {
+      if (!color) {
         return;
       }
       this.$store.commit('changeNotesColor', {

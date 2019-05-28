@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     missionStart() {
-      if (this.name == '') {
+      if (!this.name) {
         alert('請輸入姓名！');
         return;
       }

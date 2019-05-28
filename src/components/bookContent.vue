@@ -618,7 +618,7 @@ export default {
       }
     },
     changeColor(color) {
-      if (color == '') {
+      if (!color) {
         this.clearSelected();
         return;
       }
