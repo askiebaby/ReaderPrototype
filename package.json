@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "normalize-scroll-left": "^0.1.2",
     "vue": "^2.6.6",
     "vue-cookies": "^1.5.12",
     "vue-moment": "^4.0.0",

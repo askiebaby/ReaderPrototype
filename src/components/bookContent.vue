@@ -25,7 +25,7 @@
         {{ bookContent.chapter }} {{ bookContent.h1title }}
       </h2>
       <div ref="viewport" class="book__content">
-        <div ref="bookContainer">
+        <div ref="bookContainer" class="book__content__realbook">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
           <p>
             <span
@@ -242,10 +242,13 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     &__content {
-      direction: ltr;
+      direction: rtl;
       writing-mode: tb-rl;
       margin-right: 10px;
       height: 745px;
+      &__realbook {
+        direction: ltr;
+      }
       h3 {
         letter-spacing: 0.2em;
       }
@@ -270,6 +273,7 @@
 </style>
 
 <script>
+import { detectScrollType, getNormalizedScrollLeft, setNormalizedScrollLeft } from 'normalize-scroll-left';
 import completeMission from './lightBox/completeMission.vue';
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
@@ -406,8 +410,11 @@ export default {
       isShowShare: false
     };
   },
-
+  
   computed: {
+    scrollType() {
+      return detectScrollType();
+    },
     selectedToNotes() {
       let textStart = this.selected.start;
       let textEnd = this.selected.end;
@@ -583,6 +590,7 @@ export default {
       const wordsDirection = this.$store.getters.getDirections.words;
 
       if (xRatio >= 0 && xRatio < 33.333) {
+        // this.togglePageRules('prev');
         if (wordsDirection === 'column') this.togglePageRules('prev');
         if (wordsDirection === 'row') this.togglePageRules('next');
         return;
@@ -590,6 +598,7 @@ export default {
         this.toggleNavigation();
         return;
       } else if (xRatio >= 66.666 && xRatio < 100) {
+        // this.togglePageRules('next');
         if (wordsDirection === 'column') this.togglePageRules('next');
         if (wordsDirection === 'row') this.togglePageRules('prev');
         return;
@@ -770,7 +779,7 @@ export default {
         this.$store.commit('setBookLocation', this.bookLocation);
 
         // 更新文章內容或字級，要重新定位頁數位置
-        this.checkPagePosition(wordsDirection, this.resetContainerSize);
+        this.resetPagePosition(wordsDirection, this.resetContainerSize);
 
         console.warn(
           'countPageWidthHeight called!',
@@ -782,8 +791,12 @@ export default {
           this.$refs.viewport.scrollTop,
           '\n 原本寬度 scrollWidth: ',
           this.scrollWidth,
-          '初始定位 scrollLeft: ',
+          '初始定位 scrollLeft',
           this.$refs.viewport.scrollLeft,
+          '初始定位 RTL scrollLeft: ',
+          getNormalizedScrollLeft(this.$refs.viewport, 'rtl'),
+          '初始定位 LTR scrollLeft: ',
+          getNormalizedScrollLeft(this.$refs.viewport, 'ltr'),
           '\n remain: ',
           remain,
           'lineHeight: ',
@@ -825,7 +838,7 @@ export default {
           );
       }
     },
-    checkPagePosition(wordsDirection, callback) {
+    resetPagePosition(wordsDirection, callback) {
       // 更新內容，根據欄位確定動作，才定位
       if (wordsDirection === 'column') {
         // 文字橫向
@@ -862,44 +875,47 @@ export default {
         }
       } else {
         // 文字直向
-        console.log('checkPagePosition!!!');
+        console.log('resetPagePosition!!!');
+        
+        // 設定viewport及bookContainer寬高
+      callback(wordsDirection);
+      
         switch (this.togglePageAction) {
           case 'next':
           case 'default':
-            this.$refs.viewport.scrollLeft =
-              (this.bookLocation.pages - 1) * this.containerHeight + 210;
+            setNormalizedScrollLeft(this.$refs.viewport, (this.bookLocation.pages - 1) * this.containerHeight + 210, 'rtl');
             this.bookLocation.pageIndex = 0;
             this.$store.commit('setBookLocation', this.bookLocation);
             console.log(
               'next',
               this.$refs.viewport.scrollLeft,
+              getNormalizedScrollLeft(this.$refs.viewport, 'rtl'),
               this.bookLocation.pages,
               this.containerHeight
             );
             break;
 
           case 'prev':
-            this.$refs.viewport.scrollLeft = 0;
+            setNormalizedScrollLeft(this.$refs.viewport, 0, 'rtl');
             this.bookLocation.pageIndex = this.bookLocation.pages - 1;
             this.$store.commit('setBookLocation', this.bookLocation);
             console.log(
               'prev',
+              `setNormalizedScrollLeft(this.$refs.viewport, 0, 'rtl');`,
               this.$refs.viewport.scrollLeft,
+              getNormalizedScrollLeft(this.$refs.viewport, 'rtl'),
               this.bookLocation.pages,
               this.containerHeight
             );
             break;
 
           default:
-            this.$refs.viewport.scrollLeft =
-              (this.bookLocation.pages - 1) * this.containerHeight + 210;
+            setNormalizedScrollLeft(this.$refs.viewport, (this.bookLocation.pages - 1) * this.containerHeight + 210, 'rtl');
             this.bookLocation.pageIndex = 0;
             this.$store.commit('setBookLocation', this.bookLocation);
         }
       }
 
-      // 設定viewport及bookContainer寬高
-      callback(wordsDirection);
 
       // this.$store.commit('setBookLocation', this.bookLocation);
 
@@ -953,9 +969,60 @@ export default {
           }
         } else {
           // 文字直向
-          console.log(this.$refs.viewport.scrollLeft);
+          console.log(this.$refs.viewport.scrollLeft, getNormalizedScrollLeft(this.$refs.viewport, 'rtl'));
 
+          
+
+          // switch (action) {
+          //   case 'prev':
+          //     if (this.bookLocation.pageIndex < 1) {
+          //       this.toggleSection(action);
+          //       return;
+          //     } else {
+          //       this.bookLocation.pageIndex -= 1;
+          //       this.$store.commit('setBookLocation', this.bookLocation);
+          //     }
+          //     setNormalizedScrollLeft(
+          //       this.$refs.viewport,
+          //       this.bookLocation.pageIndex * viewport.clientWidth,
+          //       'rtl'
+          //     );
+
+          //     break;
+          //   case 'next':
+          //     if (
+          //       viewport.scrollWidth - viewport.clientWidth <=
+          //       viewport.scrollLeft
+          //     ) {
+          //       console.log(
+          //         'viewport.scrollWidth',
+          //         viewport.scrollWidth,
+          //         '- viewport.clientWidth',
+          //         viewport.clientWidth,
+          //         '<= viewport.scrollLeft RTL',
+          //         getNormalizedScrollLeft(this.$refs.viewport, 'rtl')
+          //       );
+          //       this.toggleSection(action);
+          //       return;
+          //     }
+
+          //     this.bookLocation.pageIndex += 1;
+          //     this.$store.commit('setBookLocation', this.bookLocation);
+
+          //     // viewport.scrollLeft =
+          //       // this.bookLocation.pageIndex * viewport.clientWidth;
+
+          //     setNormalizedScrollLeft(
+          //       this.$refs.viewport,
+          //       this.bookLocation.pageIndex * viewport.clientWidth,
+          //       'rtl'
+          //     );
+
+          //     break;
+          // }
+          console.log(action, viewport.scrollWidth, getNormalizedScrollLeft(viewport, 'rtl'))
           switch (action) {
+            
             case 'prev':
               console.log('row, prev', this.bookLocation.pageIndex);
               if (this.bookLocation.pageIndex < 1) {
@@ -966,14 +1033,12 @@ export default {
                 this.$store.commit('setBookLocation', this.bookLocation);
               }
               // 總頁數 - (目前頁數：index) * viewport
-              viewport.scrollLeft =
-                (this.bookLocation.pages - this.bookLocation.pageIndex - 1) *
-                viewport.clientWidth;
+              setNormalizedScrollLeft(viewport, (this.bookLocation.pages - this.bookLocation.pageIndex - 1) * viewport.clientWidth, 'rtl');
               break;
 
             case 'next':
               if (
-                viewport.scrollWidth - viewport.scrollLeft ===
+                viewport.scrollWidth - getNormalizedScrollLeft(viewport, 'rtl') ===
                 viewport.scrollWidth
               ) {
                 console.log(`最後一頁，要換section`);
@@ -984,11 +1049,17 @@ export default {
               this.bookLocation.pageIndex += 1;
               this.$store.commit('setBookLocation', this.bookLocation);
 
-              viewport.scrollLeft =
-                (this.bookLocation.pages - this.bookLocation.pageIndex - 1) *
-                viewport.clientWidth;
+              // viewport.scrollLeft =
+              //   (this.bookLocation.pages - this.bookLocation.pageIndex - 1) *
+              //   viewport.clientWidth;
+              console.log(this.bookLocation.pages,' - ',this.bookLocation.pageIndex ,'- 1) * ', viewport.clientWidth);
+
+
+              
+              setNormalizedScrollLeft(viewport, (this.bookLocation.pages - this.bookLocation.pageIndex - 1) * viewport.clientWidth, 'rtl');
+
               console.log(
-                `換頁數：定位${viewport.scrollLeft} = (${
+                `換頁數：定位${getNormalizedScrollLeft(viewport, 'rtl')} = (${
                   this.bookLocation.pages
                 } - ${this.bookLocation.pageIndex} - 1) * ${
                   viewport.clientWidth
@@ -998,16 +1069,6 @@ export default {
               break;
           }
         }
-
-        // function pagePlus() {
-        //   this.bookLocation.pageIndex += 1;
-        //   this.$store.commit('setBookLocation', this.bookLocation);
-        // }
-
-        // function pageMinus() {
-        //   this.bookLocation.pageIndex -= 1;
-        //   this.$store.commit('setBookLocation', this.bookLocation);
-        // }
 
         return;
       });
@@ -1023,16 +1084,16 @@ export default {
       let pageIndex = this.bookLocation.pageIndex;
       let page = this.bookLocation.pageIndex + 1;
 
-      console.log(`
-        改變前：
-        chapters: ${chapters} \n
-        chapterIndex: ${chapterIndex} \n
-        sections: ${sections} \n
-        sectionIndex: ${sectionIndex} \n
-        pages: ${pages} \n
-        pageIndex: ${pageIndex} \n
-        page: ${page} \n
-      `);
+      // console.log(`
+      //   改變前：
+      //   chapters: ${chapters} \n
+      //   chapterIndex: ${chapterIndex} \n
+      //   sections: ${sections} \n
+      //   sectionIndex: ${sectionIndex} \n
+      //   pages: ${pages} \n
+      //   pageIndex: ${pageIndex} \n
+      //   page: ${page} \n
+      // `);
 
       if (action === 'prev') {
         if (pageIndex === 0) {
@@ -1061,6 +1122,7 @@ export default {
         if (page === pages) {
           // 在該 section 最後一頁
           // reset word container's height
+          console.log('在該 section 最後一頁');
           this.bookLocation.newContentHeight = 0;
           this.$store.commit('setBookLocation', this.bookLocation);
 
@@ -1084,16 +1146,16 @@ export default {
         }
       }
 
-      console.log(`
-        改變後：
-        chapters: ${chapters} \n
-        chapterIndex: ${chapterIndex} \n
-        sections: ${sections} \n
-        sectionIndex: ${sectionIndex} \n
-        pages: ${pages} \n
-        pageIndex: ${pageIndex} \n
-        page: ${page} \n
-      `);
+      // console.log(`
+      //   改變後：
+      //   chapters: ${chapters} \n
+      //   chapterIndex: ${chapterIndex} \n
+      //   sections: ${sections} \n
+      //   sectionIndex: ${sectionIndex} \n
+      //   pages: ${pages} \n
+      //   pageIndex: ${pageIndex} \n
+      //   page: ${page} \n
+      // `);
     },
     changeContent(action) {
       let addContent = this.$store.getters.getBookContent;
