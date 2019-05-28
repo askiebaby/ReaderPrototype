@@ -111,8 +111,7 @@ export default {
         cookiesArray[this.taskIndex] = this.CookiesData;
         this.$cookies.set(this.id, JSON.stringify(cookiesArray));
       }
-      const id = this.id;
-      this.$router.push({ name: 'finishTask', params: { id } });
+      this.$router.push({ name: 'tasks' });
     }
   }
 };

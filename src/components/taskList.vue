@@ -182,7 +182,7 @@ export default {
       return () => {
         const result = this.isFinish(id);
         let idToRouter = result
-          ? { name: 'finishTask', params: { id } }
+          ? { name: 'tasks' }
           : { name: 'login', params: { id } };
         this.$router.push(idToRouter);
       };

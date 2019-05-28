@@ -71,8 +71,7 @@ export default {
       return false;
     },
     backHome() {
-      const id = this.id;
-      this.$router.push({ name: 'finishTask', params: { id } });
+      this.$router.push({ name: 'home' });
     },
     nextPage(taskIndex) {
       if (this.isFinish(taskIndex)) {
