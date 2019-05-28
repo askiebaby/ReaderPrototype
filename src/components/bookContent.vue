@@ -1127,10 +1127,11 @@ export default {
       this.nowWordsCount = this.bookContent.content.length;
     },
     touchStart(e, i) {
-      if (e.target.parentElement.className.length > 0) {
-        this.clearSelected();
-        return;
-      }
+      this.clearSelected();
+      // if (e.target.parentElement.className.length > 0) {
+      //   this.clearSelected();
+      //   return;
+      // }
       if (!this.isBetween(i)) {
         this.selected.start = i;
         this.selected.end = i;
@@ -1171,7 +1172,6 @@ export default {
           } else {
             this.tooltipPosition.x = averageX - 196;
           }
-          console.log('1561', this.tooltipPosition);
         } else {
           if (maxX > 627) {
             this.tooltipPosition.x = 476;
@@ -1217,9 +1217,12 @@ export default {
         changedTouch.clientX,
         changedTouch.clientY
       );
-      // if (!target.parentElement.classList.contains('book__content__realbook')) {
-      //   this.selectAlreadyNote = true;
-      // }
+      if (
+        target.parentElement.className &&
+        target.parentElement.className != 'book__content__realbook'
+      ) {
+        this.selectAlreadyNote = true;
+      }
       if (this.selected.start >= 0) {
         const charEnd = parseInt(target.getAttribute('index'));
         this.selected.end = charEnd;
