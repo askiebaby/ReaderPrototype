@@ -64,7 +64,7 @@ export const store = new Vuex.Store({
       },
       {
         description: [
-          '請找到第2章節"走出舒適區的重要性"中的一段話："對於這種現象，技術上...行動的趨勢"。',
+          '請找到第2章節"走出舒適區的重要性"中的一段話："如果進行鍛鍊，人們的...原來的模樣"。',
           '將此段話附上註解，註解內容為：體內平衡。',
           '用evernote分享此段落。',
           '請刪除“體內平衡”的註解。'
@@ -73,8 +73,8 @@ export const store = new Vuex.Store({
           {
             chapterIndex: 3,
             sectionIndex: 3,
-            textStart: 251,
-            textEnd: 356
+            textStart: 176,
+            textEnd: 251
           },
           { task: 3, comment: '體內平衡' },
           { task: 3 },
