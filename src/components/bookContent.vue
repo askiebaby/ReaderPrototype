@@ -244,7 +244,7 @@
     &__content {
       direction: rtl;
       writing-mode: tb-rl;
-      margin-right: 10px;
+      margin-right: 5px;
       height: 745px;
       &__realbook {
         direction: ltr;
@@ -320,7 +320,7 @@ export default {
           fontSize: '16',
           line: {
             column: '26',
-            row: '21'
+            row: '20'
           }
         },
         {
