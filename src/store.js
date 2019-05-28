@@ -26,7 +26,7 @@ export const store = new Vuex.Store({
       sections: 0,
       pageIndex: 0,
       pages: 1,
-      newContentHeight: ''
+      newViewportValue: ''
     },
     notes: [],
     target: [
