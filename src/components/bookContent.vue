@@ -1193,23 +1193,68 @@ export default {
       }
     },
     touchEnd() {
-      const averageX =
-        (this.selectPosition.start.x + this.selectPosition.end.x) / 2;
+      const directions = this.$store.getters.getDirections;
+      const fontSize = this.fontLevels[this.sizeLevel].fontSize;
+      const minX = Math.min(
+        this.selectPosition.start.x,
+        this.selectPosition.end.x
+      );
+      const maxX = Math.max(
+        this.selectPosition.start.x,
+        this.selectPosition.end.x
+      );
       const minY = Math.min(
         this.selectPosition.start.y,
         this.selectPosition.end.y
       );
-      //扣除字體以及tooltip高度
-      this.tooltipPosition.y =
-        minY - this.fontLevels[this.sizeLevel].fontSize - 42;
-      //扣除tooltip一半的寬度
-      if (averageX - 196 <= 0) {
-        this.tooltipPosition.x = 72;
-      } else if (averageX + 196 >= 695) {
-        this.tooltipPosition.x = 695 - 392;
+      const maxY = Math.max(
+        this.selectPosition.start.y,
+        this.selectPosition.end.y
+      );
+
+      if (directions.words == 'column') {
+        if (directions.functions == 'column') {
+          const averageX =
+            (this.selectPosition.start.x + this.selectPosition.end.x) / 2;
+          //扣除字體以及tooltip高度
+          this.tooltipPosition.y = minY - fontSize - 42;
+          //扣除tooltip一半的寬度
+          if (averageX - 196 <= 0) {
+            this.tooltipPosition.x = 72;
+          } else if (averageX + 196 >= 695) {
+            this.tooltipPosition.x = 695 - 392;
+          } else {
+            this.tooltipPosition.x = averageX - 196;
+          }
+        } else {
+          if (maxX > 627) {
+            this.tooltipPosition.x = 476;
+          } else {
+            this.tooltipPosition.x = maxX - 154;
+          }
+          if (maxY < 392) {
+            this.tooltipPosition.y = 367;
+          } else if (maxY > 650) {
+            this.tooltipPosition.y = 650;
+          } else {
+            this.tooltipPosition.y = this.selectPosition.end.y + fontSize;
+          }
+        }
       } else {
-        this.tooltipPosition.x = averageX - 196;
+        if (directions.functions == 'column') {
+          console.log(this.selectPosition);
+          if (minX < 196 - fontSize) {
+            this.tooltipPosition.x = minX;
+          } else {
+            this.tooltipPosition.x = minX - 196 + fontSize / 2;
+          }
+          this.tooltipWordsRows(maxY);
+        } else {
+          this.tooltipPosition.x = minX - 196 - fontSize;
+          this.tooltipWordsRows(maxY);
+        }
       }
+
       if (this.selectAlreadyNote) {
         return;
       }
@@ -1232,8 +1277,8 @@ export default {
       if (this.selected.start >= 0) {
         const charEnd = parseInt(target.getAttribute('index'));
         this.selected.end = charEnd;
-        this.selectPosition.end.x = changedTouch.clientX;
-        this.selectPosition.end.y = changedTouch.clientY;
+        this.selectPosition.end.x = target.getBoundingClientRect().x;
+        this.selectPosition.end.y = target.getBoundingClientRect().y;
       }
     },
     clearSelected() {
@@ -1246,6 +1291,15 @@ export default {
       let min = Math.min(this.selected.start, this.selected.end);
       let max = Math.max(this.selected.start, this.selected.end);
       return index >= min && index <= max;
+    },
+    tooltipWordsRows(maxY) {
+      if (this.selectPosition.start.x < this.selectPosition.end.x) {
+        this.tooltipPosition.y = this.selectPosition.start.y ;
+      } else if ((this.selectPosition.start.x = this.selectPosition.end.x)) {
+        this.tooltipPosition.y = maxY + 42;
+      } else {
+        this.tooltipPosition.y = this.selectPosition.end.y ;
+      }
     }
   }
 };
