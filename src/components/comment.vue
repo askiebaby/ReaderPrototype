@@ -12,7 +12,12 @@
           <p>
             {{ getNote.text }}
           </p>
-          <div ref="noteComment" contenteditable="false" class="comment__textarea" @click="contentConsole">
+          <div
+            ref="noteComment"
+            contenteditable="false"
+            class="comment__textarea"
+            @click="contentConsole"
+          >
             {{ getNote.comment }}
           </div>
           <span class="memo__submit" @click="updateComment">完成</span>
@@ -195,7 +200,10 @@
     }
   }
 }
-[contenteditable] { -webkit-user-select: text; user-select: text; }
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
 </style>
 
 <script>
@@ -216,7 +224,7 @@ export default {
   computed: {
     getNote() {
       const note = this.$store.getters.getNotes[this.notesIndex];
-      if (note == undefined) {
+      if (!note) {
         return { text: '', comment: '' };
       }
       return {
@@ -254,7 +262,7 @@ export default {
         this.updateCommentFn(false);
         return;
       }
-      if (task[2] == undefined) {
+      if (!task[2]) {
         this.updateCommentFn(false);
         return;
       }

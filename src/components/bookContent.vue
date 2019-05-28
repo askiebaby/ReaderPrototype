@@ -550,7 +550,7 @@ export default {
       }
       this.clearSelected();
       this.isShowComment = state.showComment;
-      if (state.showComplete == true) {
+      if (state.showComplete) {
         setTimeout(() => {
           this.isShowComplete = true;
         }, 3000);
@@ -560,7 +560,7 @@ export default {
       if (this.task.length <= 0) {
         return;
       }
-      if (this.task[0] == undefined) {
+      if (!this.task[0]) {
         return;
       }
       if (this.task[0].time.length != 1) {
@@ -647,7 +647,7 @@ export default {
         if (this.task.length <= 0) {
           return;
         }
-        if (this.task[1] != undefined) {
+        if (this.task[1]) {
           if (this.task[1].time.length == 1 && color == step2_1.css) {
             this.$store.commit('setTask', 1);
             // console.log('8522256', this.$store.getters.getTask);
@@ -681,7 +681,7 @@ export default {
       if (this.task.length <= 0) {
         return obj;
       }
-      if (this.task[1] == undefined) {
+      if (!this.task[1]) {
         return obj;
       }
       if (this.task[1].time.length != 1) {
@@ -706,7 +706,7 @@ export default {
     },
     checkFinishStep3_1(obj) {
       const step = this.$store.getters.getTarget[2].step[0];
-      if (this.task[2] == undefined) {
+      if (!this.task[2]) {
         return obj;
       }
       if (this.task[2].time.length != 1) {
@@ -1136,7 +1136,7 @@ export default {
       } else {
         this.tooltipPosition.x = averageX - 196;
       }
-      if (this.selectAlreadyNote == true) {
+      if (this.selectAlreadyNote) {
         return;
       }
       if (this.selected.start > 0 && this.selected.end > 0) {

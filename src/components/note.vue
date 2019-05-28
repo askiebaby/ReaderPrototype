@@ -328,7 +328,7 @@ export default {
       console.log('qwew', e);
       this.resetTooltip();
       this.notesIndex = e.index;
-      if (e.taskIndex != undefined) {
+      if (e.taskIndex) {
         this.$emit('taskIndex', e.taskIndex);
         setTimeout(() => {
           this.taskIndex = e.taskIndex;
@@ -383,7 +383,7 @@ export default {
       if (task.length <= 0) {
         return;
       }
-      if (task[1] == undefined) {
+      if (!task[1]) {
         return;
       }
       if (task[1].time.length != 3) {

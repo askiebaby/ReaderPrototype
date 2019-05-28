@@ -172,7 +172,7 @@ export default {
       if (this.task.length <= 0) {
         return;
       }
-      if (this.task[0] == undefined) {
+      if (!this.task[0]) {
         return;
       }
       if (this.task[0].time.length != 3) {

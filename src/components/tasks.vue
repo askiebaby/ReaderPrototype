@@ -62,10 +62,10 @@ export default {
   methods: {
     isFinish(n) {
       const cookiesArrary = JSON.parse(this.$cookies.get(this.id));
-      if (cookiesArrary == null) {
+      if (!cookiesArrary) {
         return false;
       }
-      if (cookiesArrary[n - 1] != null) {
+      if (cookiesArrary[n - 1]) {
         return true;
       }
       return false;

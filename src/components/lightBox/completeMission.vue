@@ -103,8 +103,8 @@ export default {
   methods: {
     backToTasks(isFinish) {
       let cookiesArray = [];
-      if (isFinish === true) {
-        if (this.$cookies.get(this.id) != null) {
+      if (isFinish) {
+        if (this.$cookies.get(this.id)) {
           cookiesArray = JSON.parse(this.$cookies.get(this.id));
         }
         // console.log('54654', cookiesArray);

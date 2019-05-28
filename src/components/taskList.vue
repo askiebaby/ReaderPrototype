@@ -164,11 +164,11 @@ export default {
     isFinish(id) {
       let result = true;
       const cookiesArray = JSON.parse(this.$cookies.get(id));
-      if (cookiesArray == undefined) {
+      if (!cookiesArray) {
         result = false;
         return result;
       }
-      if (cookiesArray.length == 0) {
+      if (cookiesArray.filter(n => n).length === 0) {
         result = false;
       }
       return result;
