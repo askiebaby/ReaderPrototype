@@ -252,6 +252,9 @@
         margin-bottom: 2px;
       }
     }
+    &__lightness {
+      transform: rotate(180deg);
+    }
   }
 }
 </style>
