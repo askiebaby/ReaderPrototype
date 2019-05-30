@@ -15,15 +15,9 @@
       @showComment="showComment($event)"
       @showShareUI="showShareUI($event)"
     ></tooltip>
-    <share
-      v-if="isShowShare"
-      :notes-index="selectedNoteIndex"
-      @showShareUI="showShareUI($event)"
-    ></share>
+    <share v-if="isShowShare" :notes-index="selectedNoteIndex" @showShareUI="showShareUI($event)"></share>
     <div class="book" @click="changePage">
-      <h2 class="book__chapter">
-        {{ bookContent.chapter }} {{ bookContent.h1title }}
-      </h2>
+      <h2 class="book__chapter">{{ bookContent.chapter }} {{ bookContent.h1title }}</h2>
       <div ref="viewport" class="book__content">
         <div ref="bookContainer" class="book__content__realbook">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
@@ -42,15 +36,12 @@
                 v-touch:end="touchEnd"
                 :index="g.boundary + j"
                 :class="hightLight(g.boundary + j)"
-                >{{ c }}</span
-              >
+              >{{ c }}</span>
             </span>
           </p>
         </div>
       </div>
-      <div class="page">
-        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
-      </div>
+      <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁</div>
     </div>
   </div>
 </template>
@@ -612,22 +603,62 @@ export default {
       if (notesIndex != undefined) {
         this.selectedNoteIndex = notesIndex;
         this.clearSelected();
-        const partPosition = e.target.parentElement.getBoundingClientRect();
         this.selectedPartColor = e.target.parentElement.className.split('-')[0];
         this.$store.commit('changeTooltipColor', this.selectedPartColor);
-        if (partPosition.left < 196 && partPosition.width <= 392) {
-          this.tooltipPosition.x = 72;
-        } else if (partPosition.left + 392 > 695) {
-          this.tooltipPosition.x = 695 - 392;
+        const partStartX = e.target.parentElement.firstChild.getBoundingClientRect()
+          .x;
+        const partEndX = e.target.parentElement.lastChild.getBoundingClientRect()
+          .x;
+        const partStartY = e.target.parentElement.firstChild.getBoundingClientRect()
+          .y;
+        const partEndY = e.target.parentElement.lastChild.getBoundingClientRect()
+          .y;
+        const averageX = (partStartX + partEndX) / 2;
+        const directions = this.$store.getters.getDirections;
+        const fontSize = Number(this.fontLevels[this.sizeLevel].fontSize);
+        if (directions.words == 'column') {
+          if (directions.functions == 'column') {
+            this.tooltipPosition.y = partStartY - 42 - fontSize;
+            if (averageX - 196 <= 0) {
+              this.tooltipPosition.x = 72;
+            } else if (averageX + 196 >= 695) {
+              this.tooltipPosition.x = 695 - 392;
+            } else {
+              this.tooltipPosition.x = averageX - 196;
+            }
+          } else {
+            this.tooltipPosition.x = partEndX - 196 + 72;
+            this.tooltipPositionY(partEndY, fontSize);
+          }
         } else {
-          this.tooltipPosition.x =
-            partPosition.left + partPosition.width / 2 - 196;
+          if (directions.functions == 'column') {
+            if (partEndX - 196 <= 0) {
+              this.tooltipPosition.x = 112;
+            } else if (partEndX + 196 >= 574) {
+              this.tooltipPosition.x = 574 - 392 + 42;
+            } else {
+              this.tooltipPosition.x = partEndX - 196 + fontSize + fontSize / 2;
+            }
+
+            this.tooltipPosition.y = partEndY + 42;
+          } else {
+            this.tooltipPosition.x = partEndX - 196 - fontSize - fontSize / 2;
+            this.tooltipPositionY(partEndY, fontSize);
+          }
         }
-        this.tooltipPosition.y =
-          partPosition.top - 42 - this.fontLevels[this.sizeLevel].fontSize;
         this.isShowTooltip = true;
       } else {
         this.selectedNoteIndex = -1;
+      }
+    },
+    tooltipPositionY(partEndY, fontSize) {
+      if (partEndY - 196 <= 0) {
+        console.log('sscsc', partEndY);
+        this.tooltipPosition.y = 112 + 196 - fontSize;
+      } else if (partEndY + 196 > 822) {
+        this.tooltipPosition.y = 822 - 196 + fontSize;
+      } else {
+        this.tooltipPosition.y = partEndY;
       }
     },
     changeColor(color) {
@@ -1188,7 +1219,6 @@ export default {
         }
       } else {
         if (directions.functions == 'column') {
-          console.log(this.selectPosition);
           if (minX < 196 - fontSize) {
             this.tooltipPosition.x = minX;
           } else {
@@ -1235,6 +1265,7 @@ export default {
       this.isShowTooltip = false;
       this.selected.start = -1;
       this.selected.end = -1;
+      this.tooltipPosition = { x: 0, y: 0 };
     },
     isBetween(index) {
       let min = Math.min(this.selected.start, this.selected.end);
