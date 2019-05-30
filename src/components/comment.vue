@@ -34,6 +34,7 @@
 .comment {
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 1;
   display: flex;
   align-content: center;
@@ -123,7 +124,7 @@
     @include lines(4);
   }
 }
-.functions-row {
+.words-row {
   .comment {
     &__container {
       width: 55%;
@@ -167,6 +168,7 @@
       max-width: 7em;
       min-width: auto;
       overflow: hidden;
+      text-align: justify;
     }
     &__textarea {
       max-width: 173px;
@@ -199,10 +201,6 @@
       }
     }
   }
-}
-[contenteditable] {
-  -webkit-user-select: text;
-  user-select: text;
 }
 </style>
 

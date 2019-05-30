@@ -115,6 +115,7 @@
     &__close {
       flex-basis: 40px;
       margin-top: 5px;
+      cursor: pointer;
     }
     &__title {
       flex-grow: 1;
@@ -171,7 +172,7 @@
 .green-pen {
   background-color: $green-pen;
 }
-.functions-row {
+.words-row {
   .notes {
     &__all {
       display: flex;

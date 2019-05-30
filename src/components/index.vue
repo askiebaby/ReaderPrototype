@@ -135,7 +135,7 @@
     }
   }
 }
-.functions-row {
+.words-row {
   .index {
     &__container {
       margin-left: auto;
@@ -159,7 +159,11 @@
       position: relative;
       padding-left: 0;
       min-width: 2.8em;
-      flex: 0 0 auto;
+      flex: 1 0 auto;
+      &:nth-child(1), &:nth-child(2) {
+        min-width: 45px;
+        max-width: 45px;
+      }
     }
 
     &__chapterName {
@@ -180,6 +184,7 @@
       padding-right: 0;
       .index__section__list {
         padding-left: 0;
+        min-width: 45px;
         
         .index__sectionName {
           padding-top: 120px;

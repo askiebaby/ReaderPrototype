@@ -94,8 +94,8 @@ body {
   &__bottom {
     .arrow {
       position: absolute;
-      left: 50%;
-      bottom: -15px;
+      // left: 50%;
+      // bottom: -15px;
       width: 70px;
       height: 16px;
       margin-left: -35px;
@@ -198,6 +198,85 @@ body {
     }
   }
 }
+
+// 文直功能直
+.words-row.functions-row {
+  // 內文
+  .tooltip {
+    .arrow {
+      left: 50%;
+      bottom: -15px;
+    }
+  }
+  // 筆記庫
+  .note__tooltip {
+    .arrow {
+      left: 27px;
+    }
+  }
+}
+
+// TODO 文直功能橫
+.words-row.functions-column {
+  // 內文
+  .tooltip {
+    .arrow {
+      left: 50%;
+      bottom: auto;
+      transform: rotate(180deg);
+      top: -15px;
+    }
+  }
+  // 筆記庫
+  .note__tooltip {
+    .arrow {
+      left: auto;
+      right: -8px;
+    }
+  }
+}
+// 文橫功能直 
+.words-column.functions-row {
+  // 內文
+  .tooltip {
+    .arrow {
+      transform: rotate(180deg);
+      bottom: auto;
+      top: -15px;
+    }
+  }
+  // 筆記庫
+  .note__tooltip {
+    .arrow {
+      left: 27px;
+      transform: rotate(0);
+      bottom: -15px;
+      top: auto;
+    }
+  }
+}
+
+// 文橫功能橫
+.words-column.functions-column {
+  // 內文
+  .tooltip {
+    .arrow {
+      left: 50%;
+      bottom: -15px;
+    }
+  }
+  // 筆記庫
+  .note__tooltip {
+    .arrow {
+      top: -15px;
+      transform: rotate(180deg);
+      left: auto;
+      right: -8px;
+    }
+  }
+}
+
+
 
 .note__tooltip {
   min-width: 350px;
