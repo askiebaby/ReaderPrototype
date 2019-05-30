@@ -27,7 +27,10 @@
     if (evt.touches.length > 1 || zoom !== 1) {
       return;
     }
-
+    if (evt.touches[0].touchType === 'stylus') {
+      // if device is an apple pencil
+      return;
+    }
     // Check all parent elements for scrollability
     while (el !== document.body && el !== document) {
       // Get some style properties
@@ -77,7 +80,7 @@
     }
 
     // Stop the bouncing -- no parents are scrollable
-    evt.preventDefault();
+    evt.preventDefault(); // 這一行
   };
 
   var handleTouchstart = function(evt) {
@@ -148,4 +151,4 @@
     // Browser support
     global.iNoBounce = iNoBounce;
   }
-})(this);
+})(window);

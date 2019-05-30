@@ -278,12 +278,18 @@ import {
   getNormalizedScrollLeft,
   setNormalizedScrollLeft
 } from 'normalize-scroll-left';
+import Vue from 'vue';
+import Vue2TouchEvents from 'vue2-touch-events';
 import completeMission from './lightBox/completeMission.vue';
 import documentContent from '@/assets/document.json';
 import webFont from '@/assets/webfont.js';
 import tooltip from './tooltip.vue';
 import comment from './comment.vue';
 import share from './share.vue';
+
+Vue.use(Vue2TouchEvents, {
+  longTapTimeInterval: 500
+});
 
 export default {
   components: {

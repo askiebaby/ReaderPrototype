@@ -71,7 +71,7 @@ body {
   position: absolute;
   min-width: 393px;
   max-width: 393px;
-  user-select: none;
+  // user-select: none;
   z-index: 1;
 
   &__wrapper {

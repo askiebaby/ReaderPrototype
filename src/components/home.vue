@@ -31,6 +31,17 @@ export default {
       directions: ['column', 'row']
     };
   },
-  methods: {}
+  mounted (){
+    var body = document.querySelector('.wholeTask');
+    body.addEventListener('touchstart', function(evt){
+      // should be either "stylus" or "direct"
+      console.log(evt.touches[0].touchType);
+    });
+  },
+  methods: {
+    // touchType () {
+      
+    // }
+  }
 };
 </script>
