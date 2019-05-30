@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="tooltip__bottom">
-          <div class="arrow"></div>
+          <div class="arrow opposite-side"></div>
         </div>
       </div>
     </div>
@@ -204,8 +204,8 @@ body {
   // 內文
   .tooltip {
     .arrow {
-      left: 50%;
       bottom: -15px;
+      left: 50%;
     }
   }
   // 筆記庫
@@ -213,45 +213,62 @@ body {
     .arrow {
       left: 27px;
     }
+    .opposite-side {
+      transform: rotate(180deg);
+      top: -15px;
+      bottom: auto;
+    }
   }
 }
 
-// TODO 文直功能橫
+// 文直功能橫
 .words-row.functions-column {
   // 內文
   .tooltip {
     .arrow {
-      left: 50%;
-      bottom: auto;
       transform: rotate(180deg);
       top: -15px;
+      bottom: auto;
+      left: 50%;
     }
   }
   // 筆記庫
   .note__tooltip {
     .arrow {
-      left: auto;
       right: -8px;
+      left: auto;
+    }
+    .opposite-side {
+      right: auto;
+      left: 24px;
     }
   }
 }
-// 文橫功能直 
+
+// 文橫功能直
 .words-column.functions-row {
   // 內文
   .tooltip {
     .arrow {
       transform: rotate(180deg);
-      bottom: auto;
       top: -15px;
+      bottom: auto;
+      left: 50%;
     }
   }
   // 筆記庫
   .note__tooltip {
     .arrow {
-      left: 27px;
       transform: rotate(0);
-      bottom: -15px;
       top: auto;
+      right: -12px;
+      bottom: -15px;
+      left: auto;
+    }
+    // 特定筆數，需要將箭頭定位到同一邊的反方向位置
+    .opposite-side {
+      right: auto;
+      left: 27px;
     }
   }
 }
@@ -272,6 +289,12 @@ body {
       transform: rotate(180deg);
       left: auto;
       right: -8px;
+    }
+    // 特定筆數，需要將箭頭定位到同一邊的反方向位置
+    .opposite-side {
+      transform: rotate(0);
+      top: auto;
+      bottom: -15px;
     }
   }
 }

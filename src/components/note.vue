@@ -214,14 +214,14 @@
       flex-shrink: 0;
       max-height: 700px;
       height: 100%;
-      text-align: justify;
+      width: fit-content;
+      writing-mode: vertical-rl;
+      text-align: left;
     }
     &__sentence {
       margin: 0;
       max-width: 4.5em;
-      width: fit-content;
       font-weight: 600;
-      direction: rtl;
     }
     &__memo {
       margin-right: 13px;
@@ -230,9 +230,7 @@
       padding-top: 13px;
       padding-left: 0;
       max-width: 3em;
-      width: fit-content;
       font-weight: 300;
-      direction: ltr;
     }
     &__actionButton {
       position: absolute;
