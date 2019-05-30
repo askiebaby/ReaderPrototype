@@ -126,6 +126,23 @@ export const store = new Vuex.Store({
     },
     getChineseOrder: state => {
       return state.chineseOrder;
+    },
+    getTooltipStyle: state => {
+      let result = [];
+      if (state.directions.words == 'column') {
+        if (state.directions.functions == 'column') {
+          result = ['words-column', 'functions-column'];
+        } else {
+          result = ['words-column', 'functions-row'];
+        }
+      } else {
+        if (state.directions.functions == 'column') {
+          result = ['words-row', 'functions-column'];
+        } else {
+          result = ['words-row', 'functions-row'];
+        }
+        return result;
+      }
     }
   },
   mutations: {

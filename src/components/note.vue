@@ -343,17 +343,39 @@ export default {
       this.isShowTooltip = false;
     },
     selectedNote(e, index, color) {
-      const directions = this.$store.getters.getDirections.functions;
-      if (directions == 'column') {
-        this.tooltipPosition = {
-          x: 303,
-          y: e.target.getBoundingClientRect().top + 50
-        };
+      const directions = this.$store.getters.getDirections;
+      if (directions.words == 'column') {
+        if (directions.functions == 'column') {
+          this.tooltipPosition = {
+            x: 303,
+            y: e.target.getBoundingClientRect().top + 50
+          };
+        } else {
+          let y = e.target.getBoundingClientRect().top + 137;
+          if (index > 4) {
+            y = e.target.getBoundingClientRect().top - 168;
+          }
+          this.tooltipPosition = {
+            x: 400,
+            y: y
+          };
+        }
       } else {
-        this.tooltipPosition = {
-          x: e.target.getBoundingClientRect().left - 327,
-          y: 755
-        };
+        if (directions.functions == 'column') {
+          let x = e.target.getBoundingClientRect().left - 428;
+          if (index > 2) {
+            x = e.target.getBoundingClientRect().left - 129;
+          }
+          this.tooltipPosition = {
+            x: x,
+            y: 960
+          };
+        } else {
+          this.tooltipPosition = {
+            x: e.target.getBoundingClientRect().left - 327,
+            y: 761
+          };
+        }
       }
 
       this.$store.commit('changeTooltipColor', color.split('-')[0]);
