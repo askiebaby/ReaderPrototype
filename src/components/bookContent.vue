@@ -15,9 +15,15 @@
       @showComment="showComment($event)"
       @showShareUI="showShareUI($event)"
     ></tooltip>
-    <share v-if="isShowShare" :notes-index="selectedNoteIndex" @showShareUI="showShareUI($event)"></share>
+    <share
+      v-if="isShowShare"
+      :notes-index="selectedNoteIndex"
+      @showShareUI="showShareUI($event)"
+    ></share>
     <div class="book" @click="changePage">
-      <h2 class="book__chapter">{{ bookContent.chapter }} {{ bookContent.h1title }}</h2>
+      <h2 class="book__chapter">
+        {{ bookContent.chapter }} {{ bookContent.h1title }}
+      </h2>
       <div ref="viewport" class="book__content">
         <div ref="bookContainer" class="book__content__realbook">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
@@ -36,12 +42,15 @@
                 v-touch:end="touchEnd"
                 :index="g.boundary + j"
                 :class="hightLight(g.boundary + j)"
-              >{{ c }}</span>
+                >{{ c }}</span
+              >
             </span>
           </p>
         </div>
       </div>
-      <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁</div>
+      <div class="page">
+        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+      </div>
     </div>
   </div>
 </template>
@@ -653,7 +662,6 @@ export default {
     },
     tooltipPositionY(partEndY, fontSize) {
       if (partEndY - 196 <= 0) {
-        console.log('sscsc', partEndY);
         this.tooltipPosition.y = 112 + 196 - fontSize;
       } else if (partEndY + 196 > 822) {
         this.tooltipPosition.y = 822 - 196 + fontSize;
@@ -705,6 +713,7 @@ export default {
         comment: '',
         task: 0
       };
+      console.log('scsc', obj);
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
       addObj = this.checkFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
@@ -1234,7 +1243,7 @@ export default {
       if (this.selectAlreadyNote) {
         return;
       }
-      if (this.selected.start > 0 && this.selected.end > 0) {
+      if (this.selected.start >= 0 && this.selected.end >= 0) {
         this.selectedNoteIndex = -1;
         this.selectedPartColor = '';
         this.$store.commit('changeTooltipColor', this.selectedPartColor);
