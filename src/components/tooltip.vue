@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$store.getters.getTooltipStyle">
     <div
       :class="['tooltip', { note__tooltip: !isShowIcon }]"
       data-tooltip
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="tooltip__bottom">
-          <div class="arrow opposite-side"></div>
+          <div :class="['arrow', { 'opposite-side': showOppositeSide }]"></div>
         </div>
       </div>
     </div>
@@ -299,8 +299,6 @@ body {
   }
 }
 
-
-
 .note__tooltip {
   min-width: 350px;
   max-width: 350px;
@@ -361,6 +359,20 @@ export default {
     };
   },
   computed: {
+    showOppositeSide() {
+      let result = false;
+      if (
+        (this.$store.getters.getDirections.words == 'column' &&
+          this.$store.getters.getDirections.functions == 'row' &&
+          this.notesIndex > 4) ||
+        (this.$store.getters.getDirections.words == 'row' &&
+          this.$store.getters.getDirections.functions == 'column' &&
+          this.notesIndex > 2)
+      ) {
+        result = true;
+      }
+      return result;
+    },
     isShowIcon() {
       return this.fromContent;
     },

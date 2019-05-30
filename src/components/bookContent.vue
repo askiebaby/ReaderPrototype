@@ -1222,7 +1222,7 @@ export default {
           if (maxX > 627) {
             this.tooltipPosition.x = 476;
           } else {
-            this.tooltipPosition.x = maxX - 154;
+            this.tooltipPosition.x = maxX - 140;
           }
           if (maxY < 392) {
             this.tooltipPosition.y = 367;
@@ -1236,8 +1236,10 @@ export default {
         if (directions.functions == 'column') {
           if (minX < 196 - fontSize) {
             this.tooltipPosition.x = minX;
+          } else if (minX + 196 >= 574) {
+            this.tooltipPosition.x = 225;
           } else {
-            this.tooltipPosition.x = minX - 196 + fontSize / 2;
+            this.tooltipPosition.x = minX - 178;
           }
           this.tooltipWordsRows(maxY);
         } else {
@@ -1294,6 +1296,11 @@ export default {
         this.tooltipPosition.y = maxY + 42;
       } else {
         this.tooltipPosition.y = this.selectPosition.end.y;
+      }
+      if (this.tooltipPosition.y + 196 >= 830) {
+        this.tooltipPosition.y = 634;
+      } else if (this.tooltipPosition.y - 280 <= 0) {
+        this.tooltipPosition.y = 280;
       }
     }
   }
