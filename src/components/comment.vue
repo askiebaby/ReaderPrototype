@@ -69,6 +69,7 @@
     color: $black-1;
     font-weight: 300;
     outline: none;
+    text-align: justify;
   }
   .memo {
     &__cancel,
@@ -121,6 +122,7 @@
     min-height: 6em;
     font-weight: 500;
     color: $black-1;
+    text-align: justify;
     @include lines(4);
   }
 }
