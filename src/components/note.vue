@@ -95,6 +95,8 @@
     > div {
       &:nth-child(2) {
         padding: 10px 0;
+        overflow-y: scroll;
+        height: calc(100vh - 63px);
       }
     }
   }
