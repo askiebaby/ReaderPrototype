@@ -1126,7 +1126,9 @@ export default {
         this.bookLocation.chapterIndex -= 1;
         this.bookLocation.sectionIndex =
           this.documentContent.books[prevChapterIndex].sections.length - 1;
-        this.bookLocation.sections = this.documentContent.books[prevChapterIndex].sections.length; // 前一 chapter 的 section 的長度
+        this.bookLocation.sections = this.documentContent.books[
+          prevChapterIndex
+        ].sections.length; // 前一 chapter 的 section 的長度
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'nextSection') {
         this.togglePageAction = 'next';
@@ -1256,7 +1258,10 @@ export default {
         this.selectedPartColor = '';
         this.$store.commit('changeTooltipColor', this.selectedPartColor);
         this.isShowTooltip = true;
+        this.selected.start = -1;
+        this.selected.end = -1;
       }
+      this.clearSelected();
     },
     touchMove(e) {
       let changedTouch = e.changedTouches[0];
