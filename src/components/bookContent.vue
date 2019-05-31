@@ -13,12 +13,11 @@
       :notes-index="selectedNoteIndex"
       @changeColor="changeColor($event)"
       @showComment="showComment($event)"
-      @showShareUI="showShareUI($event)"
+      @isShowTooltip="isShowTooltip = $event"
     ></tooltip>
     <share
-      v-if="isShowShare"
+      v-if="$store.state.isShowShare"
       :notes-index="selectedNoteIndex"
-      @showShareUI="showShareUI($event)"
     ></share>
     <div class="book" @click="changePage">
       <h2 class="book__chapter">
@@ -548,11 +547,11 @@ export default {
   },
 
   methods: {
-    showShareUI(event) {
-      this.clearSelected();
-      this.isShowComment = this.isShowComment ? true : false;
-      this.isShowShare = event;
-    },
+    // showShareUI(event) {
+    //   this.clearSelected();
+    //   this.isShowComment = this.isShowComment ? true : false;
+    //   this.isShowShare = event;
+    // },
     async showComment(state) {
       if (this.selectedNoteIndex < 0) {
         await this.changeColor('yellow-pen');

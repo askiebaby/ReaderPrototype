@@ -22,10 +22,7 @@
             <div class="tooltip__function__comment" @click="showComment">
               <img src="@/assets/images/icons/comment.svg" alt="註解" />
             </div>
-            <div
-              class="tooltip__function__share"
-              @click="$emit('showShareUI', true)"
-            >
+            <div class="tooltip__function__share" @click="showShareUI">
               <img src="@/assets/images/icons/share.svg" alt="分享" />
             </div>
             <div v-if="isShowIcon" class="tooltip__function__search">
@@ -387,6 +384,10 @@ export default {
     }
   },
   methods: {
+    showShareUI() {
+      this.$store.commit('toggleShareBubble');
+      this.$emit('isShowTooltip', false);
+    },
     checkFinishStep2_4(checkTask, task) {
       const step = this.$store.getters.getTarget[1].step[3];
       if (!task[1]) {

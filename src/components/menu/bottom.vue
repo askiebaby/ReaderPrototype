@@ -10,7 +10,7 @@
       <li @click="showNotes">
         <img :src="require('@/assets/menu/group.svg')" />
       </li>
-      <li>
+      <li @click="$store.commit('toggleShareBubble')">
         <img :src="require('@/assets/menu/share.svg')" />
       </li>
       <li>
