@@ -69,6 +69,7 @@
   max-width: 768px;
   margin: auto;
   position: relative;
+  user-select: none;
 
   height: 1024px;
   &__fontFamily__ming > div {
