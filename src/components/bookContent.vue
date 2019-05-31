@@ -1121,15 +1121,15 @@ export default {
         };
         this.$store.commit('setBookContent', addContent);
 
+        // 儲存變化
         this.bookLocation.chapterIndex -= 1;
         this.bookLocation.sectionIndex =
           this.documentContent.books[prevChapterIndex].sections.length - 1;
+        this.bookLocation.sections = this.documentContent.books[prevChapterIndex].sections.length; // 前一 chapter 的 section 的長度
         this.$store.commit('setBookLocation', this.bookLocation);
       } else if (action === 'nextSection') {
         this.togglePageAction = 'next';
         let nextChapterIndex = this.bookLocation.chapterIndex;
-        // let lastSectionIndex =
-        //   this.documentContent.books[nextChapterIndex].sections.length - 1;
 
         // 切換 section
         addContent = {
