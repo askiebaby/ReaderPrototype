@@ -10,11 +10,7 @@
         <div class="notes__nav__close" @click="closeNotes">
           <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
         </div>
-        <share
-          v-if="isShowShare"
-          :notes-index="notesIndex"
-          @showShareUI="showShare($event)"
-        ></share>
+        <share v-if="isShowShare" :notes-index="notesIndex"></share>
         <comment
           v-if="isShowComment"
           :notes-index="notesIndex"
@@ -29,7 +25,7 @@
           @afterDelete="afterDelete($event)"
           @changeColor="changeColor($event, notesIndex)"
           @showComment="showComment($event.showComment)"
-          @showShareUI="showShare($event)"
+          @isShowTooltip="isShowTooltip = $event"
         ></tooltip>
         <div class="notes__nav__title">
           <h2>筆記庫</h2>
@@ -290,10 +286,6 @@ export default {
     }
   },
   methods: {
-    showShare(event) {
-      this.isShowShare = event;
-      this.isShowTooltip = !event;
-    },
     showComment(event) {
       this.isShowComment = event;
       this.isShowTooltip = !event;
@@ -370,7 +362,7 @@ export default {
           }
           this.tooltipPosition = {
             x: x,
-            y: 960
+            y: 955
           };
         } else {
           this.tooltipPosition = {
