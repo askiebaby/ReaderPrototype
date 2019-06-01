@@ -342,7 +342,7 @@ export default {
         if (directions.functions == 'column') {
           this.tooltipPosition = {
             x: 303,
-            y: e.target.getBoundingClientRect().top + 50
+            y: e.target.getBoundingClientRect().top + 35
           };
         } else {
           let y = e.target.getBoundingClientRect().top + 137;
@@ -367,7 +367,7 @@ export default {
         } else {
           this.tooltipPosition = {
             x: e.target.getBoundingClientRect().left - 327,
-            y: 761
+            y: 705
           };
         }
       }
