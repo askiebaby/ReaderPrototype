@@ -5,6 +5,7 @@
     <div class="comment__container">
       <form action="">
         <h3>
+          <span class="memo__submit" @click="updateComment">完成</span>
           註解
           <span class="memo__cancel" @click="showComment(false)">取消</span>
         </h3>
@@ -12,15 +13,15 @@
           <p>
             {{ getNote.text }}
           </p>
-          <div
-            ref="noteComment"
-            contenteditable="false"
-            class="comment__textarea"
-            @click="contentConsole"
-          >
-            {{ getNote.comment }}
+          <div class="comment__textarea" @click="contentConsole">
+            <div
+              ref="noteComment"
+              contenteditable="false"
+              class="comment__textarea__realworld"
+            >
+              {{ getNote.comment }}
+            </div>
           </div>
-          <span class="memo__submit" @click="updateComment">完成</span>
         </main>
       </form>
     </div>
@@ -30,6 +31,7 @@
 
 <style lang="scss" scoped>
 @import '@/assets/scss/modules/_words-lines.scss';
+@import '@/assets/scss/modules/_font.scss';
 
 .comment {
   position: fixed;
@@ -64,18 +66,22 @@
     max-height: 173px;
     border: 1px solid $gray-3;
     border-radius: 18px;
-    font-size: 14px;
     padding: 13px;
-    color: $black-1;
     font-weight: 300;
     outline: none;
     text-align: justify;
+    &__realworld {
+      color: $black-1;
+      font-size: $indexSize;
+      outline: 0;
+      height: 7.5em;
+      overflow: hidden;
+    }
   }
   .memo {
     &__cancel,
     &__submit {
       position: absolute;
-      right: 10px;
       font-size: $indexSize;
       padding: 14px 20px;
       font-weight: 500;
@@ -85,12 +91,13 @@
       color: $white;
       top: 3px;
       border-radius: 18px;
+      left: 10px;
     }
     &__submit {
-      color: $black-1;
-      background-color: $white;
+      color: $white;
       padding: 12px 20px;
       bottom: 1px;
+      right: 10px;
     }
   }
   form {
@@ -176,16 +183,20 @@
       max-width: 173px;
       min-width: 173px;
       min-height: 531px;
-      padding: 14px 15px;
+      padding: 0 0 14px 15px;
       position: absolute;
       left: 50px;
       top: auto;
+      &__realworld {
+        width: 7.5em;
+        margin-top: 15px;
+        margin-right: 15px;
+      }
     }
     .memo {
       &__cancel,
       &__submit {
         position: absolute;
-        bottom: 5px;
         letter-spacing: 0.5em;
         padding: 0 5px;
         height: 6em;
@@ -193,13 +204,12 @@
         writing-mode: vertical-rl;
       }
       &__cancel {
-        left: 0;
         right: auto;
-        font-size: 16px;
+        left: 0;
       }
       &__submit {
-        right: unset;
-        left: 8px;
+        right: auto;
+        left: 0;
       }
     }
   }
