@@ -1,3 +1,14 @@
 @import './modules/color';
 @import './modules/font';
 @import './partials/normalize';
+
+
+body {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+}
