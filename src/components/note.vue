@@ -362,7 +362,7 @@ export default {
           }
           this.tooltipPosition = {
             x: x,
-            y: 955
+            y: 905
           };
         } else {
           this.tooltipPosition = {
