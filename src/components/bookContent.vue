@@ -446,7 +446,7 @@ export default {
       const currentSection = this.bookLocation.sectionIndex;
       const note = notes
         .map((item, i) => {
-          return { ...item, notesIndex: i };
+          return { ...item, contentIndex: i };
         })
         .filter(
           item =>
@@ -459,7 +459,7 @@ export default {
           range.push({
             i: item.textStart,
             color: item.color,
-            notesIndex: item.notesIndex
+            notesIndex: item.contentIndex
           });
           range.push({ i: item.textEnd });
         }
@@ -548,11 +548,6 @@ export default {
   },
 
   methods: {
-    // showShareUI(event) {
-    //   this.clearSelected();
-    //   this.isShowComment = this.isShowComment ? true : false;
-    //   this.isShowShare = event;
-    // },
     async showComment(state) {
       if (this.selectedNoteIndex < 0) {
         await this.changeColor('yellow-pen');
@@ -1176,11 +1171,7 @@ export default {
     },
     touchStart(e, i) {
       this.clearSelected();
-      // if (e.target.parentElement.className.length > 0) {
-      //   this.clearSelected();
-      //   return;
-      // }
-      if (!this.isBetween(i)) {
+      if (!isNaN(i)) {
         this.selected.start = i;
         this.selected.end = i;
         this.selectPosition.start.x = e.target.getBoundingClientRect().left;
@@ -1253,15 +1244,12 @@ export default {
       if (this.selectAlreadyNote) {
         return;
       }
-      if (this.selected.start >= 0 && this.selected.end >= 0) {
+      if (this.selected.start > -1 && this.selected.end > -1) {
         this.selectedNoteIndex = -1;
         this.selectedPartColor = '';
         this.$store.commit('changeTooltipColor', this.selectedPartColor);
         this.isShowTooltip = true;
-        this.selected.start = -1;
-        this.selected.end = -1;
       }
-      this.clearSelected();
     },
     touchMove(e) {
       let changedTouch = e.changedTouches[0];
@@ -1269,17 +1257,16 @@ export default {
         changedTouch.clientX,
         changedTouch.clientY
       );
-      if (
-        target.parentElement.className &&
-        target.parentElement.className != 'book__content__realbook'
-      ) {
+      if (target.parentElement.className.indexOf('pen') >= 0) {
         this.selectAlreadyNote = true;
       }
-      if (this.selected.start >= 0) {
+      if (this.selected.start > -1) {
         const charEnd = parseInt(target.getAttribute('index'));
-        this.selected.end = charEnd;
-        this.selectPosition.end.x = target.getBoundingClientRect().x;
-        this.selectPosition.end.y = target.getBoundingClientRect().y;
+        if (!isNaN(charEnd)) {
+          this.selected.end = charEnd;
+          this.selectPosition.end.x = target.getBoundingClientRect().x;
+          this.selectPosition.end.y = target.getBoundingClientRect().y;
+        }
       }
     },
     clearSelected() {
@@ -1288,11 +1275,6 @@ export default {
       this.selected.start = -1;
       this.selected.end = -1;
       this.tooltipPosition = { x: 0, y: 0 };
-    },
-    isBetween(index) {
-      let min = Math.min(this.selected.start, this.selected.end);
-      let max = Math.max(this.selected.start, this.selected.end);
-      return index >= min && index <= max;
     },
     tooltipWordsRows(maxY) {
       if (this.selectPosition.start.x < this.selectPosition.end.x) {
