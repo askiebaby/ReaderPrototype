@@ -28,8 +28,8 @@
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
           <p>
             <span
-              v-for="(g, i) in groupsContent"
-              :key="i"
+              v-for="g in groupsContent"
+              :key="g.textGroup"
               v-touch:longtap="e => selectedPart(e, g.notesIndex)"
               :class="g.hightLight"
             >
@@ -714,7 +714,6 @@ export default {
         comment: '',
         task: 0
       };
-      console.log('scsc', obj);
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
       addObj = this.checkFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
