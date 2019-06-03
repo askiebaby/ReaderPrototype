@@ -1179,7 +1179,7 @@ export default {
     },
     touchEnd() {
       const directions = this.$store.getters.getDirections;
-      const fontSize = this.fontLevels[this.sizeLevel].fontSize;
+      const fontSize = Number(this.fontLevels[this.sizeLevel].fontSize);
       const minX = Math.min(
         this.selectPosition.start.x,
         this.selectPosition.end.x
@@ -1221,7 +1221,7 @@ export default {
           } else if (maxY > 650) {
             this.tooltipPosition.y = 650;
           } else {
-            this.tooltipPosition.y = this.selectPosition.end.y + fontSize;
+            this.tooltipPosition.y = this.selectPosition.end.y;
           }
         }
       } else {
