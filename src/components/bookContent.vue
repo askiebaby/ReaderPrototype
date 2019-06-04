@@ -28,8 +28,8 @@
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
           <p>
             <span
-              v-for="(g, i) in groupsContent"
-              :key="i"
+              v-for="g in groupsContent"
+              :key="g.textGroup"
               v-touch:longtap="e => selectedPart(e, g.notesIndex)"
               :class="g.hightLight"
             >
@@ -313,80 +313,80 @@ export default {
       },
       fontLevels: [
         {
-          fontSize: '12',
+          fontSize: 12,
           line: {
-            column: '34',
-            row: '27'
+            column: 34,
+            row: 27
           }
         },
         {
-          fontSize: '14',
+          fontSize: 14,
           line: {
-            column: '29',
-            row: '24'
+            column: 29,
+            row: 24
           }
         },
         {
-          fontSize: '16',
+          fontSize: 16,
           line: {
-            column: '26',
-            row: '20'
+            column: 26,
+            row: 20
           }
         },
         {
-          fontSize: '18',
+          fontSize: 18,
           line: {
-            column: '23',
-            row: '18'
+            column: 23,
+            row: 18
           }
         },
         {
-          fontSize: '20',
+          fontSize: 20,
           line: {
-            column: '20',
-            row: '16'
+            column: 20,
+            row: 16
           }
         },
         {
-          fontSize: '24',
+          fontSize: 24,
           line: {
-            column: '17',
-            row: '13'
+            column: 17,
+            row: 13
           }
         },
         {
-          fontSize: '30',
+          fontSize: 30,
           line: {
-            column: '13',
-            row: '11'
+            column: 13,
+            row: 11
           }
         },
         {
-          fontSize: '36',
+          fontSize: 36,
           line: {
-            column: '11',
-            row: '9'
+            column: 11,
+            row: 9
           }
         },
         {
-          fontSize: '42',
+          fontSize: 42,
           line: {
-            column: '9',
-            row: '8'
+            column: 9,
+            row: 8
           }
         },
         {
-          fontSize: '48',
+          fontSize: 48,
           line: {
-            column: '8',
-            row: '7'
+            column: 8,
+            row: 7
           }
         },
         {
-          fontSize: '52',
+          fontSize: 52,
           line: {
-            column: '8',
-            row: '6'
+            column: 8,
+            row: 6
           }
         }
       ],
@@ -625,7 +625,7 @@ export default {
           .y;
         const averageX = (partStartX + partEndX) / 2;
         const directions = this.$store.getters.getDirections;
-        const fontSize = Number(this.fontLevels[this.sizeLevel].fontSize);
+        const fontSize = this.fontLevels[this.sizeLevel].fontSize;
         if (directions.words == 'column') {
           if (directions.functions == 'column') {
             this.tooltipPosition.y = partStartY - 42 - fontSize;
@@ -714,7 +714,6 @@ export default {
         comment: '',
         task: 0
       };
-      console.log('scsc', obj);
       let addObj = this.checkFinishStep2_1(step2_1, obj, color);
       addObj = this.checkFinishStep3_1(obj);
       this.$store.commit('addNotes', addObj);
@@ -1222,7 +1221,7 @@ export default {
           } else if (maxY > 650) {
             this.tooltipPosition.y = 650;
           } else {
-            this.tooltipPosition.y = this.selectPosition.end.y + fontSize;
+            this.tooltipPosition.y = this.selectPosition.end.y;
           }
         }
       } else {
@@ -1234,10 +1233,10 @@ export default {
           } else {
             this.tooltipPosition.x = minX - 178;
           }
-          this.tooltipWordsRows(maxY);
+          this.tooltipWordsRows(maxY, fontSize);
         } else {
           this.tooltipPosition.x = minX - 196 - fontSize;
-          this.tooltipWordsRows(maxY);
+          this.tooltipWordsRows(maxY, fontSize);
         }
       }
 
@@ -1276,11 +1275,11 @@ export default {
       this.selected.end = -1;
       this.tooltipPosition = { x: 0, y: 0 };
     },
-    tooltipWordsRows(maxY) {
+    tooltipWordsRows(maxY, fontSize) {
       if (this.selectPosition.start.x < this.selectPosition.end.x) {
         this.tooltipPosition.y = this.selectPosition.start.y;
       } else if ((this.selectPosition.start.x = this.selectPosition.end.x)) {
-        this.tooltipPosition.y = maxY + 42;
+        this.tooltipPosition.y = maxY + fontSize;
       } else {
         this.tooltipPosition.y = this.selectPosition.end.y;
       }

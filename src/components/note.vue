@@ -10,6 +10,11 @@
         <div class="notes__nav__close" @click="closeNotes">
           <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
         </div>
+        <div class="notes__nav__title">
+          <h2>筆記庫</h2>
+        </div>
+      </nav>
+      <div class="notes__all">
         <share v-if="isShowShare" :notes-index="notesIndex"></share>
         <comment
           v-if="isShowComment"
@@ -20,32 +25,22 @@
           v-if="isShowTooltip"
           :from-content="false"
           :notes-index="notesIndex"
-          :is-show-tooltip="isShowTooltip"
           :tooltip-position="tooltipPosition"
           @afterDelete="afterDelete($event)"
           @changeColor="changeColor($event, notesIndex)"
           @showComment="showComment($event.showComment)"
           @isShowTooltip="isShowTooltip = $event"
         ></tooltip>
-        <div class="notes__nav__title">
-          <h2>筆記庫</h2>
-        </div>
-      </nav>
-      <div class="notes__all">
         <article v-for="(item, index) in getNotes" :key="index" class="note">
           <div class="note__highlight" :class="item.color"></div>
-          <div class="note__record">
-            <div
-              class="note__sentence"
-              @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
-            >
+          <div
+            class="note__record"
+            @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
+          >
+            <div class="note__sentence">
               {{ item.text }}
             </div>
-            <div
-              v-if="item.comment.length > 0"
-              class="note__memo"
-              @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
-            >
+            <div v-if="item.comment.length > 0" class="note__memo">
               {{ item.comment }}
             </div>
           </div>
@@ -57,6 +52,10 @@
             />
           </div>
         </article>
+        <div
+          class="notes__all__background"
+          @click="isShowTooltip = false"
+        ></div>
       </div>
     </div>
   </section>
@@ -79,6 +78,15 @@
     height: 100%;
     top: 0;
     left: 0;
+  }
+  &__all {
+    position: relative;
+    &__background {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
   }
   &__container {
     position: absolute;
@@ -180,6 +188,12 @@
       -webkit-overflow-scrolling: touch;
       height: 100%;
       direction: rtl;
+      &__background {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
     }
   }
   .note {
@@ -342,12 +356,12 @@ export default {
         if (directions.functions == 'column') {
           this.tooltipPosition = {
             x: 303,
-            y: e.target.getBoundingClientRect().top + 50
+            y: e.target.getBoundingClientRect().top - 35
           };
         } else {
-          let y = e.target.getBoundingClientRect().top + 137;
+          let y = e.target.getBoundingClientRect().top + 70;
           if (index > 4) {
-            y = e.target.getBoundingClientRect().top - 168;
+            y = e.target.getBoundingClientRect().top - 228;
           }
           this.tooltipPosition = {
             x: 400,
@@ -362,12 +376,12 @@ export default {
           }
           this.tooltipPosition = {
             x: x,
-            y: 905
+            y: 810
           };
         } else {
           this.tooltipPosition = {
             x: e.target.getBoundingClientRect().left - 327,
-            y: 761
+            y: 610
           };
         }
       }
