@@ -153,27 +153,31 @@
   }
 
   &__fontSize {
+    flex-basis: 50%;
     margin-bottom: 28px;
     .changeSize {
       background: $lightGray-2;
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .small,
     .enlarge {
-      border: transparent 10px solid;
+      position: relative;
+      border: transparent 8px solid;
       display: inline-block;
-      position: absolute;
-      margin-left: 7px;
-      border-left-width: 5px;
-      border-right-width: 5px;
+      margin-left: 10px;
+      border-left-width: 4px;
+      border-right-width: 4px;
     }
     .small {
       border-top-color: #4394ff;
-      top: 15px;
+      top: 5px;
     }
     .enlarge {
       border-bottom-color: #4394ff;
-      top: 5px;
+      top: -3px;
     }
   }
 
@@ -190,17 +194,18 @@
   .function {
     &__fontSize {
       flex-direction: row-reverse;
+
       .changeSize + .changeSize {
         margin-left: auto;
         margin-right: 10px;
       }
       .changeSize {
-        direction: rtl;
         &:nth-child(1) {
-          padding-right: 30px;
+          flex-direction: row;
         }
         &:nth-child(2) {
-          padding-left: 30px;
+          flex-direction: row-reverse;
+              
         }
         &__content {
           position: relative;
@@ -212,13 +217,16 @@
       .enlarge {
         transform: rotate(-90deg);
         transform-origin: center;
-        top: 9px;
+        top: auto;
+        // margin-left: 0;
+        margin-bottom: 1px;
       }
       .small {
-        right: 40px;
+        margin-left: 15px;
+        margin-right: 4px;
       }
       .enlarge {
-        left: 37px;
+        margin-right: 15px;
       }
     }
     &__pageMode {
