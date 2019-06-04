@@ -376,12 +376,12 @@ export default {
           }
           this.tooltipPosition = {
             x: x,
-            y: 845
+            y: e.target.getBoundingClientRect().top - 24
           };
         } else {
           this.tooltipPosition = {
             x: e.target.getBoundingClientRect().left - 327,
-            y: 642
+            y: e.target.getBoundingClientRect().top - 227
           };
         }
       }
