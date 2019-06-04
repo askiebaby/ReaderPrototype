@@ -1,16 +1,16 @@
 <template>
   <div class="nav">
     <ul>
-      <li @click="openIndexStatus">
+      <li @click="$emit('openIndexStatus', true)">
         <img :src="require('@/assets/menu/burger.svg')" />
       </li>
-      <li @click="changeSettingStatus">
+      <li @click="$emit('showSettingBubble', true)">
         <img :src="require('@/assets/menu/aa.png')" />
       </li>
-      <li @click="showNotes">
+      <li @click="$emit('switchShowNotes', true)">
         <img :src="require('@/assets/menu/group.svg')" />
       </li>
-      <li @click="$store.commit('toggleShareBubble')">
+      <li @click="$emit('isShowShare', true)">
         <img :src="require('@/assets/menu/share.svg')" />
       </li>
       <li>
@@ -72,17 +72,5 @@ ul {
 </style>
 
 <script>
-export default {
-  methods: {
-    changeSettingStatus() {
-      this.$emit('showSettingBubble', true);
-    },
-    openIndexStatus() {
-      this.$emit('openIndexStatus', true);
-    },
-    showNotes() {
-      this.$emit('switchShowNotes', true);
-    }
-  }
-};
+export default {};
 </script>

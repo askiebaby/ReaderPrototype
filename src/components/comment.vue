@@ -280,7 +280,7 @@ export default {
       if (task[2].time.length == 2) {
         if (comment.trim() == step3_2.comment) {
           this.$store.commit('setTask', 2);
-          console.log('87777', this.$store.getters.getTask);
+          console.log('145949', this.$store.getters.getTask);
         }
         this.updateCommentFn(false);
         return;
@@ -288,7 +288,7 @@ export default {
       if (task[2].time.length == 4) {
         if (comment.trim() == step3_4.comment) {
           this.$store.commit('setTask', 2);
-          // console.log('87777', this.$store.getters.getTask);
+          console.log('87777', this.$store.getters.getTask);
           this.updateCommentFn(true);
           return;
         }
@@ -303,16 +303,18 @@ export default {
       });
       this.showComment(showComplete);
     },
-    placeCaretAtEnd (el) {
-      if (typeof window.getSelection != "undefined"
-          && typeof document.createRange != "undefined") {
+    placeCaretAtEnd(el) {
+      if (
+        typeof window.getSelection != 'undefined' &&
+        typeof document.createRange != 'undefined'
+      ) {
         const range = document.createRange();
         range.selectNodeContents(el);
         range.collapse(false);
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
-      } else if (typeof document.body.createTextRange != "undefined") {
+      } else if (typeof document.body.createTextRange != 'undefined') {
         const textRange = document.body.createTextRange();
         textRange.moveToElementText(el);
         textRange.collapse(false);

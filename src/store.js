@@ -12,7 +12,6 @@ export const store = new Vuex.Store({
     name: '',
     tooltipColor: '',
     task: [],
-    isShowShare: false,
     bookContent: {
       chapter: '',
       h1title: '',
@@ -194,9 +193,6 @@ export const store = new Vuex.Store({
         comment: payload.comment,
         task: payload.task
       });
-    },
-    toggleShareBubble(state) {
-      state.isShowShare = !state.isShowShare;
     },
     setDirections(state, payload) {
       state.directions = payload;

@@ -385,8 +385,11 @@ export default {
   },
   methods: {
     showShareUI() {
-      this.$store.commit('toggleShareBubble');
-      this.$emit('isShowTooltip', false);
+      const obj = {
+        isShowShare: true,
+        isShowTooltip: false
+      };
+      this.$emit('showShareUI', obj);
     },
     checkFinishStep2_4(checkTask, task) {
       const step = this.$store.getters.getTarget[1].step[3];
