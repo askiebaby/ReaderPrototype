@@ -30,7 +30,7 @@ export default new Router({
       component: login
     },
     {
-      path: '/tasks',
+      path: '/tasks/:id',
       name: 'tasks',
       component: tasks
     },

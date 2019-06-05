@@ -56,7 +56,7 @@
 export default {
   data() {
     return {
-      id: this.$store.getters.getID
+      id: this.$route.params.id
     };
   },
   methods: {

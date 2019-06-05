@@ -23,7 +23,7 @@
         </div>
         <router-link
           tag="button"
-          :to="{ name: 'tasks' }"
+          :to="{ name: 'tasks', params: { id } }"
           class="button button__primary taskPage__button"
           >上一頁</router-link
         >
