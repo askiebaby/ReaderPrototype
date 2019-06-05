@@ -1,7 +1,7 @@
 <template>
   <div class="topMenu">
     <div class="topMenu__back" @click="changeLeaveStatus">
-      <img :src="require('@/assets/menu/back.svg')" />
+      <img :src="require('@/assets/menu/back.svg')">
       <p>回到書櫃</p>
     </div>
   </div>
@@ -13,7 +13,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 10;
   padding: 33px 0 0 24px;
   &__back {
     display: flex;

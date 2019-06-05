@@ -1,32 +1,26 @@
 <template>
-  <!-- <div class="functions-row"> -->
   <section class="comment">
     <div class="comment__background"></div>
     <div class="comment__container">
-      <form action="">
+      <form action>
         <h3>
           <span class="memo__submit" @click="updateComment">完成</span>
           註解
           <span class="memo__cancel" @click="showComment(false)">取消</span>
         </h3>
         <main>
-          <p>
-            {{ getNote.text }}
-          </p>
+          <p>{{ getNote.text }}</p>
           <div class="comment__textarea" @click="contentConsole">
             <div
               ref="noteComment"
-              contenteditable="false"
+              contenteditable="true"
               class="comment__textarea__realworld"
-            >
-              {{ getNote.comment }}
-            </div>
+            >{{ getNote.comment }}</div>
           </div>
         </main>
       </form>
     </div>
   </section>
-  <!-- </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -37,7 +31,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 11;
   display: flex;
   align-content: center;
   font-family: 'Noto Sans TC', sans-serif;
@@ -192,6 +186,7 @@
         width: 7.5em;
         margin-top: 15px;
         margin-right: 15px;
+        height: 100%;
       }
     }
     .memo {
@@ -250,7 +245,6 @@ export default {
     contentConsole() {
       // 解決 contenteditable div 在 mobile 無法 focus 的問題
       const comment = this.$refs.noteComment;
-      comment.setAttribute('contenteditable', 'true');
       comment.focus();
       this.placeCaretAtEnd(this.$refs.noteComment);
     },

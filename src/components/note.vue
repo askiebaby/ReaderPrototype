@@ -267,6 +267,20 @@ export default {
       }
     };
   },
+  watch: {
+    isShowComment() {
+      this.$nextTick(function() {
+        if (this.isShowComment) {
+          const textarea = document.querySelector(
+            '.comment__textarea__realworld'
+          );
+          setTimeout(function() {
+            textarea.focus();
+          }, 0);
+        }
+      });
+    }
+  },
   computed: {
     getNotes() {
       const Notes = this.$store.getters.getNotes;

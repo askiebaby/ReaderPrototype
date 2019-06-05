@@ -16,15 +16,9 @@
       @showShareUI="showShareUI($event)"
       @isShowTooltip="isShowTooltip = $event"
     ></tooltip>
-    <share
-      v-if="isShowShare"
-      :notes-index="selectedNoteIndex"
-      @isShowShare="isShowShare = $event"
-    ></share>
+    <share v-if="isShowShare" :notes-index="selectedNoteIndex" @isShowShare="isShowShare = $event"></share>
     <div class="book" @click="changePage">
-      <h2 class="book__chapter">
-        {{ bookContent.chapter }} {{ bookContent.h1title }}
-      </h2>
+      <h2 class="book__chapter">{{ bookContent.chapter }} {{ bookContent.h1title }}</h2>
       <div ref="viewport" class="book__content">
         <div ref="bookContainer" class="book__content__realbook">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
@@ -43,15 +37,12 @@
                 v-touch:end="touchEnd"
                 :index="g.boundary + j"
                 :class="hightLight(g.boundary + j)"
-                >{{ c }}</span
-              >
+              >{{ c }}</span>
             </span>
           </p>
         </div>
       </div>
-      <div class="page">
-        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
-      </div>
+      <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁</div>
     </div>
   </div>
 </template>
@@ -422,7 +413,6 @@ export default {
       isShowShare: false
     };
   },
-
   computed: {
     scrollType() {
       return detectScrollType();
@@ -505,6 +495,19 @@ export default {
     }
   },
   watch: {
+    isShowComment() {
+      this.$nextTick(function() {
+        if (this.isShowComment) {
+          const textarea = document.querySelector(
+            '.comment__textarea__realworld'
+          );
+          console.log(textarea);
+          setTimeout(function() {
+            textarea.focus();
+          }, 0);
+        }
+      });
+    },
     bookContent: {
       handler: function() {
         // reset word container's height
@@ -555,11 +558,13 @@ export default {
       this.isShowTooltip = event.isShowTooltip;
     },
     async showComment(state) {
+      // 還沒加到筆記庫，就加進去
       if (this.selectedNoteIndex < 0) {
         await this.changeColor('yellow-pen');
       }
       this.clearSelected();
       this.isShowComment = state.showComment;
+      console.log(this.isShowComment);
       if (state.showComplete) {
         setTimeout(() => {
           this.isShowComplete = true;
