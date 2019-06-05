@@ -227,6 +227,9 @@ export default {
       documentContent
     };
   },
+  mounted() {
+    this.contentConsole();
+  },
   computed: {
     getNote() {
       const note = this.$store.getters.getNotes[this.notesIndex];
@@ -246,7 +249,7 @@ export default {
       // 解決 contenteditable div 在 mobile 無法 focus 的問題
       const comment = this.$refs.noteComment;
       comment.focus();
-      this.placeCaretAtEnd(this.$refs.noteComment);
+      this.placeCaretAtEnd(comment);
     },
     showComment(showComplete) {
       this.$emit('showComment', {

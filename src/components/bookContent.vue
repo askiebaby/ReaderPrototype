@@ -2,12 +2,12 @@
   <div>
     <complete-mission v-if="isShowComplete" :task-index="2"></complete-mission>
     <comment
-      v-if="isShowComment"
+      v-show="isShowComment"
       :notes-index="selectedNoteIndex"
       @showComment="showComment($event)"
     ></comment>
     <tooltip
-      v-if="isShowTooltip"
+      v-show="isShowTooltip"
       :tooltip-position="tooltipPosition"
       :from-content="true"
       :notes-index="selectedNoteIndex"
@@ -495,19 +495,6 @@ export default {
     }
   },
   watch: {
-    isShowComment() {
-      this.$nextTick(function() {
-        if (this.isShowComment) {
-          const textarea = document.querySelector(
-            '.comment__textarea__realworld'
-          );
-          console.log(textarea);
-          setTimeout(function() {
-            textarea.focus();
-          }, 0);
-        }
-      });
-    },
     bookContent: {
       handler: function() {
         // reset word container's height
@@ -549,10 +536,42 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.initContent();
+      this.setFocusCommentOnContent();
     });
   },
-
   methods: {
+    setFocusCommentOnContent() {
+      const tooltipComment = document.querySelector(
+        '.tooltip .tooltip__function__comment'
+      );
+      tooltipComment.addEventListener('click', () => {
+        if (this.isShowComment) {
+          const textarea = document.querySelector(
+            '.comment__textarea__realworld'
+          );
+          textarea.focus();
+          this.placeCaretAtEnd(textarea);
+        }
+      });
+    },
+    placeCaretAtEnd(el) {
+      if (
+        typeof window.getSelection != 'undefined' &&
+        typeof document.createRange != 'undefined'
+      ) {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } else if (typeof document.body.createTextRange != 'undefined') {
+        const textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+      }
+    },
     showShareUI(event) {
       this.isShowShare = event.isShowShare;
       this.isShowTooltip = event.isShowTooltip;
@@ -564,7 +583,6 @@ export default {
       }
       this.clearSelected();
       this.isShowComment = state.showComment;
-      console.log(this.isShowComment);
       if (state.showComplete) {
         setTimeout(() => {
           this.isShowComplete = true;

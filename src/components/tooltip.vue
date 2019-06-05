@@ -489,7 +489,7 @@ export default {
       this.$emit('changeColor', color + '-pen');
     },
     showComment() {
-      this.$emit('showComment', { showComment: true });
+      this.$emit('showComment', { showComment: true, setFocus() {} });
     }
   }
 };

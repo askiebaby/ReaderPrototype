@@ -13,9 +13,13 @@
         </div>
       </nav>
       <div class="notes__all">
-        <comment v-if="isShowComment" :notes-index="notesIndex" @showComment="showComment($event)"></comment>
+        <comment
+          v-show="isShowComment"
+          :notes-index="notesIndex"
+          @showComment="showComment($event)"
+        ></comment>
         <tooltip
-          v-if="isShowTooltip"
+          v-show="isShowTooltip"
           :from-content="false"
           :notes-index="notesIndex"
           :tooltip-position="tooltipPosition"
@@ -267,19 +271,10 @@ export default {
       }
     };
   },
-  watch: {
-    isShowComment() {
-      this.$nextTick(function() {
-        if (this.isShowComment) {
-          const textarea = document.querySelector(
-            '.comment__textarea__realworld'
-          );
-          setTimeout(function() {
-            textarea.focus();
-          }, 0);
-        }
-      });
-    }
+  mounted() {
+    this.$nextTick(() => {
+      this.setFocusCommentOnNote();
+    });
   },
   computed: {
     getNotes() {
@@ -298,6 +293,39 @@ export default {
     }
   },
   methods: {
+    setFocusCommentOnNote() {
+      const tooltipComment = document.querySelector(
+        '.note__tooltip .tooltip__function__comment'
+      );
+      tooltipComment.addEventListener('click', () => {
+        if (this.isShowComment) {
+          const textarea = document.querySelector(
+            '.comment__textarea__realworld'
+          );
+          console.log(textarea);
+          textarea.focus();
+          this.placeCaretAtEnd(textarea);
+        }
+      });
+    },
+    placeCaretAtEnd(el) {
+      if (
+        typeof window.getSelection != 'undefined' &&
+        typeof document.createRange != 'undefined'
+      ) {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } else if (typeof document.body.createTextRange != 'undefined') {
+        const textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+      }
+    },
     showShareUI(event) {
       this.isShowShare = event.isShowShare;
       this.isShowTooltip = event.isShowTooltip;
