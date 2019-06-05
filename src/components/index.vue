@@ -33,7 +33,8 @@
               @click="loadBookContent(book, bookIndex, section, sectionIndex)"
             >
               <span
-                v-if="sectionIndex === 0" class="index__chapterName"
+                v-if="sectionIndex === 0"
+                class="index__chapterName"
                 v-html="getTitleIndex(book.chapter)"
               >
               </span>
@@ -48,12 +49,12 @@
 
 <style lang="scss" scoped>
 .index {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
   &__background {
     height: 100vh;
     width: 100%;
@@ -107,7 +108,7 @@
       padding-left: 65px;
     }
   }
-  
+
   &__chapterName {
     position: absolute;
     left: 0;
@@ -148,7 +149,7 @@
       writing-mode: horizontal-tb;
       flex-flow: row nowrap;
       overflow-x: auto;
-      overflow-y: hidden;  
+      overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
       &::-webkit-scrollbar {
         display: none;
@@ -160,7 +161,8 @@
       padding-left: 0;
       min-width: 2.8em;
       flex: 1 0 auto;
-      &:nth-child(1), &:nth-child(2) {
+      &:nth-child(1),
+      &:nth-child(2) {
         min-width: 45px;
         max-width: 45px;
       }
@@ -185,7 +187,7 @@
       .index__section__list {
         padding-left: 0;
         min-width: 45px;
-        
+
         .index__sectionName {
           padding-top: 120px;
         }
@@ -214,11 +216,14 @@ export default {
     };
   },
   methods: {
-    getTitleIndex (chapterTitle) {
+    getTitleIndex(chapterTitle) {
       const arr = chapterTitle.split('');
       const chapterIndex = chapterTitle.slice(1, -1);
-      const finalChapterTitle = 
-        `${arr[0]}<span class="index__chapterName__index">${chapterIndex}</span>${arr[arr.length-1]}`;
+      const finalChapterTitle = `${
+        arr[0]
+      }<span class="index__chapterName__index">${chapterIndex}</span>${
+        arr[arr.length - 1]
+      }`;
       return finalChapterTitle;
     },
     closeIndexStatus() {

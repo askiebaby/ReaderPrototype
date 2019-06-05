@@ -52,7 +52,7 @@ export default {
         name: this.name
       };
       this.$store.commit('memberInfo', info);
-      this.$router.push({ name: 'tasks' });
+      this.$router.push({ name: 'tasks', params: { id: this.id } });
     }
   }
 };

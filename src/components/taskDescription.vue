@@ -26,7 +26,7 @@
         >
         <router-link
           tag="button"
-          :to="{ name: 'tasks' }"
+          :to="{ name: 'tasks', params: { taskIndex: taskIndex, id: id } }"
           class="button button__default taskPage__button"
           >取消</router-link
         >
@@ -56,7 +56,8 @@ export default {
     return {
       taskIndex: this.$route.params.taskIndex - 1,
       target: this.$store.getters.getTarget,
-      task: this.$store.getters.getTask
+      task: this.$store.getters.getTask,
+      id: this.$store.getters.getID
     };
   },
   computed: {

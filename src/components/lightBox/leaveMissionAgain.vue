@@ -42,7 +42,7 @@ export default {
       const cookiesArray = JSON.parse(this.$cookies.get(this.id));
       delete cookiesArray[this.taskIndex];
       this.$cookies.set(this.id, JSON.stringify(cookiesArray));
-      this.$router.push({ name: 'tasks' });
+      this.$router.push({ name: 'tasks', params: { id: this.id } });
     },
     cancel() {
       this.$emit('backRecord');

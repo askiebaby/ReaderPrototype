@@ -292,6 +292,20 @@ export default {
       });
     }
   },
+  watch: {
+    isShowComment() {
+      this.$nextTick(function() {
+        if (this.isShowComment) {
+          const textarea = document.querySelector(
+            '.comment__textarea__realworld'
+          );
+          setTimeout(function() {
+            textarea.focus();
+          }, 0);
+        }
+      });
+    }
+  },
   methods: {
     setFocusCommentOnNote() {
       const tooltipComment = document.querySelector(

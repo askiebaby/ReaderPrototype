@@ -23,7 +23,7 @@
         </div>
         <router-link
           tag="button"
-          :to="{ name: 'tasks' }"
+          :to="{ name: 'tasks', params: { id } }"
           class="button button__primary taskPage__button"
           >上一頁</router-link
         >
@@ -45,12 +45,11 @@ export default {
     taskIndex: {
       type: Number,
       default: -1
+    },
+    id: {
+      type: String,
+      default: ''
     }
-  },
-  data() {
-    return {
-      id: this.$store.getters.getID
-    };
   },
   computed: {
     chineseOrder() {

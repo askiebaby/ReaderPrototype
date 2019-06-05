@@ -15,7 +15,9 @@
               ref="noteComment"
               contenteditable="true"
               class="comment__textarea__realworld"
-            >{{ getNote.comment }}</div>
+            >
+              {{ getNote.comment }}
+            </div>
           </div>
         </main>
       </form>

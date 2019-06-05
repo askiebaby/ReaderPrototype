@@ -1,7 +1,7 @@
 <template>
   <div class="topMenu">
     <div class="topMenu__back" @click="changeLeaveStatus">
-      <img :src="require('@/assets/menu/back.svg')">
+      <img :src="require('@/assets/menu/back.svg')" />
       <p>回到書櫃</p>
     </div>
   </div>

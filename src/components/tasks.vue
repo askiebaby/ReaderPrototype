@@ -56,7 +56,7 @@
 export default {
   data() {
     return {
-      id: this.$store.getters.getID
+      id: this.$route.params.id
     };
   },
   methods: {
@@ -75,10 +75,16 @@ export default {
     },
     nextPage(taskIndex) {
       if (this.isFinish(taskIndex)) {
-        this.$router.push({ name: 'taskRecord', params: { taskIndex } });
+        this.$router.push({
+          name: 'taskRecord',
+          params: { taskIndex: taskIndex, id: this.id }
+        });
       } else {
         this.$store.commit('taskDefault', taskIndex - 1);
-        this.$router.push({ name: 'taskDescription', params: { taskIndex } });
+        this.$router.push({
+          name: 'taskDescription',
+          params: { taskIndex: taskIndex }
+        });
         console.log(this.$store.getters.getTask);
       }
     }

@@ -3,6 +3,7 @@
     <background-cover></background-cover>
     <mission-again
       v-if="showMissionAgain"
+      :id="$route.params.id"
       :task-index="taskIndex"
       @showConfirm="changelight"
     ></mission-again>
