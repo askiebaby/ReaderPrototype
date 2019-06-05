@@ -366,8 +366,8 @@ export default {
       if (directions.words == 'column') {
         if (directions.functions == 'column') {
           this.tooltipPosition = {
-            x: 303,
-            y: e.target.getBoundingClientRect().top - 10
+            x: 414,
+            y: e.target.getBoundingClientRect().top + 55
           };
         } else {
           let y = e.target.getBoundingClientRect().top + 152;
@@ -381,10 +381,10 @@ export default {
         }
       } else {
         if (directions.functions == 'column') {
-          let x = e.target.getBoundingClientRect().left - 370;
-          let y = e.target.getBoundingClientRect().top - 5;
+          let x = e.target.getBoundingClientRect().left - 260;
+          let y = e.target.getBoundingClientRect().top + 57;
           if (index > 2) {
-            x = e.target.getBoundingClientRect().left - 71;
+            x = e.target.getBoundingClientRect().left + 39;
           }
           this.tooltipPosition = {
             x: x,
