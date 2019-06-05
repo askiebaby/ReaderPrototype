@@ -4,6 +4,7 @@
     data-tooltip
     :style="{ top: topStyle, left: leftStyle }"
   >
+    <div class="tooltip__background" @click="$emit('closeTooltip', false)"></div>
     <div class="tooltip__wrapper">
       <div class="tooltip__top">
         <div class="tooltip__penColor">
@@ -16,19 +17,19 @@
         </div>
         <div class="tooltip__function">
           <div v-if="isShowIcon">
-            <img src="@/assets/images/icons/copy.svg" alt="複製" />
+            <img src="@/assets/images/icons/copy.svg" alt="複製">
           </div>
           <div class="tooltip__function__comment" @click="showComment">
-            <img src="@/assets/images/icons/comment.svg" alt="註解" />
+            <img src="@/assets/images/icons/comment.svg" alt="註解">
           </div>
           <div class="tooltip__function__share" @click="showShareUI">
-            <img src="@/assets/images/icons/share.svg" alt="分享" />
+            <img src="@/assets/images/icons/share.svg" alt="分享">
           </div>
           <div v-if="isShowIcon" class="tooltip__function__search">
-            <img src="@/assets/images/icons/search.svg" alt="搜尋" />
+            <img src="@/assets/images/icons/search.svg" alt="搜尋">
           </div>
           <div v-else class="tooltip__function__delete" @click="deleteNotes">
-            <img src="@/assets/images/icons/delete.svg" alt="刪除" />
+            <img src="@/assets/images/icons/delete.svg" alt="刪除">
           </div>
         </div>
       </div>
@@ -69,6 +70,14 @@ body {
   user-select: none;
   z-index: 1;
 
+  &__background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
   &__wrapper {
     position: relative;
     background-color: $white;
@@ -306,6 +315,10 @@ body {
   min-width: 350px;
   max-width: 350px;
   .tooltip {
+    &__background {
+      width: 100vw;
+      height: 100vh;
+    }
     &__penColor {
       flex-basis: 57.4%;
     }

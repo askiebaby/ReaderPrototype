@@ -1,30 +1,19 @@
 <template>
   <section class="notes">
-    <complete-mission
-      v-if="isShowComplete"
-      :task-index="taskIndex"
-    ></complete-mission>
+    <complete-mission v-if="isShowComplete" :task-index="taskIndex"></complete-mission>
     <div class="notes__background" @click="closeNotes"></div>
-    <share
-      v-if="isShowShare"
-      :notes-index="notesIndex"
-      @isShowShare="isShowShare = $event"
-    ></share>
+    <share v-if="isShowShare" :notes-index="notesIndex" @isShowShare="isShowShare = $event"></share>
     <div class="notes__container">
       <nav class="notes__nav">
         <div class="notes__nav__close" @click="closeNotes">
-          <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
+          <img :src="require('@/assets/menu/back-white.svg')" alt="BACK">
         </div>
         <div class="notes__nav__title">
           <h2>筆記庫</h2>
         </div>
       </nav>
       <div class="notes__all">
-        <comment
-          v-if="isShowComment"
-          :notes-index="notesIndex"
-          @showComment="showComment($event)"
-        ></comment>
+        <comment v-if="isShowComment" :notes-index="notesIndex" @showComment="showComment($event)"></comment>
         <tooltip
           v-if="isShowTooltip"
           :from-content="false"
@@ -35,32 +24,17 @@
           @showComment="showComment($event)"
           @showShareUI="showShareUI($event)"
           @isShowTooltip="isShowTooltip = $event"
+          @closeTooltip="isShowTooltip = $event"
         ></tooltip>
         <article v-for="(item, index) in getNotes" :key="index" class="note">
           <div class="note__highlight" :class="item.color"></div>
-          <div
-            class="note__record"
-            @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
-          >
-            <div class="note__sentence">
-              {{ item.text }}
-            </div>
-            <div v-if="item.comment.length > 0" class="note__memo">
-              {{ item.comment }}
-            </div>
+          <div class="note__record" @click="loadBookContent(item.chapterIndex, item.sectionIndex)">
+            <div class="note__sentence">{{ item.text }}</div>
+            <div v-if="item.comment.length > 0" class="note__memo">{{ item.comment }}</div>
           </div>
-          <div class="note__actionButton">
-            <img
-              :src="require('@/assets/menu/dropdown-doubleline.svg')"
-              alt="More Actions"
-              @click="e => selectedNote(e, index, item.color)"
-            />
-          </div>
+          <div class="note__actionButton" @click="e => selectedNote(e, index, item.color)"></div>
         </article>
-        <div
-          class="notes__all__background"
-          @click="isShowTooltip = false"
-        ></div>
+        <div class="notes__all__background"></div>
       </div>
     </div>
   </section>
@@ -149,6 +123,8 @@
     text-align: justify;
   }
   &__actionButton {
+    background: url('~@/assets/menu/dropdown-doubleline.svg') no-repeat center
+      center;
     flex-basis: 50px;
     height: 50px;
     text-align: center;
@@ -386,13 +362,14 @@ export default {
         }
       } else {
         if (directions.functions == 'column') {
-          let x = e.target.getBoundingClientRect().left - 428;
+          let x = e.target.getBoundingClientRect().left - 370;
+          let y = e.target.getBoundingClientRect().top - 5;
           if (index > 2) {
             x = e.target.getBoundingClientRect().left - 129;
           }
           this.tooltipPosition = {
             x: x,
-            y: e.target.getBoundingClientRect().top - 24
+            y: y
           };
         } else {
           this.tooltipPosition = {
