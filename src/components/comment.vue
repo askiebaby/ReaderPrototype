@@ -141,11 +141,11 @@
       min-height: 567px;
       display: flex;
       flex-grow: 1;
+      direction: rtl;
       margin-top: 100px;
     }
     form {
       width: 100%;
-      flex-direction: row-reverse;
     }
     main {
       position: relative;
@@ -153,6 +153,7 @@
       flex-wrap: nowrap;
       flex-grow: 1;
       writing-mode: tb-rl;
+      direction: ltr;
       padding: 18px 12px;
       width: 300px;
     }
