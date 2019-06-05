@@ -1,43 +1,38 @@
 <template>
-  <div
-    :class="['tooltip', { note__tooltip: !isShowIcon }]"
-    data-tooltip
-    :style="{ top: topStyle, left: leftStyle }"
-  >
-    <div
-      class="tooltip__background"
-      @click="$emit('closeTooltip', false)"
-    ></div>
-    <div class="tooltip__wrapper">
-      <div class="tooltip__top">
-        <div class="tooltip__penColor">
-          <div
-            v-for="item in color"
-            :key="item"
-            :class="showColor(item)"
-            @click="changeColor(item)"
-          ></div>
-        </div>
-        <div class="tooltip__function">
-          <div v-if="isShowIcon">
-            <img src="@/assets/images/icons/copy.svg" alt="複製" />
+  <div :class="['tooltipContainer', { note__tooltip: !isShowIcon }]">
+    <div class="tooltip__background" @click="$emit('closeTooltip', false)"></div>
+    <div class="tooltip" data-tooltip :style="{ top: topStyle, left: leftStyle }">
+      <div class="tooltip__wrapper">
+        <div class="tooltip__top">
+          <div class="tooltip__penColor">
+            <div
+              v-for="item in color"
+              :key="item"
+              :class="showColor(item)"
+              @click="changeColor(item)"
+            ></div>
           </div>
-          <div class="tooltip__function__comment" @click="showComment">
-            <img src="@/assets/images/icons/comment.svg" alt="註解" />
-          </div>
-          <div class="tooltip__function__share" @click="showShareUI">
-            <img src="@/assets/images/icons/share.svg" alt="分享" />
-          </div>
-          <div v-if="isShowIcon" class="tooltip__function__search">
-            <img src="@/assets/images/icons/search.svg" alt="搜尋" />
-          </div>
-          <div v-else class="tooltip__function__delete" @click="deleteNotes">
-            <img src="@/assets/images/icons/delete.svg" alt="刪除" />
+          <div class="tooltip__function">
+            <div v-if="isShowIcon">
+              <img src="@/assets/images/icons/copy.svg" alt="複製">
+            </div>
+            <div class="tooltip__function__comment" @click="showComment">
+              <img src="@/assets/images/icons/comment.svg" alt="註解">
+            </div>
+            <div class="tooltip__function__share" @click="showShareUI">
+              <img src="@/assets/images/icons/share.svg" alt="分享">
+            </div>
+            <div v-if="isShowIcon" class="tooltip__function__search">
+              <img src="@/assets/images/icons/search.svg" alt="搜尋">
+            </div>
+            <div v-else class="tooltip__function__delete" @click="deleteNotes">
+              <img src="@/assets/images/icons/delete.svg" alt="刪除">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tooltip__bottom">
-        <div :class="['arrow', { 'opposite-side': showOppositeSide }]"></div>
+        <div class="tooltip__bottom">
+          <div :class="['arrow', { 'opposite-side': showOppositeSide }]"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -66,6 +61,16 @@ body {
     transform: rotate(135deg);
   }
 }
+
+.tooltipContainer.note__tooltip {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
 .tooltip {
   position: absolute;
   min-width: 393px;
@@ -315,9 +320,9 @@ body {
 }
 
 .note__tooltip {
-  min-width: 350px;
-  max-width: 350px;
   .tooltip {
+    min-width: 350px;
+    max-width: 350px;
     &__background {
       width: 100vw;
       height: 100vh;
