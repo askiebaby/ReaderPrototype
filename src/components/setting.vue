@@ -205,7 +205,6 @@
         }
         &:nth-child(2) {
           flex-direction: row-reverse;
-              
         }
         &__content {
           position: relative;

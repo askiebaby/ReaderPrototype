@@ -16,9 +16,15 @@
       @showShareUI="showShareUI($event)"
       @isShowTooltip="isShowTooltip = $event"
     ></tooltip>
-    <share v-if="isShowShare" :notes-index="selectedNoteIndex" @isShowShare="isShowShare = $event"></share>
+    <share
+      v-if="isShowShare"
+      :notes-index="selectedNoteIndex"
+      @isShowShare="isShowShare = $event"
+    ></share>
     <div class="book" @click="changePage">
-      <h2 class="book__chapter">{{ bookContent.chapter }} {{ bookContent.h1title }}</h2>
+      <h2 class="book__chapter">
+        {{ bookContent.chapter }} {{ bookContent.h1title }}
+      </h2>
       <div ref="viewport" class="book__content">
         <div ref="bookContainer" class="book__content__realbook">
           <h3 class="book__subtitle">{{ bookContent.h3title }}</h3>
@@ -37,12 +43,15 @@
                 v-touch:end="touchEnd"
                 :index="g.boundary + j"
                 :class="hightLight(g.boundary + j)"
-              >{{ c }}</span>
+                >{{ c }}</span
+              >
             </span>
           </p>
         </div>
       </div>
-      <div class="page">本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁</div>
+      <div class="page">
+        本節第{{ bookLocation.pageIndex + 1 }}頁/共{{ bookLocation.pages }}頁
+      </div>
     </div>
   </div>
 </template>
