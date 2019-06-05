@@ -1,30 +1,19 @@
 <template>
   <section class="notes">
-    <complete-mission
-      v-if="isShowComplete"
-      :task-index="taskIndex"
-    ></complete-mission>
+    <complete-mission v-if="isShowComplete" :task-index="taskIndex"></complete-mission>
     <div class="notes__background" @click="closeNotes"></div>
-    <share
-      v-if="isShowShare"
-      :notes-index="notesIndex"
-      @isShowShare="isShowShare = $event"
-    ></share>
+    <share v-if="isShowShare" :notes-index="notesIndex" @isShowShare="isShowShare = $event"></share>
     <div class="notes__container">
       <nav class="notes__nav">
         <div class="notes__nav__close" @click="closeNotes">
-          <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
+          <img :src="require('@/assets/menu/back-white.svg')" alt="BACK">
         </div>
         <div class="notes__nav__title">
           <h2>筆記庫</h2>
         </div>
       </nav>
       <div class="notes__all">
-        <comment
-          v-if="isShowComment"
-          :notes-index="notesIndex"
-          @showComment="showComment($event)"
-        ></comment>
+        <comment v-if="isShowComment" :notes-index="notesIndex" @showComment="showComment($event)"></comment>
         <tooltip
           v-if="isShowTooltip"
           :from-content="false"
@@ -39,19 +28,11 @@
         ></tooltip>
         <article v-for="(item, index) in getNotes" :key="index" class="note">
           <div class="note__highlight" :class="item.color"></div>
-          <div
-            class="note__record"
-            @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
-          >
+          <div class="note__record" @click="loadBookContent(item.chapterIndex, item.sectionIndex)">
             <div class="note__sentence">{{ item.text }}</div>
-            <div v-if="item.comment.length > 0" class="note__memo">
-              {{ item.comment }}
-            </div>
+            <div v-if="item.comment.length > 0" class="note__memo">{{ item.comment }}</div>
           </div>
-          <div
-            class="note__actionButton"
-            @click="e => selectedNote(e, index, item.color)"
-          ></div>
+          <div class="note__actionButton" @click="e => selectedNote(e, index, item.color)"></div>
         </article>
         <div class="notes__all__background"></div>
       </div>
@@ -153,6 +134,7 @@
     @include lines(3);
     font-size: 14px;
     margin-bottom: 15px;
+    min-height: 4.5em;
   }
   &__memo {
     @include lines(2);
@@ -233,6 +215,7 @@
     &__sentence {
       margin: 0;
       max-width: 4.5em;
+      min-width: 4.5em;
       font-weight: 600;
     }
     &__memo {
@@ -242,6 +225,7 @@
       padding-top: 13px;
       padding-left: 0;
       max-width: 3em;
+      min-width: 3em;
       font-weight: 300;
     }
     &__actionButton {
@@ -282,6 +266,20 @@ export default {
         y: 0
       }
     };
+  },
+  watch: {
+    isShowComment() {
+      this.$nextTick(function() {
+        if (this.isShowComment) {
+          const textarea = document.querySelector(
+            '.comment__textarea__realworld'
+          );
+          setTimeout(function() {
+            textarea.focus();
+          }, 0);
+        }
+      });
+    }
   },
   computed: {
     getNotes() {
