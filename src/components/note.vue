@@ -370,12 +370,12 @@ export default {
             y: e.target.getBoundingClientRect().top - 10
           };
         } else {
-          let y = e.target.getBoundingClientRect().top + 90;
+          let y = e.target.getBoundingClientRect().top + 152;
           if (index > 4) {
-            y = e.target.getBoundingClientRect().top - 210;
+            y = e.target.getBoundingClientRect().top - 147;
           }
           this.tooltipPosition = {
-            x: 400,
+            x: 510,
             y: y
           };
         }
@@ -392,8 +392,8 @@ export default {
           };
         } else {
           this.tooltipPosition = {
-            x: e.target.getBoundingClientRect().left - 270,
-            y: e.target.getBoundingClientRect().top - 210
+            x: e.target.getBoundingClientRect().left - 167,
+            y: e.target.getBoundingClientRect().top - 147
           };
         }
       }
