@@ -26,7 +26,7 @@
         >
         <router-link
           tag="button"
-          :to="{ name: 'tasks', params: { id } }"
+          :to="{ name: 'tasks', params: { taskIndex: taskIndex, id: id } }"
           class="button button__default taskPage__button"
           >取消</router-link
         >

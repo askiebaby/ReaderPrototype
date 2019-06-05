@@ -45,12 +45,11 @@ export default {
     taskIndex: {
       type: Number,
       default: -1
+    },
+    id: {
+      type: String,
+      default: ''
     }
-  },
-  data() {
-    return {
-      id: this.$store.getters.getID
-    };
   },
   computed: {
     chineseOrder() {

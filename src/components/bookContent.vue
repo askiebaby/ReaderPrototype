@@ -616,6 +616,7 @@ export default {
       }
     },
     selectedPart(e, notesIndex) {
+      this.$store.commit('addTotalCounts');
       if (notesIndex != undefined) {
         this.selectedNoteIndex = notesIndex;
         this.clearSelected();
@@ -1184,6 +1185,7 @@ export default {
       }
     },
     touchEnd() {
+      this.$store.commit('addTotalCounts');
       const directions = this.$store.getters.getDirections;
       const fontSize = this.fontLevels[this.sizeLevel].fontSize;
       const minX = Math.min(

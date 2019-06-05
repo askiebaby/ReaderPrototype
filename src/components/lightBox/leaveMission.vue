@@ -72,8 +72,7 @@ export default {
   },
   methods: {
     backTasks() {
-      const id = this.id;
-      this.$router.push({ name: 'tasks', params: { id } });
+      this.$router.push({ name: 'tasks', params: { id: this.id } });
     },
     leaveCheck() {
       this.leaveTxt = !this.leaveTxt;

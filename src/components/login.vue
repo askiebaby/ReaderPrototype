@@ -43,17 +43,16 @@ export default {
   },
   methods: {
     missionStart() {
-      const id = this.id;
       if (!this.name) {
         alert('請輸入姓名！');
         return;
       }
       let info = {
-        id: id,
+        id: this.id,
         name: this.name
       };
       this.$store.commit('memberInfo', info);
-      this.$router.push({ name: 'tasks', params: { id } });
+      this.$router.push({ name: 'tasks', params: { id: this.id } });
     }
   }
 };
