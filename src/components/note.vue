@@ -5,6 +5,11 @@
       :task-index="taskIndex"
     ></complete-mission>
     <div class="notes__background" @click="closeNotes"></div>
+    <share
+      v-if="isShowShare"
+      :notes-index="notesIndex"
+      @isShowShare="isShowShare = $event"
+    ></share>
     <div class="notes__container">
       <nav class="notes__nav">
         <div class="notes__nav__close" @click="closeNotes">
@@ -15,11 +20,10 @@
         </div>
       </nav>
       <div class="notes__all">
-        <share v-if="isShowShare" :notes-index="notesIndex"></share>
         <comment
           v-if="isShowComment"
           :notes-index="notesIndex"
-          @showComment="showComment($event.showComment)"
+          @showComment="showComment($event)"
         ></comment>
         <tooltip
           v-if="isShowTooltip"
@@ -28,7 +32,8 @@
           :tooltip-position="tooltipPosition"
           @afterDelete="afterDelete($event)"
           @changeColor="changeColor($event, notesIndex)"
-          @showComment="showComment($event.showComment)"
+          @showComment="showComment($event)"
+          @showShareUI="showShareUI($event)"
           @isShowTooltip="isShowTooltip = $event"
         ></tooltip>
         <article v-for="(item, index) in getNotes" :key="index" class="note">
@@ -300,9 +305,20 @@ export default {
     }
   },
   methods: {
+    showShareUI(event) {
+      this.isShowShare = event.isShowShare;
+      this.isShowTooltip = event.isShowTooltip;
+    },
     showComment(event) {
-      this.isShowComment = event;
-      this.isShowTooltip = !event;
+      this.isShowComment = event.showComment;
+      this.isShowTooltip = !event.showComment;
+      if (event.showComplete) {
+        this.$emit('taskIndex', 2);
+        setTimeout(() => {
+          this.taskIndex = 2;
+          this.isShowComplete = true;
+        }, 3000);
+      }
     },
     loadBookContent(chapterIndex, sectionIndex) {
       // ?????
@@ -376,12 +392,12 @@ export default {
           }
           this.tooltipPosition = {
             x: x,
-            y: 810
+            y: e.target.getBoundingClientRect().top - 24
           };
         } else {
           this.tooltipPosition = {
             x: e.target.getBoundingClientRect().left - 327,
-            y: 610
+            y: e.target.getBoundingClientRect().top - 227
           };
         }
       }

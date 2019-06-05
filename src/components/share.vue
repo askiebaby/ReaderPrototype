@@ -1,9 +1,6 @@
 <template>
   <section class="share">
-    <div
-      class="share__background"
-      @click="$store.commit('toggleShareBubble')"
-    ></div>
+    <div class="share__background" @click="$emit('isShowShare', false)"></div>
     <div class="share__container">
       <h3>點一下來使用AirDrop分享</h3>
       <div class="share__flexRow">
@@ -186,31 +183,31 @@ export default {
   methods: {
     checkStep3_3() {
       if (this.notesIndex == -1) {
-        this.$store.commit('toggleShareBubble');
+        this.$emit('isShowShare', false);
         return;
       }
       const task = this.$store.getters.getTask;
       const checkTask = this.$store.getters.getNotes[this.notesIndex].task;
       const step3_3 = this.$store.getters.getTarget[2].step[2];
       if (checkTask != step3_3.task) {
-        this.$store.commit('toggleShareBubble');
+        this.$emit('isShowShare', false);
         return;
       }
       if (task.length <= 0) {
-        this.$store.commit('toggleShareBubble');
+        this.$emit('isShowShare', false);
         return;
       }
       if (!task[2]) {
-        this.$store.commit('toggleShareBubble');
+        this.$emit('isShowShare', false);
         return;
       }
       if (task[2].time.length != 3) {
-        this.$store.commit('toggleShareBubble');
+        this.$emit('isShowShare', false);
         return;
       }
       console.log('759544');
       this.$store.commit('setTask', 2);
-      this.$store.commit('toggleShareBubble');
+      this.$emit('isShowShare', false);
     }
   }
 };

@@ -4,10 +4,10 @@
       v-show="isShowNavigation"
       @showLeaveBubble="isLeaveMission = $event"
     ></menu-top>
+    <share v-if="isShowShare" @isShowShare="isShowShare = $event"></share>
     <note
       v-if="isShowNotes"
       @switchShowNotes="isShowNotes = $event"
-      @showShareUI="showShareUI($event)"
       @taskIndex="changeTaskIndex($event)"
     ></note>
     <bookContent
@@ -42,6 +42,7 @@
     ></complete-mission>
     <menu-bottom
       v-show="isShowNavigation"
+      @isShowShare="isShowShare = $event"
       @showSettingBubble="isShowSetting = $event"
       @openIndexStatus="isShowIndex = $event"
       @switchShowNotes="isShowNotes = $event"
@@ -63,11 +64,13 @@ import setting from './setting.vue';
 import bookContent from './bookContent.vue';
 import completeMission from './lightBox/completeMission.vue';
 import note from './note.vue';
+import share from './share.vue';
 // data
 import document from '@/assets/document.json';
 
 export default {
   components: {
+    share,
     leaveMission,
     menuTop,
     bookContent,
@@ -79,6 +82,7 @@ export default {
   },
   data() {
     return {
+      isShowShare: false,
       isLeaveMission: false,
       isShowNavigation: false,
       isShowSetting: false,
