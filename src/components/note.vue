@@ -1,19 +1,30 @@
 <template>
   <section class="notes">
-    <complete-mission v-if="isShowComplete" :task-index="taskIndex"></complete-mission>
+    <complete-mission
+      v-if="isShowComplete"
+      :task-index="taskIndex"
+    ></complete-mission>
     <div class="notes__background" @click="closeNotes"></div>
-    <share v-if="isShowShare" :notes-index="notesIndex" @isShowShare="isShowShare = $event"></share>
+    <share
+      v-if="isShowShare"
+      :notes-index="notesIndex"
+      @isShowShare="isShowShare = $event"
+    ></share>
     <div class="notes__container">
       <nav class="notes__nav">
         <div class="notes__nav__close" @click="closeNotes">
-          <img :src="require('@/assets/menu/back-white.svg')" alt="BACK">
+          <img :src="require('@/assets/menu/back-white.svg')" alt="BACK" />
         </div>
         <div class="notes__nav__title">
           <h2>筆記庫</h2>
         </div>
       </nav>
       <div class="notes__all">
-        <comment v-if="isShowComment" :notes-index="notesIndex" @showComment="showComment($event)"></comment>
+        <comment
+          v-if="isShowComment"
+          :notes-index="notesIndex"
+          @showComment="showComment($event)"
+        ></comment>
         <tooltip
           v-if="isShowTooltip"
           :from-content="false"
@@ -28,11 +39,19 @@
         ></tooltip>
         <article v-for="(item, index) in getNotes" :key="index" class="note">
           <div class="note__highlight" :class="item.color"></div>
-          <div class="note__record" @click="loadBookContent(item.chapterIndex, item.sectionIndex)">
+          <div
+            class="note__record"
+            @click="loadBookContent(item.chapterIndex, item.sectionIndex)"
+          >
             <div class="note__sentence">{{ item.text }}</div>
-            <div v-if="item.comment.length > 0" class="note__memo">{{ item.comment }}</div>
+            <div v-if="item.comment.length > 0" class="note__memo">
+              {{ item.comment }}
+            </div>
           </div>
-          <div class="note__actionButton" @click="e => selectedNote(e, index, item.color)"></div>
+          <div
+            class="note__actionButton"
+            @click="e => selectedNote(e, index, item.color)"
+          ></div>
         </article>
         <div class="notes__all__background"></div>
       </div>
@@ -348,12 +367,12 @@ export default {
         if (directions.functions == 'column') {
           this.tooltipPosition = {
             x: 303,
-            y: e.target.getBoundingClientRect().top - 35
+            y: e.target.getBoundingClientRect().top - 10
           };
         } else {
-          let y = e.target.getBoundingClientRect().top + 70;
+          let y = e.target.getBoundingClientRect().top + 90;
           if (index > 4) {
-            y = e.target.getBoundingClientRect().top - 228;
+            y = e.target.getBoundingClientRect().top - 210;
           }
           this.tooltipPosition = {
             x: 400,
@@ -365,7 +384,7 @@ export default {
           let x = e.target.getBoundingClientRect().left - 370;
           let y = e.target.getBoundingClientRect().top - 5;
           if (index > 2) {
-            x = e.target.getBoundingClientRect().left - 129;
+            x = e.target.getBoundingClientRect().left - 71;
           }
           this.tooltipPosition = {
             x: x,
@@ -373,8 +392,8 @@ export default {
           };
         } else {
           this.tooltipPosition = {
-            x: e.target.getBoundingClientRect().left - 327,
-            y: e.target.getBoundingClientRect().top - 227
+            x: e.target.getBoundingClientRect().left - 270,
+            y: e.target.getBoundingClientRect().top - 210
           };
         }
       }
