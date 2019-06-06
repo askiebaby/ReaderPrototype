@@ -9,6 +9,7 @@
     ></mission-again>
     <leave-mission-again
       v-if="showleaveMissionAgain"
+      :id="$route.params.id"
       :task-index="taskIndex"
       @backRecord="changelight"
     ></leave-mission-again>
