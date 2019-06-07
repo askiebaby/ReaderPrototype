@@ -31,7 +31,7 @@
           <p>
             <span
               v-for="g in groupsContent"
-              :key="g.textGroup"
+              :key="g.textGroup + g.notesIndex"
               v-touch:longtap="e => selectedPart(e, g.notesIndex)"
               :class="g.hightLight"
             >
