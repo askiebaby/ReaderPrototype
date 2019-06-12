@@ -5,6 +5,7 @@
 這是一款開源（Open Source）[AGPL v3 授權](https://www.gnu.org/licenses/agpl-3.0)的[線上電子書](https://github.com/askiebaby/ReaderPrototype)。專為 iPad 平板量身打造，透過 **PWA 技術**，您可以將應用程式「加到主畫面」。使用的 JavaScript 框架是主流框架之一的 **Vue**，路由設定搭配 **Vue Router**；狀態管理使用 Vue 應用程式專屬的 **VueX**，是整個應用程式狀態管理的中心；開發搭配 Vue 官方提供的開發者[擴充套件](https://github.com/vuejs/vue-devtools)，方便我們開發中，查看事件觸發時資料狀態的變化來除錯。
 
 這個專案最特別的地方在於：
+這是一款開源（Open Source）AGPL v3 授權的[線上電子書](https://github.com/askiebaby/ReaderPrototype)，模仿原生 APP 行為與電子書介面，透過 PWA 技術，可安裝到您的智慧型裝置。主要載體是 iPad。
 
 - 需要模仿真正的電子書應用程式，在直、橫排版的需求下，及切換字級大小後，**書籍章節、頁面間正確的切換**。
 - 需要模仿應用程式，能夠**安裝到使用者的主畫面**。
