@@ -4,7 +4,7 @@
 
 ## 專案簡述
 
-這是一款開源（Open Source）MIT 授權的[線上電子書](https://github.com/askiebaby/ReaderPrototype)，模仿原生 APP 行為與電子書介面，透過 PWA 技術，可安裝到您的智慧型裝置。主要載體是 iPad。
+這是一款開源（Open Source）AGPL v3 授權的[線上電子書](https://github.com/askiebaby/ReaderPrototype)，模仿原生 APP 行為與電子書介面，透過 PWA 技術，可安裝到您的智慧型裝置。主要載體是 iPad。
 
 ## 專案目的與流程
 
