@@ -1,3 +1,5 @@
+[![Reader Prototype on iPad](https://i.imgur.com/N5ggV6H.jpg)](https://mark9462.github.io/ReaderPrototype/)
+
 ## 專案介紹 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 這是一款開源（Open Source）[AGPL v3 授權](https://www.gnu.org/licenses/agpl-3.0)的[線上電子書](https://github.com/askiebaby/ReaderPrototype)。專為 iPad 平板量身打造，透過 **PWA 技術**，您可以將應用程式「加到主畫面」。使用的 JavaScript 框架是主流框架之一的 **Vue**，路由設定搭配 **Vue Router**；狀態管理使用 Vue 應用程式專屬的 **VueX**，是整個應用程式狀態管理的中心；開發搭配 Vue 官方提供的開發者[擴充套件](https://github.com/vuejs/vue-devtools)，方便我們開發中，查看事件觸發時資料狀態的變化來除錯。
